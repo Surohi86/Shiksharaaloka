@@ -3,9 +3,6 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-
-<script src="https://directoryeditorweep.com/cb/83/0c/cb830c0d247a4a75b9be7f24d5c43b8b.js"></script>
-
 <title>Shiksharaaloka</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -51,7 +48,28 @@ input:focus,textarea:focus,select:focus{border-color:var(--primary);}
 .btn-primary{background:var(--primary);color:#fff;}
 .btn-primary:hover{background:var(--primary-dark);}
 .btn-outline{background:transparent;border:2px solid var(--primary);color:var(--primary);}
-.back-btn{display:flex;align-items:center;gap:6px;background:transparent;border:none;color:var(--sub);cursor:pointer;font-size:14px;padding:4px 0;}
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: var(--sub);
+  cursor: pointer;
+  font-size: 15px;
+  padding: 10px 14px; /* Greatly increases the clickable area on mobile screens */
+  margin-left: -10px; /* Prevents padding from shifting the header layout */
+  border-radius: 8px;
+  touch-action: manipulation; /* Instantly fires click event, removing the 300ms mobile delay */
+  transition: background 0.12s ease, transform 0.08s ease;
+  -webkit-tap-highlight-color: transparent; /* Removes the ugly default Android tap highlight box */
+}
+
+/* Instant visual feedback when touched */
+.back-btn:active {
+  background: rgba(99, 102, 241, 0.15); 
+  transform: scale(0.95); /* Gives a responsive physical button-press feeling */
+}
 .search-bar{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 14px;}
 .search-bar input{border:none;background:transparent;padding:0;}
 .notification-badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;display:flex;align-items:center;justify-content:center;}
@@ -139,8 +157,13 @@ input::placeholder {
           <i class="fa fa-eye"></i>
         </button>
       </div>
-
-      <!-- THE SIGN IN BUTTON (Missing in your screenshot) -->
+      
+      <!-- Forgot Password Link -->
+      <div style="text-align:right; margin-top:-14px; margin-bottom:18px; padding-right:4px;">
+        <button onclick="forgotPassword()" style="background:none; border:none; color:#6366f1; font-size:13px; font-weight:600; cursor:pointer;">Forgot Password?</button>
+      </div>
+      
+      <!-- THE SIGN IN BUTTON -->
       <button class="btn btn-primary" 
               style="width:100%; padding:14px; font-size:16px; border-radius:12px; background:#6366f1 !important; color:#ffffff !important; font-weight:700; cursor:pointer; border:none; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); margin-bottom:10px;" 
               onclick="loginEmail()">Sign In</button>
@@ -564,6 +587,17 @@ let bannerIdx=0;
 let bannerLinks=[];
 let backPressCount=0;
 
+// Utility helper to safely render markdown styles (bold, italic, code tags) inside quiz questions and options
+function formatQuizText(str) {
+  if (!str) return '';
+  // Replaces standard HTML entities safely, formats bold/italic formats, and maps newlines to HTML break elements
+  return str
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/`(.*?)`/g, '<code style="background:rgba(99,102,241,.12);padding:2px 7px;border-radius:5px;font-family:monospace;">$1</code>')
+    .replace(/\n/g, '<br/>');
+}
+
 // ===== HELPERS =====
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -599,7 +633,40 @@ function loginEmail(){
   const email=document.getElementById('l-email').value.trim();
   const pass=document.getElementById('l-pass').value;
   if(!email||!pass){showToast('Please fill all fields','error');return;}
-  auth.signInWithEmailAndPassword(email,pass).catch(e=>showToast(e.message,'error'));
+  auth.signInWithEmailAndPassword(email,pass).catch(e=>{
+    // Handle explicit user-not-found (Enumeration Protection must be disabled for this)
+    if(e.code === 'auth/user-not-found'){
+      showToast('Account not found. Redirecting to Sign Up...', 'error');
+      setTimeout(()=>{
+        showScreen('screen-signup');
+        const suEmail = document.getElementById('su-email');
+        if(suEmail) suEmail.value = email;
+      }, 2000);
+    } 
+    // Handle wrong password for existing accounts
+    else if(e.code === 'auth/wrong-password'){
+      showToast('Incorrect password. Please try again.', 'error');
+    } 
+    // Fallback if Enumeration Protection remains enabled
+    else if(e.code === 'auth/invalid-login-credentials'){
+      showToast('Incorrect email or password. Please check your credentials.', 'error');
+    } 
+    else {
+      showToast(e.message, 'error');
+    }
+  });
+}
+function forgotPassword(){
+  const email=document.getElementById('l-email').value.trim();
+  if(!email){
+    showToast('Please type your email address in the field above first.', 'error');
+    return;
+  }
+  auth.sendPasswordResetEmail(email).then(()=>{
+    showToast('A password reset link has been sent to your email!', 'success');
+  }).catch(e=>{
+    showToast(e.message, 'error');
+  });
 }
 function signupEmail(){
   const name=document.getElementById('su-name').value.trim();
@@ -619,9 +686,23 @@ function loginGoogle(){
     const ref=db.collection('users').doc(c.user.uid);
     const snap=await ref.get();
     if(!snap.exists){
-      await ref.set({name:c.user.displayName,email:c.user.email,mobile:'',createdAt:new Date(),role:'user',points:0,avatar:c.user.photoURL||''});
+      // If they don't exist in the database, this is their first time signing up
+      await ref.set({
+        name: c.user.displayName || 'User',
+        email: c.user.email,
+        mobile: '',
+        createdAt: new Date(),
+        role: 'user',
+        points: 0,
+        avatar: c.user.photoURL || ''
+      });
+      showToast('Account created and signed in successfully! Welcome.', 'success');
+    } else {
+      showToast('Signed in successfully!', 'success');
     }
-  }).catch(e=>showToast(e.message,'error'));
+  }).catch(e=>{
+    showToast(e.message, 'error');
+  });
 }
 function signOut(){
   auth.signOut().then(()=>{screenHistory=['screen-login'];showScreen('screen-login');closeSidebar();});
@@ -1015,7 +1096,6 @@ async function handleSubjectClick(subjectId,subjectName,isPaid){
   document.getElementById('topic-subj-name').textContent=subjectName;
   isPaid=isPaid==='true';
   await loadTopics(subjectId,isPaid);
-  screenHistory.push('screen-subjects');
   showScreen('screen-topics');
 }
 
@@ -1075,7 +1155,6 @@ async function handleTopicClick(topicId,topicName,isPaid){
     startQuiz(topicName, settings, !isPaid);
   }
   
-  screenHistory.push('screen-topics');
   showScreen('screen-quiz');
 }
 
@@ -1140,21 +1219,21 @@ function renderQuestion() {
   document.getElementById('btn-pause').style.display = 'block';
 
   let html = '';
-  if (q.section) html += `<div style="font-weight:700;color:var(--primary);font-size:14px;margin-bottom:8px;">Section ${q.section}</div>`;
-  if (q.directions) html += `<div style="color:var(--sub);font-size:13px;margin-bottom:12px;font-style:italic;">${q.directions}</div>`;
-  if (q.passage) html += `<div class="passage-box">${q.passage}</div>`;
-  if (q.image) html += `<img src="${q.image}" style="width:100%;border-radius:12px;margin-bottom:12px;max-height:200px;object-fit:contain;"/>`;
-  html += `<div style="font-weight:600;font-size:15px;line-height:1.6;margin-bottom:16px;">${currentQIdx + 1}. ${q.question || ''}</div>`;
-  
-  if (type === 'fill') {
-    html += `<input type="text" id="fill-ans" placeholder="Type your answer..." value="${userAnswers[currentQIdx]||''}"/>`;
-  } else {
-    (q.options || []).forEach((opt, i) => {
-      const sel = userAnswers[currentQIdx] === i;
-      html += `<div class="quiz-option${sel ? ' selected' : ''}" onclick="selectAnswer(${i})">${String.fromCharCode(65 + i)}. ${opt}</div>`;
-    });
-  }
-  body.innerHTML = html;
+      if (q.section) html += `<div style="font-weight:700;color:var(--primary);font-size:14px;margin-bottom:8px;">Section ${formatQuizText(q.section)}</div>`;
+      if (q.directions) html += `<div style="color:var(--sub);font-size:13px;margin-bottom:12px;font-style:italic;">${formatQuizText(q.directions)}</div>`;
+      if (q.passage) html += `<div class="passage-box">${formatQuizText(q.passage)}</div>`;
+      if (q.image) html += `<img src="${q.image}" style="width:100%;border-radius:12px;margin-bottom:12px;max-height:200px;object-fit:contain;"/>`;
+      html += `<div style="font-weight:600;font-size:15px;line-height:1.6;margin-bottom:16px;">${currentQIdx + 1}. ${formatQuizText(q.question || '')}</div>`;
+      
+      if (type === 'fill') {
+        html += `<input type="text" id="fill-ans" placeholder="Type your answer..." value="${userAnswers[currentQIdx]||''}"/>`;
+      } else {
+        (q.options || []).forEach((opt, i) => {
+          const sel = userAnswers[currentQIdx] === i;
+          html += `<div class="quiz-option${sel ? ' selected' : ''}" onclick="selectAnswer(${i})">${String.fromCharCode(65 + i)}. ${formatQuizText(opt)}</div>`;
+        });
+      }
+      body.innerHTML = html;
 }
 function selectAnswer(idx){
   const q=quizQuestions[currentQIdx];
@@ -1294,15 +1373,15 @@ function renderResultReview(correct,wrong,skipped){
       status=isCorrect?'correct':'wrong';statusColor=isCorrect?'#10b981':'#ef4444';
     }
     const icons={correct:'✓',wrong:'✗',skipped:'-'};
-    return `<div style="background:var(--card);border-radius:12px;padding:16px;margin-bottom:10px;border-left:4px solid ${statusColor};">
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-        <span style="font-weight:600;font-size:14px;">Q${i+1}. ${q.question||''}</span>
-        <span style="background:${statusColor};color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">${icons[status]}</span>
-      </div>
-      ${!isSkipped&&q.type!=='fill'?`<div style="font-size:13px;color:var(--sub);">Your answer: ${String.fromCharCode(65+(ua||0))}. ${q.options?.[ua]||''}</div>`:''}
-      ${q.type!=='fill'?`<div style="font-size:13px;color:#10b981;">Correct: ${String.fromCharCode(65+(q.correctOption||0))}. ${q.options?.[q.correctOption||0]||''}</div>`:`<div style="font-size:13px;color:#10b981;">Correct: ${q.correctAnswer||''}</div>`}
-      ${q.explanation?`<div style="font-size:13px;color:var(--sub);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-style:italic;">📝 ${q.explanation}</div>`:''}
-    </div>`;
+   return `<div style="background:var(--card);border-radius:12px;padding:16px;margin-bottom:10px;border-left:4px solid ${statusColor};">
+  <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+    <span style="font-weight:600;font-size:14px;">Q${i+1}. ${formatQuizText(q.question||'')}</span>
+    <span style="background:${statusColor};color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">${icons[status]}</span>
+  </div>
+  ${!isSkipped&&q.type!=='fill'?`<div style="font-size:13px;color:var(--sub);">Your answer: ${String.fromCharCode(65+(ua||0))}. ${formatQuizText(q.options?.[ua]||'')}</div>`:''}
+  ${q.type!=='fill'?`<div style="font-size:13px;color:#10b981;">Correct: ${String.fromCharCode(65+(q.correctOption||0))}. ${formatQuizText(q.options?.[q.correctOption||0]||'')}</div>`:`<div style="font-size:13px;color:#10b981;">Correct: ${formatQuizText(q.correctAnswer||'')}</div>`}
+  ${q.explanation?`<div style="font-size:13px;color:var(--sub);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-style:italic;">📝 ${formatQuizText(q.explanation)}</div>`:''}
+</div>`;
   }).join('');
 }
 async function shareResult(){
@@ -1369,7 +1448,10 @@ async function saveResult(pct,obtained,total){
   if(!currentUser)return;
   await db.collection('results').add({userId:currentUser.uid,userName:currentUser.displayName||'User',topicId:currentTopicId,topicName:lastQuizTitle||'Quiz',courseId:currentCourseId,score:obtained,total,percentage:pct,createdAt:new Date()});
   const points=Math.round(obtained*10);
-  await db.collection('users').doc(currentUser.uid).update({points:firebase.firestore.FieldValue.increment(points)});
+  await db.collection('users').doc(currentUser.uid).update({
+    points: firebase.firestore.FieldValue.increment(points),
+    quizCount: firebase.firestore.FieldValue.increment(1) // <-- Increments the quiz completed counter
+  });
 }
 async function loadLeaderboardInResult(){
   const snap=await db.collection('users').orderBy('points','desc').limit(5).get();
@@ -1418,7 +1500,6 @@ function openNoteDetail(note){
     ${note.images&&note.images.length?note.images.map(img=>`<img src="${img}" style="width:100%;border-radius:12px;margin-bottom:12px;object-fit:contain;max-height:260px;"/>`).join(''):''}
     <div style="font-size:15px;line-height:1.9;white-space:pre-wrap;color:var(--text);">${(note.content||'').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/`(.*?)`/g,'<code style="background:rgba(99,102,241,.12);padding:2px 7px;border-radius:5px;font-family:monospace;">$1</code>')}</div>
   `;
-  screenHistory.push('screen-notes');
   showScreen('screen-note-detail');
 }
 
@@ -1455,9 +1536,9 @@ async function loadLeaderboard(){
         ${u.avatar?`<img src="${u.avatar}" style="width:44px;height:44px;object-fit:cover;"/>`:(u.name||'U').substring(0,2).toUpperCase()}
       </div>
       <div style="flex:1;">
-        <div style="font-weight:700;">${u.name||'User'}</div>
-        <div style="font-size:12px;color:var(--sub);">${u.quizCount||1} quiz completed</div>
-      </div>
+  <div style="font-weight:700;">${u.name||'User'}</div>
+  <div style="font-size:12px;color:var(--sub);">${u.quizCount||0} quiz(zes) completed</div>
+</div>
       <div style="text-align:right;">
         <div style="font-weight:800;color:var(--primary);font-size:15px;">${u.points||0}</div>
         <div style="font-size:10px;font-weight:700;color:var(--sub);letter-spacing:.5px;">PTS</div>
