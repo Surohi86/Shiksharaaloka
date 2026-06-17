@@ -8,8 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-:root{--primary:#6366f1;--primary-dark:#4f46e5;--bg:#f8fafc;--card:#fff;--text:#1e293b;--sub:#64748b;--border:#e2e8f0;--sidebar:#1e1b4b;}
-[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--sub:#94a3b8;--border:#334155;--sidebar:#0f172a;}
+:root{--primary:#6366f1;--primary-dark:#4f46e5;--bg:#f8fafc;--card:#fff;--text:#1e293b;--sub:#64748b;--border:#e2e8f0;--sidebar:#1e1b4b;--card-border:#cbd5e1;}
+[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--sub:#94a3b8;--border:#334155;--sidebar:#0f172a;--card-border:#475569;}
 *{font-family:'Poppins',sans-serif;box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);min-height:100vh;}
 .screen{display:none!important;}
@@ -30,7 +30,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;}
 .banner-slider{position:relative;overflow:hidden;height:180px;background:#6366f1;}
 .banner-slide{position:absolute;inset:0;opacity:0;transition:opacity .6s;cursor:pointer;}
 .banner-slide.active{opacity:1;}
-.course-card{background:var(--card);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;}
+.course-card{background:var(--card);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;border:2px solid var(--card-border);box-shadow:0 4px 10px rgba(0,0,0,0.04);}
 .course-card:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,.12);}
 .quiz-option{display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--border);border-radius:12px;cursor:pointer;transition:.2s;margin-bottom:10px;}
 .quiz-option:hover{border-color:var(--primary);background:rgba(99,102,241,.05);}
@@ -70,8 +70,38 @@ input:focus,textarea:focus,select:focus{border-color:var(--primary);}
   background: rgba(99, 102, 241, 0.15); 
   transform: scale(0.95); /* Gives a responsive physical button-press feeling */
 }
-.search-bar{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 14px;}
-.search-bar input{border:none;background:transparent;padding:0;}
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff !important; /* Unified full white background */
+  border: 1.5px solid #e2e8f0 !important;
+  border-radius: 14px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Elegant soft shadow */
+  transition: all 0.22s ease;
+}
+.search-bar i {
+  color: #6366f1 !important; /* Beautiful Indigo search icon */
+  font-size: 16px;
+  transition: transform 0.2s ease;
+}
+.search-bar input {
+  border: none !important;
+  background: transparent !important; /* Blends seamlessly into the container */
+  padding: 0 !important;
+  color: #1e293b !important; /* High contrast text for clean readability */
+  font-weight: 500;
+  font-size: 14.5px;
+  outline: none !important;
+}
+.search-bar:focus-within {
+  border-color: #6366f1 !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.15) !important;
+}
+.search-bar:focus-within i {
+  transform: scale(1.15); /* Modern, interactive scale effect */
+}
 .notification-badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;display:flex;align-items:center;justify-content:center;}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;align-items:center;justify-content:center;}
 .modal.active{display:flex;}
@@ -465,9 +495,15 @@ input::placeholder {
     <div style="margin-bottom:14px;"><label style="font-size:13px;color:var(--sub);margin-bottom:6px;display:block;">Username</label><input id="p-username" type="text" placeholder="Username"/></div>
     <div style="margin-bottom:14px;"><label style="font-size:13px;color:var(--sub);margin-bottom:6px;display:block;">Profile Picture (URL or upload)</label><input id="p-pic" type="text" placeholder="Image URL or paste link" oninput="previewProfilePic()"/></div>
     <div style="margin-bottom:14px;"><label style="font-size:13px;color:var(--sub);margin-bottom:6px;display:block;">Mobile Number</label><input id="p-mobile" type="tel" placeholder="Mobile Number"/></div>
+    
+    <!-- Properly nested Delete Account UI block -->
+    <div style="margin-top:32px; border-top:1px solid var(--border); padding-top:20px;">
+      <button onclick="deleteUserAccount()" class="btn btn-primary" style="background:#ef4444 !important; width:100%; font-weight:700; border:none; border-radius:10px; padding:12px; cursor:pointer;">Delete My Account</button>
+      <p style="color:var(--sub); font-size:11px; margin-top:8px; text-align:center;">Warning: This action is permanent. All your points and test history will be erased.</p>
+    </div>
   </div>
 </div>
-
+    
 <!-- ======================== STATIC PAGES (About, Disclaimer, Privacy, Contact, Links) ======================== -->
 <div id="screen-static" class="screen">
   <div class="header">
@@ -708,6 +744,37 @@ function signOut(){
   auth.signOut().then(()=>{screenHistory=['screen-login'];showScreen('screen-login');closeSidebar();});
 }
 
+async function deleteUserAccount(){
+  if(!confirm("Are you absolutely sure you want to delete your account? This will permanently erase your profile, scores, and credentials. This action cannot be undone.")) return;
+  
+  const user = firebase.auth().currentUser;
+  if(user) {
+    try {
+      // 1. Delete user profile metadata from Firestore
+      await db.collection('users').doc(user.uid).delete();
+      
+      // 2. Delete user's historic test results
+      const resultsSnap = await db.collection('results').where('userId', '==', user.uid).get();
+      const batch = db.batch();
+      resultsSnap.forEach(doc => batch.delete(doc.ref));
+      await batch.commit();
+      
+      // 3. Delete the Auth record itself
+      await user.delete();
+      
+      showToast("Account successfully deleted.", "success");
+      signOut();
+    } catch (e) {
+      if (e.code === 'auth/requires-recent-login') {
+        // Firebase Auth security mechanism requires fresh login to delete account
+        showToast("Please sign out and sign back in to verify your identity before deleting your account.", "error");
+      } else {
+        showToast("Error deleting account: " + e.message, "error");
+      }
+    }
+  }
+}
+
 let currentUserRole='user';
 auth.onAuthStateChanged(async user=>{
   if(user){
@@ -838,29 +905,32 @@ async function saveProfile(){
 // ===== SIDEBAR =====
 function buildSidebar(){
   const items=[
-    {icon:'fa-home',label:'Home',action:"showScreen('screen-courses');closeSidebar();"},
-    {icon:'fa-sticky-note',label:'Notes',action:"loadNotes();showScreen('screen-notes');closeSidebar();"},
-    {icon:'fa-chart-bar',label:'My Results',action:"loadMyResults();showScreen('screen-myresults');closeSidebar();"},
-    {icon:'fa-trophy',label:'Leader Board',action:"loadLeaderboard();showScreen('screen-leaderboard');closeSidebar();"},
-    {icon:'fa-user',label:'Profile',action:"showScreen('screen-profile');closeSidebar();"},
-    {icon:'fa-info-circle',label:'About Us',action:"openStatic('aboutus');closeSidebar();"},
-    {icon:'fa-exclamation-triangle',label:'Disclaimer',action:"openStatic('disclaimer');closeSidebar();"},
-    {icon:'fa-shield-alt',label:'Privacy Policy',action:"openStatic('privacy');closeSidebar();"},
-    {icon:'fa-envelope',label:'Contact Us',action:"openStatic('contact');closeSidebar();"},
-    {icon:'fa-link',label:'Important Links',action:"openStatic('links');closeSidebar();"},
-    {icon:'fa-star',label:'Student Reviews',action:"openStatic('reviews');closeSidebar();"},
-    {icon:'fa-users',label:'Our Students',action:"openStatic('users');closeSidebar();"},
-    {icon:'fa-youtube',label:'YouTube Lessons',action:"openStatic('youtube');closeSidebar();"},
-    {icon:'fa-sign-out-alt',label:'Sign Out',action:"signOut()"},
+    {icon:'fa-home',label:'Home',color:'#6366f1',action:"showScreen('screen-courses');closeSidebar();"},
+    {icon:'fa-sticky-note',label:'Notes',color:'#f59e0b',action:"loadNotes();showScreen('screen-notes');closeSidebar();"},
+    {icon:'fa-chart-bar',label:'My Results',color:'#10b981',action:"loadMyResults();showScreen('screen-myresults');closeSidebar();"},
+    {icon:'fa-trophy',label:'Leader Board',color:'#eab308',action:"loadLeaderboard();showScreen('screen-leaderboard');closeSidebar();"},
+    {icon:'fa-user',label:'Profile',color:'#8b5cf6',action:"showScreen('screen-profile');closeSidebar();"},
+    {icon:'fa-info-circle',label:'About Us',color:'#3b82f6',action:"openStatic('aboutus');closeSidebar();"},
+    {icon:'fa-exclamation-triangle',label:'Disclaimer',color:'#f97316',action:"openStatic('disclaimer');closeSidebar();"},
+    {icon:'fa-shield-alt',label:'Privacy Policy',color:'#14b8a6',action:"openStatic('privacy');closeSidebar();"},
+    {icon:'fa-envelope',label:'Contact Us',color:'#ec4899',action:"openStatic('contact');closeSidebar();"},
+    {icon:'fa-link',label:'Important Links',color:'#06b6d4',action:"openStatic('links');closeSidebar();"},
+    {icon:'fa-star',label:'Student Reviews',color:'#fbbf24',action:"openStatic('reviews');closeSidebar();"},
+    {icon:'fa-users',label:'Our Students',color:'#3b82f6',action:"openStatic('users');closeSidebar();"},
+    {icon:'fa-youtube',label:'YouTube Lessons',color:'#ff0000',action:"openStatic('youtube');closeSidebar();", prefix:'fab'},
+    {icon:'fa-sign-out-alt',label:'Sign Out',color:'#f43f5e',action:"signOut()"},
   ];
   const container=document.getElementById('sb-items');
-  container.innerHTML=items.map(item=>`
-    <button onclick="${item.action}" style="width:100%;text-align:left;background:none;border:none;color:#e2e8f0;padding:14px 20px;cursor:pointer;display:flex;align-items:center;gap:14px;font-size:15px;font-family:Poppins;transition:.2s;"
-      onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='none'">
-      <i class="fa ${item.icon}" style="width:20px;text-align:center;"></i> ${item.label}
-    </button>
-    <div style="height:1px;background:rgba(255,255,255,.05);margin:0 20px;"></div>
-  `).join('');
+  container.innerHTML=items.map(item=>{
+    const prefix = item.prefix || 'fa';
+    return `
+      <button onclick="${item.action}" style="width:100%;text-align:left;background:none;border:none;color:#e2e8f0;padding:14px 20px;cursor:pointer;display:flex;align-items:center;gap:14px;font-size:15px;font-family:Poppins;transition:.2s;"
+        onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='none'">
+        <i class="${prefix} ${item.icon}" style="width:20px;text-align:center;color:${item.color} !important;"></i> ${item.label}
+      </button>
+      <div style="height:1px;background:rgba(255,255,255,.05);margin:0 20px;"></div>
+    `;
+  }).join('');
 }
 
 // ===== STATIC PAGES =====
@@ -906,21 +976,57 @@ async function openStatic(page){
       `).join(''):'<div style="text-align:center;color:var(--sub);padding:20px;font-size:14px;">No reviews yet. Be the first!</div>'}
     `;
   } else if(page==='users'){
-    const statsRef=db.collection('settings').doc('stats');
-    const snap2=await statsRef.get();
-    const stats=snap2.exists?snap2.data():{};
-    const base=stats.happyLearners||0;
-    statsRef.set({happyLearners:firebase.firestore.FieldValue.increment(1)},{merge:true});
-    const snap2b=await statsRef.get();
-    const count=(snap2b.exists?snap2b.data().happyLearners:base)||base;
-    container.innerHTML=`
-      <div style="text-align:center;padding:40px 24px;">
-        <div style="font-size:72px;font-weight:900;color:var(--primary);line-height:1;" id="user-count-display">0</div>
-        <div style="color:var(--sub);font-size:20px;margin-top:8px;font-weight:600;">Happy Learners</div>
-        <div style="margin-top:24px;color:var(--sub);font-size:14px;">Every learner counts! Join our growing family.</div>
-      </div>`
-    ;
-    animateCount('user-count-display',count);
+        const statsRef=db.collection('settings').doc('stats');
+        const snap2=await statsRef.get();
+        const stats=snap2.exists?snap2.data():{};
+        const base=stats.happyLearners||0;
+        statsRef.set({happyLearners:firebase.firestore.FieldValue.increment(1)},{merge:true});
+        const snap2b=await statsRef.get();
+        const count=(snap2b.exists?snap2b.data().happyLearners:base)||base;
+        container.innerHTML=`
+          <div style="text-align:center;padding:40px 24px;">
+            <div style="font-size:72px;font-weight:900;color:var(--primary);line-height:1;" id="user-count-display">0</div>
+            <div style="color:var(--sub);font-size:20px;margin-top:8px;font-weight:600;">Happy Learners</div>
+            <div style="margin-top:24px;color:var(--sub);font-size:14px;">Every learner counts! Join our growing family.</div>
+          </div>`
+        ;
+        animateCount('user-count-display',count);
+
+        // --- ADSTERRA POPUNDER AD TRIGGER ---
+        // Clean up any old popunder script elements to prevent duplications
+        const oldAdContainer = document.getElementById('popunder-ad-container');
+        if (oldAdContainer) oldAdContainer.remove();
+
+        db.collection('settings').doc('ads').get().then(adsSnap => {
+          if (adsSnap.exists) {
+            const popunderCode = adsSnap.data().popunderCode;
+            if (popunderCode && popunderCode.trim()) {
+              const adDiv = document.createElement('div');
+              adDiv.id = 'popunder-ad-container';
+              adDiv.style.display = 'none'; // Keep container hidden
+              document.body.appendChild(adDiv);
+              
+              try {
+                const range = document.createRange();
+                range.selectNode(adDiv);
+                const frag = range.createContextualFragment(popunderCode);
+                adDiv.appendChild(frag);
+              } catch(e) {
+                adDiv.innerHTML = popunderCode;
+              }
+
+              // Re-create script elements to force evaluation and trigger the popup window event
+              const scripts = adDiv.querySelectorAll('script');
+              scripts.forEach(oldScript => {
+                const newScript = document.createElement('script');
+                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+              });
+            }
+          }
+        });
+        // ------------------------------------
   } else if(page==='youtube'){
     const snap2=await db.collection('youtubeLinks').get();
     const links=snap2.docs.map(d=>({id:d.id,...d.data()}));
@@ -997,7 +1103,7 @@ function renderFeatured(courses,enrolled){
   list.innerHTML=featured.map(c=>{
     const isEnrolled=enrolled.includes(c.id)||!c.isPaid;
     const color=c.bgColor||'#6366f1';
-    return `<div onclick="handleCourseClick('${c.id}','${c.isPaid}','${isEnrolled}')" style="min-width:160px;background:var(--card);border-radius:16px;overflow:hidden;cursor:pointer;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.08);">
+return `<div onclick="handleCourseClick('${c.id}','${c.isPaid}','${isEnrolled}')" style="min-width:160px;background:var(--card);border-radius:16px;overflow:hidden;cursor:pointer;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.08);border:2px solid var(--card-border);">
       <div style="background:${color};padding:20px;display:flex;flex-direction:column;align-items:center;">
         <div style="font-size:32px;">${c.icon||'📚'}</div>
       </div>
@@ -1679,28 +1785,48 @@ async function loadNotifications(){
   if(!currentUser)return;
   const snap=await db.collection('notifications').where('target','in',['all',currentUser.uid]).limit(20).get();
   const notifs=snap.docs.map(d=>({id:d.id,...d.data()}));
+  
+  // Retrieve the timestamp of when the user last opened notifications
+  const lastViewedStr = localStorage.getItem('last_viewed_notifs_' + currentUser.uid);
+  const lastViewedTime = lastViewedStr ? parseInt(lastViewedStr) : 0;
+
   const badge=document.getElementById('notif-badge');
-  const unread=notifs.filter(n=>!n.readBy?.includes(currentUser.uid));
+  
+  // Filter notifications that were created after the user's last viewed timestamp
+  const unread = notifs.filter(n => {
+    const createdTime = n.createdAt?.toMillis ? n.createdAt.toMillis() : (n.createdAt?.seconds ? n.createdAt.seconds * 1000 : 0);
+    return createdTime > lastViewedTime;
+  });
+
   badge.style.display=unread.length?'flex':'none';
   badge.textContent=unread.length;
+  
   const container=document.getElementById('notif-list');
-  container.innerHTML=notifs.length?notifs.map(n=>`
-    <div style="padding:12px;border-radius:10px;margin-bottom:8px;background:${n.readBy?.includes(currentUser.uid)?'var(--bg)':'rgba(99,102,241,.08)'};border:1px solid var(--border);">
-      <div style="font-weight:600;margin-bottom:4px;">${n.title||'Notification'}</div>
-      <div style="color:var(--sub);font-size:13px;">${n.message||''}</div>
-      ${n.url?`<a href="${n.url}" target="_blank" style="color:var(--primary);font-size:13px;font-weight:600;">Learn more →</a>`:''}
-    </div>
-  `).join(''):'<div style="text-align:center;color:var(--sub);padding:20px;">No notifications</div>';
+  container.innerHTML=notifs.length?notifs.map(n=>{
+    const createdTime = n.createdAt?.toMillis ? n.createdAt.toMillis() : (n.createdAt?.seconds ? n.createdAt.seconds * 1000 : 0);
+    const isSeen = createdTime <= lastViewedTime;
+    return `
+      <div style="padding:12px;border-radius:10px;margin-bottom:8px;background:${isSeen?'var(--bg)':'rgba(99,102,241,.08)'};border:1px solid var(--border);">
+        <div style="font-weight:600;margin-bottom:4px;">${n.title||'Notification'}</div>
+        <div style="color:var(--sub);font-size:13px;">${n.message||''}</div>
+        ${n.url?`<a href="${n.url}" target="_blank" style="color:var(--primary);font-size:13px;font-weight:600;">Learn more →</a>`:''}
+      </div>
+    `;
+  }).join(''):'<div style="text-align:center;color:var(--sub);padding:20px;">No notifications</div>';
 }
 function openNotifs(){
-  loadNotifications();
   openModal('notif-modal');
-  if(currentUser){
-    const snap=db.collection('notifications').where('target','in',['all',currentUser.uid]).get().then(s=>{
-      s.docs.forEach(doc=>{if(!doc.data().readBy?.includes(currentUser.uid))doc.ref.update({readBy:firebase.firestore.FieldValue.arrayUnion(currentUser.uid)});});
-      document.getElementById('notif-badge').style.display='none';
-    });
-  }
+  if(!currentUser)return;
+  
+  // Instantly record current millisecond timestamp locally 
+  localStorage.setItem('last_viewed_notifs_' + currentUser.uid, Date.now().toString());
+  
+  // Instantly remove the red badge 
+  const badge=document.getElementById('notif-badge');
+  if(badge) badge.style.display='none';
+  
+  // Re-render the notification list inside the modal with updated read/seen backgrounds
+  loadNotifications();
 }
 
 // ===== ADS =====
