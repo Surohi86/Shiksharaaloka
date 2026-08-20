@@ -35,7 +35,12 @@ body{background:var(--bg);color:var(--text);min-height:100vh;}
 .ticker-icon{width:34px;height:34px;min-width:34px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
 .ticker-track{overflow:hidden;flex:1;position:relative;}
 .ticker-pill:hover .ticker-content { animation-play-state: paused; }
-.ticker-content { display: inline-block; white-space: nowrap; animation: ticker 35s linear infinite; }
+.ticker-content { 
+  display: inline-block; 
+  white-space: nowrap; 
+  padding-left: 100%; /* Positions text right at the entry edge of the tray */
+  animation: ticker 55s linear infinite; 
+}
 .ticker-link { color: #fff; text-decoration: none !important; display: inline-flex; align-items: center; gap: 4px; transition: opacity 0.2s ease, transform 0.15s ease; }
 .ticker-link:hover { opacity: 0.9; text-decoration: none !important; }
 
@@ -62,7 +67,11 @@ body{background:var(--bg);color:var(--text);min-height:100vh;}
   0%, 100% { transform: scale(1); box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4); }
   50% { transform: scale(1.12); box-shadow: 0 0 12px rgba(255, 255, 255, 0.8); }
 }
-@keyframes ticker{0%{transform:translateX(100%);}100%{transform:translateX(-100%);}}
+/* Immediate right-edge entry and smooth left exit */
+@keyframes ticker {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
 /* ================= HERO BANNER 16 TRANSITIONS ================= */
 .banner-slider {
   position: relative;
@@ -999,9 +1008,15 @@ function loadTicker(s){
     return `<span ${clickAttr} class="ticker-link" style="color:#fff;font-size:13px;font-weight:500;text-decoration:none !important;${pointerStyle}"><span class="ticker-badge-new">NEW</span>${t.text}${linkIcon}</span>`;
   }).join('<span style="color:rgba(255,255,255,.6);padding:0 28px;">◆</span>');
 
-  const fullTickerHtml = renderItems() + '<span style="color:rgba(255,255,255,.6);padding:0 28px;">◆</span>' + renderItems();
+  const separator = '<span style="color:rgba(255,255,255,.6);padding:0 28px;">◆</span>';
+  const fullTickerHtml = renderItems();
   const textContainer = document.getElementById('ticker-text');
-  if(textContainer) textContainer.innerHTML = fullTickerHtml;
+  if(textContainer) {
+    textContainer.innerHTML = fullTickerHtml;
+    // Apply dynamic speed set by admin
+    const speedSeconds = parseInt(s.tickerSpeed) || 55;
+    textContainer.style.animationDuration = speedSeconds + 's';
+  }
 
   const pill = document.getElementById('ticker-pill');
   if(pill && s.tickerColor){
