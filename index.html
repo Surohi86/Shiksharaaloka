@@ -34,11 +34,133 @@ body{background:var(--bg);color:var(--text);min-height:100vh;}
 .ticker-pill{border-radius:50px;padding:10px 16px;display:flex;align-items:center;gap:10px;overflow:hidden;background:linear-gradient(90deg,#6366f1,#8b5cf6);}
 .ticker-icon{width:34px;height:34px;min-width:34px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
 .ticker-track{overflow:hidden;flex:1;position:relative;}
-.ticker-content{display:inline-block;white-space:nowrap;animation:ticker 35s linear infinite;}
+.ticker-pill:hover .ticker-content { animation-play-state: paused; }
+.ticker-content { display: inline-block; white-space: nowrap; animation: ticker 35s linear infinite; }
+.ticker-link { color: #fff; text-decoration: none !important; display: inline-flex; align-items: center; gap: 4px; transition: opacity 0.2s ease, transform 0.15s ease; }
+.ticker-link:hover { opacity: 0.9; text-decoration: none !important; }
+
+/* Modern Animated "NEW" Pop-up Badge */
+.ticker-badge-new {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  padding: 1px 7px;
+  border-radius: 6px;
+  margin-right: 6px;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.45);
+  animation: badgePop 1.6s ease-in-out infinite;
+  text-transform: uppercase;
+  line-height: 1.4;
+  vertical-align: middle;
+}
+@keyframes badgePop {
+  0%, 100% { transform: scale(1); box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4); }
+  50% { transform: scale(1.12); box-shadow: 0 0 12px rgba(255, 255, 255, 0.8); }
+}
 @keyframes ticker{0%{transform:translateX(100%);}100%{transform:translateX(-100%);}}
-.banner-slider{position:relative;overflow:hidden;height:180px;background:#6366f1;}
-.banner-slide{position:absolute;inset:0;opacity:0;transition:opacity .6s;cursor:pointer;}
-.banner-slide.active{opacity:1;}
+/* ================= HERO BANNER 16 TRANSITIONS ================= */
+.banner-slider {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  background: #6366f1;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateZ(0);
+  perspective: 1000px;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+}
+.banner-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  cursor: pointer;
+  border-radius: 20px;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+.banner-slide.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+
+/* 1. Smooth Fade */
+.banner-slide.t-fade { animation: bFade 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+@keyframes bFade { 0% { opacity: 0; } 100% { opacity: 1; } }
+
+/* 2. Slide from Right */
+.banner-slide.t-slide-right { animation: bSlideRight 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bSlideRight { 0% { transform: translateX(100%); opacity: 0.4; } 100% { transform: translateX(0); opacity: 1; } }
+
+/* 3. Slide from Left */
+.banner-slide.t-slide-left { animation: bSlideLeft 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bSlideLeft { 0% { transform: translateX(-100%); opacity: 0.4; } 100% { transform: translateX(0); opacity: 1; } }
+
+/* 4. Slide from Bottom */
+.banner-slide.t-slide-up { animation: bSlideUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bSlideUp { 0% { transform: translateY(100%); opacity: 0.4; } 100% { transform: translateY(0); opacity: 1; } }
+
+/* 5. Slide from Top */
+.banner-slide.t-slide-down { animation: bSlideDown 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bSlideDown { 0% { transform: translateY(-100%); opacity: 0.4; } 100% { transform: translateY(0); opacity: 1; } }
+
+/* 6. Zoom In */
+.banner-slide.t-zoom-in { animation: bZoomIn 0.8s cubic-bezier(0.34, 1.4, 0.64, 1) forwards; }
+@keyframes bZoomIn { 0% { transform: scale(0.65); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* 7. Zoom Out */
+.banner-slide.t-zoom-out { animation: bZoomOut 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes bZoomOut { 0% { transform: scale(1.35); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* 8. 3D Flip Horizontal */
+.banner-slide.t-flip-x { animation: bFlipX 0.85s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+@keyframes bFlipX { 0% { transform: rotateX(90deg); opacity: 0; } 100% { transform: rotateX(0deg); opacity: 1; } }
+
+/* 9. 3D Flip Vertical */
+.banner-slide.t-flip-y { animation: bFlipY 0.85s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+@keyframes bFlipY { 0% { transform: rotateY(90deg); opacity: 0; } 100% { transform: rotateY(0deg); opacity: 1; } }
+
+/* 10. Rotate In */
+.banner-slide.t-rotate-in { animation: bRotateIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bRotateIn { 0% { transform: rotate(-15deg) scale(0.85); opacity: 0; } 100% { transform: rotate(0deg) scale(1); opacity: 1; } }
+
+/* 11. Swirl Clockwise */
+.banner-slide.t-swirl { animation: bSwirl 0.85s cubic-bezier(0.34, 1.2, 0.64, 1) forwards; }
+@keyframes bSwirl { 0% { transform: rotate(20deg) scale(0.7); opacity: 0; } 100% { transform: rotate(0deg) scale(1); opacity: 1; } }
+
+/* 12. Blur Focus */
+.banner-slide.t-blur { animation: bBlur 0.8s ease-out forwards; }
+@keyframes bBlur { 0% { filter: blur(12px); opacity: 0; transform: scale(1.06); } 100% { filter: blur(0px); opacity: 1; transform: scale(1); } }
+
+/* 13. Elastic Bounce */
+.banner-slide.t-bounce { animation: bBounce 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
+@keyframes bBounce { 0% { transform: scale(0.4); opacity: 0; } 70% { transform: scale(1.04); opacity: 0.9; } 100% { transform: scale(1); opacity: 1; } }
+
+/* 14. Skew Slide */
+.banner-slide.t-skew { animation: bSkew 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bSkew { 0% { transform: translateX(80%) skewX(-12deg); opacity: 0; } 100% { transform: translateX(0) skewX(0deg); opacity: 1; } }
+
+/* 15. Diagonal Drop */
+.banner-slide.t-diagonal { animation: bDiagonal 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bDiagonal { 0% { transform: translate(50%, -50%) scale(0.8); opacity: 0; } 100% { transform: translate(0, 0) scale(1); opacity: 1; } }
+
+/* 16. Curtain Wipe */
+.banner-slide.t-curtain { animation: bCurtain 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bCurtain { 0% { clip-path: inset(0 50% 0 50%); opacity: 0.3; } 100% { clip-path: inset(0 0 0 0); opacity: 1; } }
 .course-card{background:var(--card);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;border:2px solid var(--card-border);box-shadow:0 4px 10px rgba(0,0,0,0.04);}
 .course-card:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,.12);}
 .quiz-option{display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--border);border-radius:12px;cursor:pointer;transition:.2s;margin-bottom:10px;}
@@ -66,40 +188,38 @@ input:focus,textarea:focus,select:focus{border-color:var(--primary);}
   color: var(--sub);
   cursor: pointer;
   font-size: 15px;
-  padding: 10px 14px; /* Greatly increases the clickable area on mobile screens */
-  margin-left: -10px; /* Prevents padding from shifting the header layout */
+  padding: 10px 14px;
+  margin-left: -10px;
   border-radius: 8px;
-  touch-action: manipulation; /* Instantly fires click event, removing the 300ms mobile delay */
+  touch-action: manipulation;
   transition: background 0.12s ease, transform 0.08s ease;
-  -webkit-tap-highlight-color: transparent; /* Removes the ugly default Android tap highlight box */
+  -webkit-tap-highlight-color: transparent;
 }
-
-/* Instant visual feedback when touched */
 .back-btn:active {
   background: rgba(99, 102, 241, 0.15); 
-  transform: scale(0.95); /* Gives a responsive physical button-press feeling */
+  transform: scale(0.95);
 }
 .search-bar {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: #ffffff !important; /* Unified full white background */
+  background: #ffffff !important;
   border: 1.5px solid #e2e8f0 !important;
   border-radius: 14px;
   padding: 12px 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Elegant soft shadow */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   transition: all 0.22s ease;
 }
 .search-bar i {
-  color: #6366f1 !important; /* Beautiful Indigo search icon */
+  color: #6366f1 !important;
   font-size: 16px;
   transition: transform 0.2s ease;
 }
 .search-bar input {
   border: none !important;
-  background: transparent !important; /* Blends seamlessly into the container */
+  background: transparent !important;
   padding: 0 !important;
-  color: #1e293b !important; /* High contrast text for clean readability */
+  color: #1e293b !important;
   font-weight: 500;
   font-size: 14.5px;
   outline: none !important;
@@ -109,7 +229,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--primary);}
   box-shadow: 0 4px 14px rgba(99, 102, 241, 0.15) !important;
 }
 .search-bar:focus-within i {
-  transform: scale(1.15); /* Modern, interactive scale effect */
+  transform: scale(1.15);
 }
 .notification-badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;display:flex;align-items:center;justify-content:center;}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;align-items:center;justify-content:center;}
@@ -124,24 +244,19 @@ input:focus,textarea:focus,select:focus{border-color:var(--primary);}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 .fade-in{animation:fadeIn .3s ease;}
 .section-title{font-size:20px;font-weight:700;margin-bottom:16px;}
-/* Disable selection and long-press menus */
 * {
   -webkit-user-select: none !important;
   user-select: none !important;
-  -webkit-touch-callout: none !important; /* Disables long-press links/images menu */
+  -webkit-touch-callout: none !important;
 }
-
-/* Allow typing in inputs */
 input, textarea {
   -webkit-user-select: text !important;
   user-select: text !important;
-  color: #000000 !important; /* Force Black Text */
-  -webkit-text-fill-color: #000000 !important; /* Fix for some mobile browsers */
-  background-color: #ffffff !important; /* Force White Background */
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+  background-color: #ffffff !important;
   opacity: 1 !important;
 }
-
-/* Ensure placeholder is visible */
 input::placeholder {
   color: #94a3b8 !important;
   opacity: 1 !important;
@@ -173,7 +288,7 @@ input::placeholder {
 <div id="screen-login" class="screen active" style="background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);">
   <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px 16px;">
     <div style="background:#ffffff !important; border-radius:28px; padding:40px 32px; width:100%; max-width:400px; box-shadow:0 20px 50px rgba(0,0,0,0.2); text-align:center;">
-      
+
       <!-- Logo & Header -->
       <div style="margin-bottom:30px;">
         <img id="login-logo" src="https://img.icons8.com/color/96/graduation-cap.png" style="width:80px; height:80px; margin:0 auto 15px; display:block; border-radius:20px;"/>
@@ -186,7 +301,7 @@ input::placeholder {
         <input id="l-email" type="email" placeholder="Email Address" 
                style="width:100%; padding:14px 16px; border:1.5px solid #e2e8f0; border-radius:12px; outline:none; font-size:15px; color:#000000 !important; background-color:#ffffff !important;"/>
       </div>
-      
+
       <!-- Password Input -->
       <div style="margin-bottom:20px; position:relative;">
         <input id="l-pass" type="password" placeholder="Password" 
@@ -196,12 +311,12 @@ input::placeholder {
           <i class="fa fa-eye"></i>
         </button>
       </div>
-      
+
       <!-- Forgot Password Link -->
       <div style="text-align:right; margin-top:-14px; margin-bottom:18px; padding-right:4px;">
         <button onclick="forgotPassword()" style="background:none; border:none; color:#6366f1; font-size:13px; font-weight:600; cursor:pointer;">Forgot Password?</button>
       </div>
-      
+
       <!-- THE SIGN IN BUTTON -->
       <button class="btn btn-primary" 
               style="width:100%; padding:14px; font-size:16px; border-radius:12px; background:#6366f1 !important; color:#ffffff !important; font-weight:700; cursor:pointer; border:none; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); margin-bottom:10px;" 
@@ -218,7 +333,7 @@ input::placeholder {
 <div id="screen-signup" class="screen" style="background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);">
   <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px 16px;">
     <div style="background:#fff; border-radius:28px; padding:40px 32px; width:100%; max-width:400px; box-shadow:0 20px 50px rgba(0,0,0,0.15); text-align:center;">
-      
+
       <div style="margin-bottom:25px;">
         <img id="signup-logo" src="https://img.icons8.com/color/96/graduation-cap.png" style="width:64px; height:64px; margin:0 auto 10px; display:block; border-radius:15px;"/>
         <h1 style="font-size:24px; font-weight:800; color:#6366f1;">Create Account</h1>
@@ -227,7 +342,7 @@ input::placeholder {
       <div style="margin-bottom:12px;"><input id="su-name" type="text" placeholder="Full Name" style="width:100%; padding:12px; border:1.5px solid #e2e8f0; border-radius:12px; outline:none;"/></div>
       <div style="margin-bottom:12px;"><input id="su-mobile" type="tel" placeholder="Mobile Number" style="width:100%; padding:12px; border:1.5px solid #e2e8f0; border-radius:12px; outline:none;"/></div>
       <div style="margin-bottom:12px;"><input id="su-email" type="email" placeholder="Email Address" style="width:100%; padding:12px; border:1.5px solid #e2e8f0; border-radius:12px; outline:none;"/></div>
-      
+
       <div style="margin-bottom:20px; position:relative;">
         <input id="su-pass" type="password" placeholder="Password" style="width:100%; padding:12px; border:1.5px solid #e2e8f0; border-radius:12px; outline:none;"/>
         <button onclick="togglePass('su-pass',this)" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); background:none; border:none; color:#94a3b8; cursor:pointer;"><i class="fa fa-eye"></i></button>
@@ -262,9 +377,9 @@ input::placeholder {
       <input type="text" placeholder="Search courses..." id="search-input" oninput="filterCourses()" style="flex:1;border:none;background:transparent;padding:0;"/>
     </div>
   </div>
-  <!-- Hero Banner -->
-  <div style="padding:12px 16px 0;">
-    <div class="banner-slider" id="hero-banner" style="border-radius:16px;" onclick="bannerClick()">
+  <!-- Hero Banner (Wide with Rounded Edges) -->
+  <div style="padding: 10px 14px 0; width: 100%; box-sizing: border-box;">
+    <div class="banner-slider" id="hero-banner" onclick="bannerClick()">
       <div class="banner-slide active" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;">
         <div style="text-align:center;color:#fff;padding:20px;">
           <h2 style="font-size:22px;font-weight:800;">Welcome to Shiksharaaloka</h2>
@@ -282,9 +397,9 @@ input::placeholder {
       </div>
       <div class="ticker-track">
         <div class="ticker-content" id="ticker-text">
-          <span id="ticker-msg" style="color:#fff;font-size:13px;font-weight:500;">Welcome to Shiksharaaloka! Explore our courses and start learning today.</span>
-          <span style="color:rgba(255,255,255,.6);padding:0 40px;">◆</span>
-          <span id="ticker-msg2" style="color:#fff;font-size:13px;font-weight:500;">Welcome to Shiksharaaloka! Explore our courses and start learning today.</span>
+          <span class="ticker-link" style="color:#fff;font-size:13px;font-weight:500;text-decoration:none;"><span class="ticker-badge-new">NEW</span>Welcome to Shiksharaaloka! Explore our courses and start learning today.</span>
+          <span style="color:rgba(255,255,255,.6);padding:0 28px;">◆</span>
+          <span class="ticker-link" style="color:#fff;font-size:13px;font-weight:500;text-decoration:none;"><span class="ticker-badge-new">NEW</span>Welcome to Shiksharaaloka! Explore our courses and start learning today.</span>
         </div>
       </div>
     </div>
@@ -460,7 +575,7 @@ input::placeholder {
 
 <!-- ======================== LEADERBOARD SCREEN ======================== -->
 <div id="screen-leaderboard" class="screen">
-  <div class="header" style="background:linear-gradient(135deg,#1e1b4b,#312e81);">
+  <div class="header" id="leaderboard-header" style="background:linear-gradient(135deg,#1e1b4b,#312e81);">
     <button onclick="goBack('screen-courses')" style="background:rgba(255,255,255,.15);border:none;border-radius:8px;padding:8px 12px;cursor:pointer;"><i class="fa fa-arrow-left" style="color:#fff;"></i></button>
     <span style="font-weight:700;flex:1;text-align:center;color:#fff;">🏆 Global Leaderboard</span>
     <button onclick="loadLeaderboard()" style="background:rgba(255,255,255,.15);border:none;border-radius:8px;padding:8px 12px;cursor:pointer;"><i class="fa fa-sync" style="color:#fff;"></i></button>
@@ -490,16 +605,15 @@ input::placeholder {
     <div style="margin-bottom:14px;"><label style="font-size:13px;color:var(--sub);margin-bottom:6px;display:block;">Username</label><input id="p-username" type="text" placeholder="Username"/></div>
     <div style="margin-bottom:14px;"><label style="font-size:13px;color:var(--sub);margin-bottom:6px;display:block;">Profile Picture (URL or upload)</label><input id="p-pic" type="text" placeholder="Image URL or paste link" oninput="previewProfilePic()"/></div>
     <div style="margin-bottom:14px;"><label style="font-size:13px;color:var(--sub);margin-bottom:6px;display:block;">Mobile Number</label><input id="p-mobile" type="tel" placeholder="Mobile Number"/></div>
-    
-    <!-- Properly nested Delete Account UI block -->
+
     <div style="margin-top:32px; border-top:1px solid var(--border); padding-top:20px;">
       <button onclick="deleteUserAccount()" class="btn btn-primary" style="background:#ef4444 !important; width:100%; font-weight:700; border:none; border-radius:10px; padding:12px; cursor:pointer;">Delete My Account</button>
       <p style="color:var(--sub); font-size:11px; margin-top:8px; text-align:center;">Warning: This action is permanent. All your points and test history will be erased.</p>
     </div>
   </div>
 </div>
-    
-<!-- ======================== STATIC PAGES (About, Disclaimer, Privacy, Contact, Links) ======================== -->
+
+<!-- ======================== STATIC PAGES ======================== -->
 <div id="screen-static" class="screen">
   <div class="header">
     <button class="back-btn" onclick="goBack('screen-courses')"><i class="fa fa-arrow-left"></i> Back</button>
@@ -583,7 +697,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth=firebase.auth();
 const db=firebase.firestore();
-// Add this immediately after firebase initialization
 db.enablePersistence().catch(function(err) {
     if (err.code == 'failed-precondition') {
         console.log("Multiple tabs open, persistence can only be enabled in one tab at a time.");
@@ -618,10 +731,8 @@ let bannerIdx=0;
 let bannerLinks=[];
 let backPressCount=0;
 
-// Utility helper to safely render markdown styles (bold, italic, code tags) inside quiz questions and options
 function formatQuizText(str) {
   if (!str) return '';
-  // Replaces standard HTML entities safely, formats bold/italic formats, and maps newlines to HTML break elements
   return str
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
@@ -665,7 +776,6 @@ function loginEmail(){
   const pass=document.getElementById('l-pass').value;
   if(!email||!pass){showToast('Please fill all fields','error');return;}
   auth.signInWithEmailAndPassword(email,pass).catch(e=>{
-    // Handle explicit user-not-found (Enumeration Protection must be disabled for this)
     if(e.code === 'auth/user-not-found'){
       showToast('Account not found. Redirecting to Sign Up...', 'error');
       setTimeout(()=>{
@@ -674,11 +784,9 @@ function loginEmail(){
         if(suEmail) suEmail.value = email;
       }, 2000);
     } 
-    // Handle wrong password for existing accounts
     else if(e.code === 'auth/wrong-password'){
       showToast('Incorrect password. Please try again.', 'error');
     } 
-    // Fallback if Enumeration Protection remains enabled
     else if(e.code === 'auth/invalid-login-credentials'){
       showToast('Incorrect email or password. Please check your credentials.', 'error');
     } 
@@ -717,7 +825,6 @@ function loginGoogle(){
     const ref=db.collection('users').doc(c.user.uid);
     const snap=await ref.get();
     if(!snap.exists){
-      // If they don't exist in the database, this is their first time signing up
       await ref.set({
         name: c.user.displayName || 'User',
         email: c.user.email,
@@ -741,27 +848,20 @@ function signOut(){
 
 async function deleteUserAccount(){
   if(!confirm("Are you absolutely sure you want to delete your account? This will permanently erase your profile, scores, and credentials. This action cannot be undone.")) return;
-  
+
   const user = firebase.auth().currentUser;
   if(user) {
     try {
-      // 1. Delete user profile metadata from Firestore
       await db.collection('users').doc(user.uid).delete();
-      
-      // 2. Delete user's historic test results
       const resultsSnap = await db.collection('results').where('userId', '==', user.uid).get();
       const batch = db.batch();
       resultsSnap.forEach(doc => batch.delete(doc.ref));
       await batch.commit();
-      
-      // 3. Delete the Auth record itself
       await user.delete();
-      
       showToast("Account successfully deleted.", "success");
       signOut();
     } catch (e) {
       if (e.code === 'auth/requires-recent-login') {
-        // Firebase Auth security mechanism requires fresh login to delete account
         showToast("Please sign out and sign back in to verify your identity before deleting your account.", "error");
       } else {
         showToast("Error deleting account: " + e.message, "error");
@@ -827,37 +927,94 @@ function loadBanners(s){
       slide.innerHTML=`<iframe src="${vid}?autoplay=1&mute=1" style="width:100%;height:100%;border:none;" allowfullscreen></iframe>`;
     } else if(b.url){
       slide.style.backgroundImage=`url(${b.url})`;
-      slide.style.backgroundSize='cover';slide.style.backgroundPosition='center';
+      slide.style.backgroundSize='100% 100%';
+      slide.style.backgroundPosition='center';
+      slide.style.backgroundRepeat='no-repeat';
+      slide.style.borderRadius='20px';
     }
     container.appendChild(slide);
   });
   autoBanner();
 }
-function autoBanner(){
-  setInterval(()=>{
-    const slides=document.querySelectorAll('.banner-slide');
-    if(!slides.length)return;
-    slides[bannerIdx].classList.remove('active');
-    bannerIdx=(bannerIdx+1)%slides.length;
-    slides[bannerIdx].classList.add('active');
-  },4000);
+const bannerTransitions = [
+  't-fade',
+  't-slide-right',
+  't-slide-left',
+  't-slide-up',
+  't-slide-down',
+  't-zoom-in',
+  't-zoom-out',
+  't-flip-x',
+  't-flip-y',
+  't-rotate-in',
+  't-swirl',
+  't-blur',
+  't-bounce',
+  't-skew',
+  't-diagonal',
+  't-curtain'
+];
+let transitionIdx = 0;
+let bannerInterval = null;
+
+function autoBanner() {
+  if (bannerInterval) clearInterval(bannerInterval);
+  bannerInterval = setInterval(() => {
+    const slides = document.querySelectorAll('.banner-slide');
+    if (slides.length <= 1) return;
+
+    bannerIdx = (bannerIdx + 1) % slides.length;
+    const nextSlide = slides[bannerIdx];
+
+    // Select the next transition in the cycle
+    const currentTransition = bannerTransitions[transitionIdx];
+    transitionIdx = (transitionIdx + 1) % bannerTransitions.length;
+
+    // Reset active/transition classes on all slides
+    slides.forEach(s => {
+      s.classList.remove('active', ...bannerTransitions);
+    });
+
+    // Apply new active slide with transition effect
+    nextSlide.classList.add('active', currentTransition);
+  }, 4000);
 }
 function bannerClick(){if(bannerLinks[bannerIdx])window.open(bannerLinks[bannerIdx],'_blank');}
-function loadTicker(s){
-  const msg=s.tickerText||'Welcome to Shiksharaaloka! Explore our courses.';
-  ['ticker-msg','ticker-msg2'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=msg;});
-  const pill=document.getElementById('ticker-pill');
-  if(pill && s.tickerColor){
-  pill.style.background = "none"; // Clear old gradient
-  pill.style.setProperty('background', s.tickerColor, 'important');
+function handleTickerClick(url){
+  if(url && url.trim()){
+    window.open(url.trim(), '_blank');
+  }
 }
-  const iconWrap=document.getElementById('ticker-icon-wrap');
+
+function loadTicker(s){
+  const tickerList = (s.tickers && s.tickers.length)
+    ? s.tickers 
+    : [{ text: s.tickerText || 'Welcome to Shiksharaaloka! Explore our courses and start learning today.', link: '' }];
+
+  const renderItems = () => tickerList.map(t => {
+    const hasLink = t.link && t.link.trim() !== '';
+    const clickAttr = hasLink ? `onclick="handleTickerClick('${t.link.replace(/'/g, "\\'")}')"` : '';
+    const pointerStyle = hasLink ? 'cursor:pointer;' : 'cursor:default;';
+    const linkIcon = hasLink ? '<i class="fa fa-external-link-alt" style="font-size:10px;margin-left:6px;opacity:0.85;"></i>' : '';
+    return `<span ${clickAttr} class="ticker-link" style="color:#fff;font-size:13px;font-weight:500;text-decoration:none !important;${pointerStyle}"><span class="ticker-badge-new">NEW</span>${t.text}${linkIcon}</span>`;
+  }).join('<span style="color:rgba(255,255,255,.6);padding:0 28px;">◆</span>');
+
+  const fullTickerHtml = renderItems() + '<span style="color:rgba(255,255,255,.6);padding:0 28px;">◆</span>' + renderItems();
+  const textContainer = document.getElementById('ticker-text');
+  if(textContainer) textContainer.innerHTML = fullTickerHtml;
+
+  const pill = document.getElementById('ticker-pill');
+  if(pill && s.tickerColor){
+    pill.style.background = "none";
+    pill.style.setProperty('background', s.tickerColor, 'important');
+  }
+  const iconWrap = document.getElementById('ticker-icon-wrap');
   if(iconWrap){
-    const icon=s.tickerIcon||'fa-bullhorn';
+    const icon = s.tickerIcon || 'fa-bullhorn';
     if(icon.startsWith('fa-')){
-      iconWrap.innerHTML=`<i class="fa ${icon}" style="color:#fff;font-size:14px;"></i>`;
+      iconWrap.innerHTML = `<i class="fa ${icon}" style="color:#fff;font-size:14px;"></i>`;
     } else {
-      iconWrap.innerHTML=`<span style="font-size:20px;line-height:1;">${icon}</span>`;
+      iconWrap.innerHTML = `<span style="font-size:20px;line-height:1;">${icon}</span>`;
     }
   }
 }
@@ -988,7 +1145,6 @@ async function openStatic(page){
         animateCount('user-count-display',count);
 
         // --- ADSTERRA POPUNDER AD TRIGGER ---
-        // Clean up any old popunder script elements to prevent duplications
         const oldAdContainer = document.getElementById('popunder-ad-container');
         if (oldAdContainer) oldAdContainer.remove();
 
@@ -998,9 +1154,9 @@ async function openStatic(page){
             if (popunderCode && popunderCode.trim()) {
               const adDiv = document.createElement('div');
               adDiv.id = 'popunder-ad-container';
-              adDiv.style.display = 'none'; // Keep container hidden
+              adDiv.style.display = 'none';
               document.body.appendChild(adDiv);
-              
+
               try {
                 const range = document.createRange();
                 range.selectNode(adDiv);
@@ -1010,7 +1166,6 @@ async function openStatic(page){
                 adDiv.innerHTML = popunderCode;
               }
 
-              // Re-create script elements to force evaluation and trigger the popup window event
               const scripts = adDiv.querySelectorAll('script');
               scripts.forEach(oldScript => {
                 const newScript = document.createElement('script');
@@ -1021,7 +1176,6 @@ async function openStatic(page){
             }
           }
         });
-        // ------------------------------------
   } else if(page==='youtube'){
     const snap2=await db.collection('youtubeLinks').get();
     const links=snap2.docs.map(d=>({id:d.id,...d.data()}));
@@ -1051,15 +1205,11 @@ function animateCount(id,target){
 
 // ===== COURSES =====
 async function loadCourses() {
-  const grid = document.getElementById('courses-grid');
-  
-  // 1. Show cached data immediately if available
   if (cache.courses && cache.enrolled) {
     renderCourses(cache.courses, cache.enrolled);
     renderFeatured(cache.courses, cache.enrolled);
   }
 
-  // 2. Fetch from Firebase in the background (updates the screen if data changed)
   const [snap, enrollSnap] = await Promise.all([
     db.collection('courses').orderBy('createdAt').get(),
     db.collection('enrollments').where('userId', '==', currentUser.uid).get()
@@ -1098,7 +1248,7 @@ function renderFeatured(courses,enrolled){
   list.innerHTML=featured.map(c=>{
     const isEnrolled=enrolled.includes(c.id)||!c.isPaid;
     const color=c.bgColor||'#6366f1';
-return `<div onclick="handleCourseClick('${c.id}','${c.isPaid}','${isEnrolled}')" style="min-width:160px;background:var(--card);border-radius:16px;overflow:hidden;cursor:pointer;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.08);border:2px solid var(--card-border);">
+    return `<div onclick="handleCourseClick('${c.id}','${c.isPaid}','${isEnrolled}')" style="min-width:160px;background:var(--card);border-radius:16px;overflow:hidden;cursor:pointer;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.08);border:2px solid var(--card-border);">
       <div style="background:${color};padding:20px;display:flex;flex-direction:column;align-items:center;">
         <div style="font-size:32px;">${c.icon||'📚'}</div>
       </div>
@@ -1142,7 +1292,7 @@ function openPaymentModal(c,courseId){
       <div style="font-size:24px;font-weight:800;color:#10b981;">₹${c.discountedPrice||c.price}</div>
       ${c.price&&c.discountedPrice&&c.price!==c.discountedPrice?`<div style="color:var(--sub);text-decoration:line-through;">₹${c.price}</div>`:''}
     </div>
-    ${c.paymentUrl?(()=>{
+    ${c.paymentUrl?(()=> {
       const isImg=/\.(jpg|jpeg|png|webp|gif|svg)(\?.*)?$/i.test(c.paymentUrl)||/ibb\.co|imgbb|postimg|i\.imgur|drive\.google|cloudinary/i.test(c.paymentUrl);
       return isImg
         ?`<div style="text-align:center;margin-bottom:16px;"><img src="${c.paymentUrl}" style="max-width:180px;max-height:180px;width:auto;height:auto;border-radius:12px;border:1px solid var(--border);display:block;margin:0 auto;" alt="Payment QR"/><p style="color:var(--sub);font-size:12px;margin-top:8px;">Scan the QR code to pay</p></div>`
@@ -1157,29 +1307,22 @@ function openPaymentModal(c,courseId){
 
 // ===== SUBJECTS =====
 async function loadSubjects(courseId, isPaid) {
-  const grid = document.getElementById('subjects-grid');
-
-  // 1. Check Cache first
   if (cache.subjects[courseId]) {
     renderSubjectsHTML(cache.subjects[courseId], isPaid);
   }
 
- // 2. Background update
-const snap = await db.collection('subjects').where('courseId', '==', courseId).get();
-let subjects = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  const snap = await db.collection('subjects').where('courseId', '==', courseId).get();
+  let subjects = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-// FIX: Sort subjects by creation time (Entry Order)
-subjects.sort((a, b) => {
-  const timeA = a.createdAt?.seconds || 0;
-  const timeB = b.createdAt?.seconds || 0;
-  return timeA - timeB;
-});
+  subjects.sort((a, b) => {
+    const timeA = a.createdAt?.seconds || 0;
+    const timeB = b.createdAt?.seconds || 0;
+    return timeA - timeB;
+  });
 
-cache.subjects[courseId] = subjects;
-renderSubjectsHTML(subjects, isPaid);
+  cache.subjects[courseId] = subjects;
+  renderSubjectsHTML(subjects, isPaid);
 }
-
-// Helper to keep code clean
 function renderSubjectsHTML(subjects, isPaid) {
   const grid = document.getElementById('subjects-grid');
   grid.innerHTML = subjects.map(s => {
@@ -1202,27 +1345,22 @@ async function handleSubjectClick(subjectId,subjectName,isPaid){
 
 // ===== TOPICS =====
 async function loadTopics(subjectId, isPaid) {
-  // 1. Check Cache
   if (cache.topics[subjectId]) {
     renderTopicsHTML(cache.topics[subjectId], isPaid);
   }
 
-  // 2. Background update
-const snap = await db.collection('topics').where('subjectId', '==', subjectId).get();
-let topics = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  const snap = await db.collection('topics').where('subjectId', '==', subjectId).get();
+  let topics = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-// FIX: Sort topics by creation time so they appear in entry order
-topics.sort((a, b) => {
-  const timeA = a.createdAt?.seconds || 0;
-  const timeB = b.createdAt?.seconds || 0;
-  return timeA - timeB;
-});
+  topics.sort((a, b) => {
+    const timeA = a.createdAt?.seconds || 0;
+    const timeB = b.createdAt?.seconds || 0;
+    return timeA - timeB;
+  });
 
-cache.topics[subjectId] = topics;
-
+  cache.topics[subjectId] = topics;
   renderTopicsHTML(topics, isPaid);
 }
-
 function renderTopicsHTML(topics, isPaid) {
   const list = document.getElementById('topics-list');
   list.innerHTML = topics.map((t, i) => {
@@ -1242,20 +1380,19 @@ async function handleTopicClick(topicId,topicName,isPaid){
   isPaid=isPaid==='true';
   const snap=await db.collection('quizzes').where('topicId','==',topicId).get();
   quizQuestions=snap.docs.map(d=>({id:d.id,...d.data()}));
-  
+
   if(!quizQuestions.length){showToast('No quiz available for this topic.','info');return;}
 
   const firstQ = quizQuestions[0];
   const settings = firstQ?.quizSettings || {};
 
-  // FIX: If it's a URL Quiz, start it without shuffling or internal timers
   if(firstQ.type === 'url') {
     startQuiz(topicName, {timer: 0}, !isPaid); 
   } else {
     if(settings.shuffle) quizQuestions = quizQuestions.sort(() => Math.random() - .5);
     startQuiz(topicName, settings, !isPaid);
   }
-  
+
   showScreen('screen-quiz');
 }
 
@@ -1287,11 +1424,9 @@ function renderQuestion() {
   const body = document.getElementById('quiz-body');
   const type = q.type || 'mcq';
 
-  // --- 1. URL QUIZ LOGIC ---
   if (type === 'url') {
-    // Hide standard app UI elements completely
     document.getElementById('quiz-progress-bar').style.display = 'none';
-    document.getElementById('quiz-nav').style.display = 'none'; // THIS REMOVES THE FOOTER BUTTONS
+    document.getElementById('quiz-nav').style.display = 'none';
 
     body.innerHTML = `
       <div style="margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
@@ -1302,17 +1437,16 @@ function renderQuestion() {
         <iframe src="${q.url}" style="width:100%; height:100%; border:none;" allowfullscreen></iframe>
       </div>
     `;
-    return; // Exit function
+    return;
   }
 
-  // --- 2. STANDARD QUIZ LOGIC (Restores UI for normal quizzes) ---
   document.getElementById('quiz-progress-bar').style.display = 'block';
-  document.getElementById('quiz-nav').style.display = 'flex'; // SHOWS FOOTER FOR NORMAL QUIZZES
-  
+  document.getElementById('quiz-nav').style.display = 'flex';
+
   const total = quizQuestions.length;
   document.getElementById('q-count').textContent = `Question ${currentQIdx + 1}/${total}`;
   document.getElementById('q-progress').style.width = `${((currentQIdx + 1) / total) * 100}%`;
-  
+
   const isLast = currentQIdx === total - 1;
   document.getElementById('btn-next').style.display = isLast ? 'none' : '';
   document.getElementById('btn-submit').style.display = isLast ? '' : 'none';
@@ -1320,21 +1454,21 @@ function renderQuestion() {
   document.getElementById('btn-pause').style.display = 'block';
 
   let html = '';
-      if (q.section) html += `<div style="font-weight:700;color:var(--primary);font-size:14px;margin-bottom:8px;">Section ${formatQuizText(q.section)}</div>`;
-      if (q.directions) html += `<div style="color:var(--sub);font-size:13px;margin-bottom:12px;font-style:italic;">${formatQuizText(q.directions)}</div>`;
-      if (q.passage) html += `<div class="passage-box">${formatQuizText(q.passage)}</div>`;
-      if (q.image) html += `<img src="${q.image}" style="width:100%;border-radius:12px;margin-bottom:12px;max-height:200px;object-fit:contain;"/>`;
-      html += `<div style="font-weight:600;font-size:15px;line-height:1.6;margin-bottom:16px;">${currentQIdx + 1}. ${formatQuizText(q.question || '')}</div>`;
-      
-      if (type === 'fill') {
-        html += `<input type="text" id="fill-ans" placeholder="Type your answer..." value="${userAnswers[currentQIdx]||''}"/>`;
-      } else {
-        (q.options || []).forEach((opt, i) => {
-          const sel = userAnswers[currentQIdx] === i;
-          html += `<div class="quiz-option${sel ? ' selected' : ''}" onclick="selectAnswer(${i})">${String.fromCharCode(65 + i)}. ${formatQuizText(opt)}</div>`;
-        });
-      }
-      body.innerHTML = html;
+  if (q.section) html += `<div style="font-weight:700;color:var(--primary);font-size:14px;margin-bottom:8px;">Section ${formatQuizText(q.section)}</div>`;
+  if (q.directions) html += `<div style="color:var(--sub);font-size:13px;margin-bottom:12px;font-style:italic;">${formatQuizText(q.directions)}</div>`;
+  if (q.passage) html += `<div class="passage-box">${formatQuizText(q.passage)}</div>`;
+  if (q.image) html += `<img src="${q.image}" style="width:100%;border-radius:12px;margin-bottom:12px;max-height:200px;object-fit:contain;"/>`;
+  html += `<div style="font-weight:600;font-size:15px;line-height:1.6;margin-bottom:16px;">${currentQIdx + 1}. ${formatQuizText(q.question || '')}</div>`;
+
+  if (type === 'fill') {
+    html += `<input type="text" id="fill-ans" placeholder="Type your answer..." value="${userAnswers[currentQIdx]||''}"/>`;
+  } else {
+    (q.options || []).forEach((opt, i) => {
+      const sel = userAnswers[currentQIdx] === i;
+      html += `<div class="quiz-option${sel ? ' selected' : ''}" onclick="selectAnswer(${i})">${String.fromCharCode(65 + i)}. ${formatQuizText(opt)}</div>`;
+    });
+  }
+  body.innerHTML = html;
 }
 function selectAnswer(idx){
   const q=quizQuestions[currentQIdx];
@@ -1351,16 +1485,12 @@ function quizNext(){
 }
 function submitQuiz() {
   const q = quizQuestions[0];
-  
-  // If it is a URL Quiz, just close it and go home
   if (q && q.type === 'url') {
     clearInterval(timerInterval);
     showScreen('screen-courses');
     showToast('Quiz session closed', 'info');
     return;
   }
-
-  // Standard Quiz logic for MCQs
   if (quizQuestions[currentQIdx]?.type === 'fill') {
     const val = document.getElementById('fill-ans')?.value?.trim();
     userAnswers[currentQIdx] = val || null;
@@ -1392,20 +1522,17 @@ function pauseTimer(){
   btn.innerHTML=timerPaused?'<i class="fa fa-play"></i> Resume':'<i class="fa fa-pause"></i> Pause';
 }
 function calculateResults() {
-  // 1. Check if it's a URL quiz
   if (quizQuestions[0] && quizQuestions[0].type === 'url') {
     showToast('Quiz session ended', 'info');
     showScreen('screen-courses');
     return;
   }
 
-  // 2. Reset calculations for this attempt
   let correct = 0;
   let wrong = 0;
   let skipped = 0;
-  let tempScore = 0; // Local score variable
+  let tempScore = 0;
 
-  // 3. Loop through questions to check answers
   quizQuestions.forEach((q, i) => {
     const ua = userAnswers[i];
     if (ua === null || ua === undefined || ua === "") {
@@ -1434,22 +1561,19 @@ function calculateResults() {
     }
   });
 
-  // 4. Calculate final values
   const total = quizQuestions.reduce((sum, q) => sum + (q.marks || 1), 0);
-  const obtained = Math.max(0, tempScore); // Ensure score isn't negative
+  const obtained = Math.max(0, tempScore);
   const pct = total > 0 ? Math.round((obtained / total) * 100) : 0;
 
-  // 5. Update the UI with real numbers (using backticks for the percentage)
   document.getElementById('result-pct').textContent = `${pct}%`;
-  
+
   const grade = pct >= 90 ? 'Outstanding! 🏆' : pct >= 75 ? 'Excellent! 🌟' : pct >= 50 ? 'Good Job! 👍' : 'Try Again! 💪';
   document.getElementById('result-grade').textContent = grade;
-  
+
   document.getElementById('res-total').textContent = total;
   document.getElementById('res-obtained').textContent = obtained;
   document.getElementById('res-skipped').textContent = skipped;
 
-  // 6. Update the Circle Progress
   const arc = document.getElementById('result-arc');
   const offset = 440 - (440 * pct / 100);
   setTimeout(() => arc.style.strokeDashoffset = offset, 100);
@@ -1458,7 +1582,6 @@ function calculateResults() {
   arc.setAttribute('stroke', color);
   document.getElementById('result-pct').style.color = color;
 
-  // 7. Finalize and Save
   renderResultReview(correct, wrong, skipped);
   saveResult(pct, obtained, total);
   loadLeaderboardInResult();
@@ -1474,15 +1597,15 @@ function renderResultReview(correct,wrong,skipped){
       status=isCorrect?'correct':'wrong';statusColor=isCorrect?'#10b981':'#ef4444';
     }
     const icons={correct:'✓',wrong:'✗',skipped:'-'};
-   return `<div style="background:var(--card);border-radius:12px;padding:16px;margin-bottom:10px;border-left:4px solid ${statusColor};">
-  <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-    <span style="font-weight:600;font-size:14px;">Q${i+1}. ${formatQuizText(q.question||'')}</span>
-    <span style="background:${statusColor};color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">${icons[status]}</span>
-  </div>
-  ${!isSkipped&&q.type!=='fill'?`<div style="font-size:13px;color:var(--sub);">Your answer: ${String.fromCharCode(65+(ua||0))}. ${formatQuizText(q.options?.[ua]||'')}</div>`:''}
-  ${q.type!=='fill'?`<div style="font-size:13px;color:#10b981;">Correct: ${String.fromCharCode(65+(q.correctOption||0))}. ${formatQuizText(q.options?.[q.correctOption||0]||'')}</div>`:`<div style="font-size:13px;color:#10b981;">Correct: ${formatQuizText(q.correctAnswer||'')}</div>`}
-  ${q.explanation?`<div style="font-size:13px;color:var(--sub);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-style:italic;">📝 ${formatQuizText(q.explanation)}</div>`:''}
-</div>`;
+    return `<div style="background:var(--card);border-radius:12px;padding:16px;margin-bottom:10px;border-left:4px solid ${statusColor};">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-weight:600;font-size:14px;">Q${i+1}. ${formatQuizText(q.question||'')}</span>
+        <span style="background:${statusColor};color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">${icons[status]}</span>
+      </div>
+      ${!isSkipped&&q.type!=='fill'?`<div style="font-size:13px;color:var(--sub);">Your answer: ${String.fromCharCode(65+(ua||0))}. ${formatQuizText(q.options?.[ua]||'')}</div>`:''}
+      ${q.type!=='fill'?`<div style="font-size:13px;color:#10b981;">Correct: ${String.fromCharCode(65+(q.correctOption||0))}. ${formatQuizText(q.options?.[q.correctOption||0]||'')}</div>`:`<div style="font-size:13px;color:#10b981;">Correct: ${formatQuizText(q.correctAnswer||'')}</div>`}
+      ${q.explanation?`<div style="font-size:13px;color:var(--sub);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-style:italic;">📝 ${formatQuizText(q.explanation)}</div>`:''}
+    </div>`;
   }).join('');
 }
 async function shareResult(){
@@ -1532,7 +1655,7 @@ async function shareResult(){
   try{
     const blob=await new Promise(res=>canvas.toBlob(res,'image/png'));
     const file=new File([blob],'shiksharaaloka-result.png',{type:'image/png'});
-    const shareText=`🎓 I scored ${pct}% (${obtained}/${total}) in "${topic}" on Shiksharaaloka!\nGrade: ${grade} — ${gradeLabel}\n\n📲 Join me and start learning!`;
+    const shareText=`I scored ${pct}% (${obtained}/${total}) in "${topic}" on Shiksharaaloka!\nGrade: ${grade} — ${gradeLabel}\n\nJoin me and start learning!`;
     if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
       await navigator.share({title:'My Quiz Result — Shiksharaaloka',text:shareText,files:[file]});
     } else if(navigator.share){
@@ -1551,7 +1674,7 @@ async function saveResult(pct,obtained,total){
   const points=Math.round(obtained*10);
   await db.collection('users').doc(currentUser.uid).update({
     points: firebase.firestore.FieldValue.increment(points),
-    quizCount: firebase.firestore.FieldValue.increment(1) // <-- Increments the quiz completed counter
+    quizCount: firebase.firestore.FieldValue.increment(1)
   });
 }
 async function loadLeaderboardInResult(){
@@ -1570,6 +1693,33 @@ async function loadLeaderboardInResult(){
 
 // ===== NOTES =====
 const NOTE_COLORS=['#f59e0b','#06b6d4','#ec4899','#22c55e','#6366f1','#f97316','#8b5cf6','#14b8a6'];
+
+function getFieldCSS(color, style, align) {
+  let css = '';
+  if (color) css += `color: ${color} !important;`;
+  if (align) css += `text-align: ${align} !important;`;
+  if (style === 'bold') {
+    css += `font-weight: bold !important; font-style: normal !important;`;
+  } else if (style === 'italic') {
+    css += `font-style: italic !important; font-weight: normal !important;`;
+  } else if (style === 'bold-italic') {
+    css += `font-weight: bold !important; font-style: italic !important;`;
+  } else if (style === 'normal') {
+    css += `font-weight: normal !important; font-style: normal !important;`;
+  }
+  return css;
+}
+
+function formatNoteContent(str) {
+  if (!str) return '';
+  return str
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/`(.*?)`/g, '<code style="background:rgba(99,102,241,.12);padding:2px 7px;border-radius:5px;font-family:monospace;">$1</code>')
+    .replace(/\^(.*?)\^/g, '<sup>$1</sup>')
+    .replace(/~(.*?)~/g, '<sub>$1</sub>');
+}
+
 async function loadNotes(){
   if(!currentUser)return;
   const snap=await db.collection('notes').orderBy('createdAt','desc').get();
@@ -1582,12 +1732,41 @@ async function loadNotes(){
     const tc=dark?'#fff':'#1e293b';
     const sc=dark?'rgba(255,255,255,.75)':'rgba(0,0,0,.6)';
     const ic=dark?'rgba(255,255,255,.25)':'rgba(255,255,255,.45)';
-    const nJson=JSON.stringify({id:n.id,title:n.title,content:n.content,pdfUrl:n.pdfUrl,images:n.images,course:n.course,subject:n.subject}).replace(/'/g,'&#39;');
+    
+    const nJson=JSON.stringify({
+      id: n.id,
+      title: n.title,
+      titleColor: n.titleColor||'',
+      titleStyle: n.titleStyle||'normal',
+      titleAlign: n.titleAlign||'left',
+      subject: n.subject,
+      subjectColor: n.subjectColor||'',
+      subjectStyle: n.subjectStyle||'normal',
+      subjectAlign: n.subjectAlign||'left',
+      topic: n.topic||'',
+      topicColor: n.topicColor||'',
+      topicStyle: n.topicStyle||'normal',
+      topicAlign: n.topicAlign||'left',
+      content: n.content,
+      contentColor: n.contentColor||'',
+      contentStyle: n.contentStyle||'normal',
+      contentAlign: n.contentAlign||'left',
+      pdfUrl: n.pdfUrl,
+      images: n.images,
+      course: n.course
+    }).replace(/'/g,'&#39;');
+
+    const titleCss = getFieldCSS(n.titleColor, n.titleStyle, n.titleAlign);
+    const subjectCss = getFieldCSS(n.subjectColor, n.subjectStyle, n.subjectAlign);
+
+    const finalTitleStyle = n.titleColor ? titleCss : `color:${tc}; ${titleCss}`;
+    const finalSubjectStyle = n.subjectColor ? subjectCss : `color:${sc}; ${subjectCss}`;
+
     return `<div onclick='openNoteDetail(${nJson})' style="background:${color};border-radius:22px;padding:18px;margin-bottom:14px;cursor:pointer;display:flex;align-items:center;gap:14px;box-shadow:0 6px 18px rgba(0,0,0,.13);active-opacity:.85;">
       <div style="background:${ic};border-radius:14px;width:64px;height:64px;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;">${n.pdfUrl?'📄':'📝'}</div>
       <div style="flex:1;min-width:0;">
-        <div style="font-weight:800;font-size:17px;color:${tc};margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${n.title||'Note'}</div>
-        <div style="font-size:13px;color:${sc};">${n.course||n.subject||'Study Notes'}</div>
+        <div style="font-weight:800;font-size:17px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; ${finalTitleStyle}">${n.title||'Note'}</div>
+        <div style="font-size:13px; ${finalSubjectStyle}">${n.course||n.subject||'Study Notes'}</div>
       </div>
       <i class="fa fa-chevron-right" style="color:${dark?'rgba(255,255,255,.5)':'rgba(0,0,0,.3)'};font-size:16px;flex-shrink:0;"></i>
     </div>`;
@@ -1596,10 +1775,28 @@ async function loadNotes(){
 function openNoteDetail(note){
   document.getElementById('note-detail-title').textContent=note.title||'Note';
   const body=document.getElementById('note-detail-body');
-  body.innerHTML=`
+  
+  const subjectCss = getFieldCSS(note.subjectColor, note.subjectStyle, note.subjectAlign);
+  const topicCss = getFieldCSS(note.topicColor, note.topicStyle, note.topicAlign);
+  const titleCss = getFieldCSS(note.titleColor, note.titleStyle, note.titleAlign);
+  const contentCss = getFieldCSS(note.contentColor, note.contentStyle, note.contentAlign);
+
+  let detailsHTML = '';
+  if(note.subject) {
+    detailsHTML += `<div style="font-size:14px; margin-bottom:4px; ${subjectCss}"><strong>Subject:</strong> ${note.subject}</div>`;
+  }
+  if(note.topic) {
+    detailsHTML += `<div style="font-size:14px; margin-bottom:12px; ${topicCss}"><strong>Topic:</strong> ${note.topic}</div>`;
+  }
+  if(note.title) {
+    detailsHTML += `<h2 style="font-size:20px; margin-bottom:16px; ${titleCss}">${note.title}</h2>`;
+  }
+
+  body.innerHTML = `
+    ${detailsHTML}
     ${note.pdfUrl?`<a href="${note.pdfUrl}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#ef4444;color:#fff;border-radius:12px;padding:12px 20px;text-decoration:none;font-weight:700;margin-bottom:18px;"><i class="fa fa-file-pdf"></i> Open PDF</a>`:''}
     ${note.images&&note.images.length?note.images.map(img=>`<img src="${img}" style="width:100%;border-radius:12px;margin-bottom:12px;object-fit:contain;max-height:260px;"/>`).join(''):''}
-    <div style="font-size:15px;line-height:1.9;white-space:pre-wrap;color:var(--text);">${(note.content||'').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/`(.*?)`/g,'<code style="background:rgba(99,102,241,.12);padding:2px 7px;border-radius:5px;font-family:monospace;">$1</code>')}</div>
+    <div style="font-size:15px;line-height:1.9;white-space:pre-wrap; ${contentCss}">${formatNoteContent(note.content||'')}</div>
   `;
   showScreen('screen-note-detail');
 }
@@ -1637,9 +1834,9 @@ async function loadLeaderboard(){
         ${u.avatar?`<img src="${u.avatar}" style="width:44px;height:44px;object-fit:cover;"/>`:(u.name||'U').substring(0,2).toUpperCase()}
       </div>
       <div style="flex:1;">
-  <div style="font-weight:700;">${u.name||'User'}</div>
-  <div style="font-size:12px;color:var(--sub);">${u.quizCount||0} quiz(zes) completed</div>
-</div>
+        <div style="font-weight:700;">${u.name||'User'}</div>
+        <div style="font-size:12px;color:var(--sub);">${u.quizCount||0} quiz(zes) completed</div>
+      </div>
       <div style="text-align:right;">
         <div style="font-weight:800;color:var(--primary);font-size:15px;">${u.points||0}</div>
         <div style="font-size:10px;font-weight:700;color:var(--sub);letter-spacing:.5px;">PTS</div>
@@ -1780,14 +1977,12 @@ async function loadNotifications(){
   if(!currentUser)return;
   const snap=await db.collection('notifications').where('target','in',['all',currentUser.uid]).limit(20).get();
   const notifs=snap.docs.map(d=>({id:d.id,...d.data()}));
-  
-  // Retrieve the timestamp of when the user last opened notifications
+
   const lastViewedStr = localStorage.getItem('last_viewed_notifs_' + currentUser.uid);
   const lastViewedTime = lastViewedStr ? parseInt(lastViewedStr) : 0;
 
   const badge=document.getElementById('notif-badge');
-  
-  // Filter notifications that were created after the user's last viewed timestamp
+
   const unread = notifs.filter(n => {
     const createdTime = n.createdAt?.toMillis ? n.createdAt.toMillis() : (n.createdAt?.seconds ? n.createdAt.seconds * 1000 : 0);
     return createdTime > lastViewedTime;
@@ -1795,7 +1990,7 @@ async function loadNotifications(){
 
   badge.style.display=unread.length?'flex':'none';
   badge.textContent=unread.length;
-  
+
   const container=document.getElementById('notif-list');
   container.innerHTML=notifs.length?notifs.map(n=>{
     const createdTime = n.createdAt?.toMillis ? n.createdAt.toMillis() : (n.createdAt?.seconds ? n.createdAt.seconds * 1000 : 0);
@@ -1812,15 +2007,9 @@ async function loadNotifications(){
 function openNotifs(){
   openModal('notif-modal');
   if(!currentUser)return;
-  
-  // Instantly record current millisecond timestamp locally 
   localStorage.setItem('last_viewed_notifs_' + currentUser.uid, Date.now().toString());
-  
-  // Instantly remove the red badge 
   const badge=document.getElementById('notif-badge');
   if(badge) badge.style.display='none';
-  
-  // Re-render the notification list inside the modal with updated read/seen backgrounds
   loadNotifications();
 }
 
