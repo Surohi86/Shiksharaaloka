@@ -172,7 +172,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;}
 @keyframes bCurtain { 0% { clip-path: inset(0 50% 0 50%); opacity: 0.3; } 100% { clip-path: inset(0 0 0 0); opacity: 1; } }
 .course-card{background:var(--card);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;border:2px solid var(--card-border);box-shadow:0 4px 10px rgba(0,0,0,0.04);}
 .course-card:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,.12);}
-.quiz-option{display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--border);border-radius:12px;cursor:pointer;transition:.2s;margin-bottom:10px;}
+.quiz-option{display:flex;align-items:flex-start;gap:12px;padding:14px;border:2px solid var(--border);border-radius:12px;cursor:pointer;transition:.2s;margin-bottom:10px;text-align:left;}
 .quiz-option:hover{border-color:var(--primary);background:rgba(99,102,241,.05);}
 .quiz-option.selected{border-color:var(--primary);background:rgba(99,102,241,.1);}
 .quiz-option.correct{border-color:#10b981;background:rgba(16,185,129,.1);}
@@ -269,6 +269,28 @@ input, textarea {
 input::placeholder {
   color: #94a3b8 !important;
   opacity: 1 !important;
+}
+
+/* --- HTML NOTE CONTAINER STYLES --- */
+.html-note-rendered {
+  width: 100%;
+  line-height: 1.7;
+  color: var(--text);
+  overflow-x: auto;
+}
+.html-note-rendered table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 12px 0 !important;
+}
+.html-note-rendered th, .html-note-rendered td {
+  border: 1px solid var(--border) !important;
+  padding: 8px 10px !important;
+}
+.html-note-rendered img {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 8px;
 }
 </style>
 </head>
@@ -746,6 +768,8 @@ function formatQuizText(str) {
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
     .replace(/`(.*?)`/g, '<code style="background:rgba(99,102,241,.12);padding:2px 7px;border-radius:5px;font-family:monospace;">$1</code>')
+    .replace(/\^(.*?)\^/g, '<sup>$1</sup>')
+    .replace(/~(.*?)~/g, '<sub>$1</sub>')
     .replace(/\n/g, '<br/>');
 }
 
@@ -1398,6 +1422,11 @@ async function handleTopicClick(topicId,topicName,isPaid){
 
   if(!quizQuestions.length){showToast('No quiz available for this topic.','info');return;}
 
+  // Preserve numerical question order if saved with an index/order
+  if (quizQuestions.some(q => q.order !== undefined)) {
+    quizQuestions.sort((a, b) => (a.order || 0) - (b.order || 0));
+  }
+
   const firstQ = quizQuestions[0];
   const settings = firstQ?.quizSettings || {};
 
@@ -1480,7 +1509,10 @@ function renderQuestion() {
   } else {
     (q.options || []).forEach((opt, i) => {
       const sel = userAnswers[currentQIdx] === i;
-      html += `<div class="quiz-option${sel ? ' selected' : ''}" onclick="selectAnswer(${i})">${String.fromCharCode(65 + i)}. ${formatQuizText(opt)}</div>`;
+      html += `<div class="quiz-option${sel ? ' selected' : ''}" onclick="selectAnswer(${i})">
+        <span style="font-weight:700;min-width:24px;color:var(--primary);flex-shrink:0;">${String.fromCharCode(65 + i)}.</span>
+        <span style="flex:1;line-height:1.5;">${formatQuizText(opt)}</span>
+      </div>`;
     });
   }
   body.innerHTML = html;
@@ -1708,6 +1740,7 @@ async function loadLeaderboardInResult(){
 
 // ===== NOTES =====
 const NOTE_COLORS=['#f59e0b','#06b6d4','#ec4899','#22c55e','#6366f1','#f97316','#8b5cf6','#14b8a6'];
+window._userNotesCache = {};
 
 function getFieldCSS(color, style, align) {
   let css = '';
@@ -1740,56 +1773,44 @@ async function loadNotes(){
   const snap=await db.collection('notes').orderBy('createdAt','desc').get();
   const notes=snap.docs.map(d=>({id:d.id,...d.data()}));
   const container=document.getElementById('notes-list');
-  if(!notes.length){container.innerHTML='<div style="text-align:center;color:var(--sub);padding:60px 20px;"><i class="fa fa-sticky-note" style="font-size:48px;margin-bottom:16px;display:block;opacity:.4;"></i>No notes available.</div>';return;}
+  if(!notes.length){
+    container.innerHTML='<div style="text-align:center;color:var(--sub);padding:60px 20px;"><i class="fa fa-sticky-note" style="font-size:48px;margin-bottom:16px;display:block;opacity:.4;"></i>No notes available.</div>';
+    return;
+  }
+
+  // Cache notes in memory to prevent JSON encoding/quote breaks with raw HTML
+  window._userNotesCache = {};
+  notes.forEach(n => { window._userNotesCache[n.id] = n; });
+
   container.innerHTML=notes.map((n,i)=>{
     const color=NOTE_COLORS[i%NOTE_COLORS.length];
     const dark=['#6366f1','#8b5cf6','#ec4899'].includes(color);
     const tc=dark?'#fff':'#1e293b';
     const sc=dark?'rgba(255,255,255,.75)':'rgba(0,0,0,.6)';
     const ic=dark?'rgba(255,255,255,.25)':'rgba(255,255,255,.45)';
-    
-    const nJson=JSON.stringify({
-      id: n.id,
-      title: n.title,
-      titleColor: n.titleColor||'',
-      titleStyle: n.titleStyle||'normal',
-      titleAlign: n.titleAlign||'left',
-      subject: n.subject,
-      subjectColor: n.subjectColor||'',
-      subjectStyle: n.subjectStyle||'normal',
-      subjectAlign: n.subjectAlign||'left',
-      topic: n.topic||'',
-      topicColor: n.topicColor||'',
-      topicStyle: n.topicStyle||'normal',
-      topicAlign: n.topicAlign||'left',
-      content: n.content,
-      contentColor: n.contentColor||'',
-      contentStyle: n.contentStyle||'normal',
-      contentAlign: n.contentAlign||'left',
-      pdfUrl: n.pdfUrl,
-      images: n.images,
-      course: n.course
-    }).replace(/'/g,'&#39;');
 
-    const titleCss = getFieldCSS(n.titleColor, n.titleStyle, n.titleAlign);
-    const subjectCss = getFieldCSS(n.subjectColor, n.subjectStyle, n.subjectAlign);
+    const iconType = n.isHtml ? '💻' : (n.pdfUrl ? '📄' : '📝');
 
-    const finalTitleStyle = n.titleColor ? titleCss : `color:${tc}; ${titleCss}`;
-    const finalSubjectStyle = n.subjectColor ? subjectCss : `color:${sc}; ${subjectCss}`;
-
-    return `<div onclick='openNoteDetail(${nJson})' style="background:${color};border-radius:22px;padding:18px;margin-bottom:14px;cursor:pointer;display:flex;align-items:center;gap:14px;box-shadow:0 6px 18px rgba(0,0,0,.13);active-opacity:.85;">
-      <div style="background:${ic};border-radius:14px;width:64px;height:64px;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;">${n.pdfUrl?'📄':'📝'}</div>
+    return `<div onclick="openNoteDetailById('${n.id}')" style="background:${color};border-radius:22px;padding:18px;margin-bottom:14px;cursor:pointer;display:flex;align-items:center;gap:14px;box-shadow:0 6px 18px rgba(0,0,0,.13);">
+      <div style="background:${ic};border-radius:14px;width:64px;height:64px;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;">${iconType}</div>
       <div style="flex:1;min-width:0;">
-        <div style="font-weight:800;font-size:17px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; ${finalTitleStyle}">${n.title||'Note'}</div>
-        <div style="font-size:13px; ${finalSubjectStyle}">${n.course||n.subject||'Study Notes'}</div>
+        <div style="font-weight:800;font-size:17px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:${tc};">${n.title||'Note'}</div>
+        <div style="font-size:13px;color:${sc};">${n.course||n.subject||'Study Notes'}</div>
       </div>
       <i class="fa fa-chevron-right" style="color:${dark?'rgba(255,255,255,.5)':'rgba(0,0,0,.3)'};font-size:16px;flex-shrink:0;"></i>
     </div>`;
   }).join('');
 }
+
+function openNoteDetailById(id){
+  const note = window._userNotesCache[id];
+  if (!note) return;
+  openNoteDetail(note);
+}
+
 function openNoteDetail(note){
-  document.getElementById('note-detail-title').textContent=note.title||'Note';
-  const body=document.getElementById('note-detail-body');
+  document.getElementById('note-detail-title').textContent = note.title || 'Note';
+  const body = document.getElementById('note-detail-body');
   
   const subjectCss = getFieldCSS(note.subjectColor, note.subjectStyle, note.subjectAlign);
   const topicCss = getFieldCSS(note.topicColor, note.topicStyle, note.topicAlign);
@@ -1807,11 +1828,20 @@ function openNoteDetail(note){
     detailsHTML += `<h2 style="font-size:20px; margin-bottom:16px; ${titleCss}">${note.title}</h2>`;
   }
 
+  let renderedContent = '';
+  if (note.isHtml) {
+    // Render raw HTML without forcing white-space: pre-wrap
+    renderedContent = `<div class="html-note-rendered">${note.content || ''}</div>`;
+  } else {
+    // Normal markdown / text note
+    renderedContent = `<div style="font-size:15px;line-height:1.9;white-space:pre-wrap; ${contentCss}">${formatNoteContent(note.content||'')}</div>`;
+  }
+
   body.innerHTML = `
     ${detailsHTML}
     ${note.pdfUrl?`<a href="${note.pdfUrl}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#ef4444;color:#fff;border-radius:12px;padding:12px 20px;text-decoration:none;font-weight:700;margin-bottom:18px;"><i class="fa fa-file-pdf"></i> Open PDF</a>`:''}
     ${note.images&&note.images.length?note.images.map(img=>`<img src="${img}" style="width:100%;border-radius:12px;margin-bottom:12px;object-fit:contain;max-height:260px;"/>`).join(''):''}
-    <div style="font-size:15px;line-height:1.9;white-space:pre-wrap; ${contentCss}">${formatNoteContent(note.content||'')}</div>
+    ${renderedContent}
   `;
   showScreen('screen-note-detail');
 }
