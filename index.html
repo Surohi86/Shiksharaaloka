@@ -170,6 +170,142 @@ body{background:var(--bg);color:var(--text);min-height:100vh;}
 /* 16. Curtain Wipe */
 .banner-slide.t-curtain { animation: bCurtain 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes bCurtain { 0% { clip-path: inset(0 50% 0 50%); opacity: 0.3; } 100% { clip-path: inset(0 0 0 0); opacity: 1; } }
+
+/* 17. Circle / Iris Reveal */
+.banner-slide.t-circle-expand { animation: bCircleExpand 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bCircleExpand { 0% { clip-path: circle(0% at 50% 50%); opacity: 0.3; } 100% { clip-path: circle(150% at 50% 50%); opacity: 1; } }
+
+/* 18. 3D Cube Rotate Left */
+.banner-slide.t-cube-left { animation: bCubeLeft 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; transform-origin: left center; }
+@keyframes bCubeLeft { 0% { transform: perspective(1000px) rotateY(-90deg) translateZ(60px); opacity: 0; } 100% { transform: perspective(1000px) rotateY(0deg) translateZ(0); opacity: 1; } }
+
+/* 19. 3D Cube Rotate Right */
+.banner-slide.t-cube-right { animation: bCubeRight 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; transform-origin: right center; }
+@keyframes bCubeRight { 0% { transform: perspective(1000px) rotateY(90deg) translateZ(60px); opacity: 0; } 100% { transform: perspective(1000px) rotateY(0deg) translateZ(0); opacity: 1; } }
+
+/* 20. Diamond Wipe */
+.banner-slide.t-diamond { animation: bDiamond 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bDiamond { 0% { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%); opacity: 0.2; } 100% { clip-path: polygon(50% -60%, 160% 50%, 50% 160%, -60% 50%); opacity: 1; } }
+
+/* 21. Spiral Zoom In */
+.banner-slide.t-spiral-zoom { animation: bSpiralZoom 0.85s cubic-bezier(0.34, 1.3, 0.64, 1) forwards; }
+@keyframes bSpiralZoom { 0% { transform: scale(0.2) rotate(180deg); opacity: 0; filter: blur(8px); } 100% { transform: scale(1) rotate(0deg); opacity: 1; filter: blur(0px); } }
+
+/* 22. Diagonal 3D Card Flip */
+.banner-slide.t-card-flip { animation: bCardFlip 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bCardFlip { 0% { transform: perspective(900px) rotate3d(1, 1, 0, 75deg) scale(0.8); opacity: 0; } 100% { transform: perspective(900px) rotate3d(1, 1, 0, 0deg) scale(1); opacity: 1; } }
+
+/* 23. Horizontal Split Wipe */
+.banner-slide.t-split-h { animation: bSplitH 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bSplitH { 0% { clip-path: inset(50% 0 50% 0); opacity: 0.3; } 100% { clip-path: inset(0 0 0 0); opacity: 1; } }
+
+/* 24. Corner Radial Wipe */
+.banner-slide.t-corner-wipe { animation: bCornerWipe 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bCornerWipe { 0% { clip-path: circle(0% at 0% 0%); opacity: 0.2; } 100% { clip-path: circle(160% at 0% 0%); opacity: 1; } }
+
+/* 25. Shockwave Pulse */
+.banner-slide.t-shockwave { animation: bShockwave 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes bShockwave { 0% { transform: scale(1.4); filter: brightness(2) blur(10px); opacity: 0; } 100% { transform: scale(1); filter: brightness(1) blur(0px); opacity: 1; } }
+
+/* 26. 3D Swing Drop */
+.banner-slide.t-swing { animation: bSwing 0.85s cubic-bezier(0.25, 1.2, 0.5, 1) forwards; transform-origin: top center; }
+@keyframes bSwing { 0% { transform: perspective(800px) rotateX(-85deg); opacity: 0; } 100% { transform: perspective(800px) rotateX(0deg); opacity: 1; } }
+
+/* 27. Tornado Spin In */
+.banner-slide.t-tornado { animation: bTornado 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bTornado { 0% { transform: rotate(-540deg) scale(0.15); opacity: 0; } 100% { transform: rotate(0deg) scale(1); opacity: 1; } }
+
+/* 28. Tilt Slide */
+.banner-slide.t-tilt-slide { animation: bTiltSlide 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bTiltSlide { 0% { transform: translateX(80%) rotate(10deg) scale(0.85); opacity: 0; filter: blur(6px); } 100% { transform: translateX(0) rotate(0deg) scale(1); opacity: 1; filter: blur(0px); } }
+
+/* 29. Hexagon Iris Wipe */
+.banner-slide.t-hexagon { animation: bHexagon 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bHexagon { 0% { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%); opacity: 0.2; } 100% { clip-path: polygon(50% -60%, 160% 20%, 160% 80%, 50% 160%, -60% 80%, -60% 20%); opacity: 1; } }
+
+/* 30. Glitch Flash */
+.banner-slide.t-flash { animation: bFlash 0.75s ease-out forwards; }
+@keyframes bFlash { 0% { opacity: 0; transform: scale(1.08) skewX(4deg); filter: brightness(2.4) contrast(1.4); } 50% { opacity: 0.9; transform: scale(0.98) skewX(-2deg); filter: brightness(1.3); } 100% { opacity: 1; transform: scale(1) skewX(0deg); filter: brightness(1) contrast(1); } }
+
+/* 31. Sky Drop 3D */
+.banner-slide.t-fall-down { animation: bFallDown 0.85s cubic-bezier(0.34, 1.4, 0.64, 1) forwards; }
+@keyframes bFallDown { 0% { transform: translateY(-120%) scale(1.2) perspective(600px) rotateX(35deg); opacity: 0; } 100% { transform: translateY(0) scale(1) perspective(600px) rotateX(0deg); opacity: 1; } }
+
+/* 32. Diagonal Cross-Zoom */
+.banner-slide.t-cross-zoom { animation: bCrossZoom 0.85s cubic-bezier(0.34, 1.3, 0.64, 1) forwards; }
+@keyframes bCrossZoom { 0% { transform: translate(-45%, 45%) scale(0.3); opacity: 0; filter: blur(8px); } 100% { transform: translate(0, 0) scale(1); opacity: 1; filter: blur(0px); } }
+
+/* 33. Cinematic Stretch Zoom */
+.banner-slide.t-cinematic-zoom { animation: bCinematicZoom 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bCinematicZoom { 0% { transform: scale(0.8, 1.45); opacity: 0; filter: contrast(1.6); } 100% { transform: scale(1, 1); opacity: 1; filter: contrast(1); } }
+
+/* 34. 3D Origami Fold */
+.banner-slide.t-origami-fold { animation: bOrigamiFold 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; transform-origin: bottom center; }
+@keyframes bOrigamiFold { 0% { transform: perspective(850px) rotateX(90deg); opacity: 0; } 100% { transform: perspective(850px) rotateX(0deg); opacity: 1; } }
+
+/* 35. 8-Point Star Wipe */
+.banner-slide.t-star-wipe { animation: bStarWipe 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bStarWipe { 0% { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%); opacity: 0.2; } 100% { clip-path: polygon(50% -60%, 85% 15%, 160% 50%, 85% 85%, 50% 160%, 15% 85%, -60% 50%, 15% 15%); opacity: 1; } }
+
+/* 36. 3D Spin & Fall */
+.banner-slide.t-spin-fall { animation: bSpinFall 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bSpinFall { 0% { transform: perspective(700px) rotateZ(360deg) rotateX(50deg) scale(0.2); opacity: 0; } 100% { transform: perspective(700px) rotateZ(0deg) rotateX(0deg) scale(1); opacity: 1; } }
+
+/* 37. Elastic Jell-O Wobble */
+.banner-slide.t-wobble-elastic { animation: bWobbleElastic 0.9s ease-out forwards; }
+@keyframes bWobbleElastic { 0% { transform: scale(0.3) skewX(20deg); opacity: 0; } 45% { transform: scale(1.08) skewX(-12deg); opacity: 0.95; } 75% { transform: scale(0.97) skewX(5deg); } 100% { transform: scale(1) skewX(0deg); opacity: 1; } }
+
+/* 38. Diagonal Slicing Split */
+.banner-slide.t-split-diagonal { animation: bSplitDiagonal 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bSplitDiagonal { 0% { clip-path: polygon(0 0, 100% 0, 100% 0, 0 100%); opacity: 0.2; } 100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; } }
+
+/* 39. Prism Kaleidoscope */
+.banner-slide.t-kaleidoscope { animation: bKaleidoscope 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bKaleidoscope { 0% { transform: scale(0.15) rotate(270deg); filter: hue-rotate(180deg) blur(10px); opacity: 0; } 100% { transform: scale(1) rotate(0deg); filter: hue-rotate(0deg) blur(0px); opacity: 1; } }
+
+/* 40. 3D Book Page Curl */
+.banner-slide.t-paper-curl { animation: bPaperCurl 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; transform-origin: left center; }
+@keyframes bPaperCurl { 0% { transform: perspective(1200px) rotateY(-85deg); opacity: 0.2; box-shadow: -20px 0 35px rgba(0,0,0,0.6); } 100% { transform: perspective(1200px) rotateY(0deg); opacity: 1; box-shadow: none; } }
+
+/* 41. Vortex Swirl In */
+.banner-slide.t-vortex-zoom { animation: bVortexZoom 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes bVortexZoom { 0% { transform: scale(2.2) rotate(-90deg); filter: blur(14px); opacity: 0; } 100% { transform: scale(1) rotate(0deg); filter: blur(0px); opacity: 1; } }
+
+/* 42. Top-Right Radial Reveal */
+.banner-slide.t-circle-shrink { animation: bCircleShrink 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bCircleShrink { 0% { clip-path: circle(0% at 100% 0%); opacity: 0.2; } 100% { clip-path: circle(160% at 100% 0%); opacity: 1; } }
+
+/* 43. Pinwheel Sweep */
+.banner-slide.t-pinwheel { animation: bPinwheel 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bPinwheel { 0% { clip-path: polygon(50% 50%, 50% 0, 50% 0, 50% 0, 50% 0); opacity: 0.2; } 100% { clip-path: polygon(50% 50%, 50% 0, 100% 0, 100% 100%, 0 100%, 0 0, 50% 0); opacity: 1; } }
+
+/* 44. Reverse Diagonal 3D Tilt */
+.banner-slide.t-flip-diag-alt { animation: bFlipDiagAlt 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bFlipDiagAlt { 0% { transform: perspective(900px) rotate3d(-1, 1, 0, 75deg) scale(0.8); opacity: 0; } 100% { transform: perspective(900px) rotate3d(0, 0, 0, 0deg) scale(1); opacity: 1; } }
+
+/* 45. Anti-Gravity Float & Pop */
+.banner-slide.t-float-pop { animation: bFloatPop 0.85s cubic-bezier(0.34, 1.4, 0.64, 1) forwards; }
+@keyframes bFloatPop { 0% { transform: translateY(70px) scale(0.7); opacity: 0; } 65% { transform: translateY(-10px) scale(1.04); opacity: 0.95; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
+
+/* 46. Solar Lens Flare */
+.banner-slide.t-lens-flare { animation: bLensFlare 0.8s ease-out forwards; }
+@keyframes bLensFlare { 0% { filter: brightness(3.5) saturate(2); transform: scale(1.18); opacity: 0; } 50% { opacity: 0.95; } 100% { filter: brightness(1) saturate(1); transform: scale(1); opacity: 1; } }
+
+/* 47. 3D Corner Hinge Drop */
+.banner-slide.t-side-hinge { animation: bSideHinge 0.85s cubic-bezier(0.25, 1.2, 0.5, 1) forwards; transform-origin: top left; }
+@keyframes bSideHinge { 0% { transform: rotate(-60deg) scale(0.6); opacity: 0; } 100% { transform: rotate(0deg) scale(1); opacity: 1; } }
+
+/* 48. Zoom-Slide Fusion */
+.banner-slide.t-zoom-slide-combo { animation: bZoomSlideCombo 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bZoomSlideCombo { 0% { transform: translate(60%, -40%) scale(0.4) rotate(14deg); opacity: 0; } 100% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; } }
+
+/* 49. 3D Warp Tunnel */
+.banner-slide.t-depth-tunnel { animation: bDepthTunnel 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes bDepthTunnel { 0% { transform: perspective(500px) translateZ(-800px) scale(0.2); opacity: 0; filter: blur(16px); } 100% { transform: perspective(500px) translateZ(0) scale(1); opacity: 1; filter: blur(0px); } }
+
+/* 50. Liquid Wave Settle */
+.banner-slide.t-liquid-wave { animation: bLiquidWave 0.85s ease-out forwards; }
+@keyframes bLiquidWave { 0% { transform: scale(0.85) skew(9deg, 4deg); filter: contrast(1.8) blur(6px); opacity: 0; } 50% { transform: scale(1.03) skew(-3deg, -2deg); filter: contrast(1.2); opacity: 0.9; } 100% { transform: scale(1) skew(0deg, 0deg); filter: contrast(1) blur(0px); opacity: 1; } }
 .course-card{background:var(--card);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;border:2px solid var(--card-border);box-shadow:0 4px 10px rgba(0,0,0,0.04);}
 .course-card:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,.12);}
 .quiz-option{display:flex;align-items:flex-start;gap:12px;padding:14px;border:2px solid var(--border);border-radius:12px;cursor:pointer;transition:.2s;margin-bottom:10px;text-align:left;}
@@ -645,7 +781,7 @@ input::placeholder {
 <!-- ======================== BOOKS SCREEN ======================== -->
 <div id="screen-books" class="screen">
   <div class="header">
-    <button class="back-btn" onclick="handleBookBack()"><i class="fa fa-arrow-left"></i> Back</button>
+    <button class="back-btn" onclick="onScreenBookBack()"><i class="fa fa-arrow-left"></i> Back</button>
     <span id="books-main-title" style="font-weight:700;flex:1;text-align:center;">Books</span>
     <div style="width:50px;"></div>
   </div>
@@ -666,13 +802,28 @@ input::placeholder {
 </div>
 
 <!-- ======================== BOOK VIEWER SCREEN ======================== -->
-<div id="screen-book-viewer" class="screen">
-  <div class="header">
-    <button class="back-btn" onclick="goBack('screen-books')"><i class="fa fa-arrow-left"></i> Back</button>
-    <span id="book-viewer-title" style="font-weight:700;flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 10px;">Book Reader</span>
-    <button id="book-viewer-download" style="background:none;border:none;color:var(--primary);font-size:18px;cursor:pointer;display:none;"><i class="fa fa-download"></i></button>
+<div id="screen-book-viewer" class="screen" style="position:fixed;inset:0;width:100vw;height:100vh;background:#0f172a;z-index:9999;display:none;flex-direction:column;overflow:hidden;">
+
+  <!-- Fixed Top Header -->
+  <div style="position:fixed;top:0;left:0;right:0;height:52px;background:rgba(15,23,42,0.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:2147483647;display:flex;align-items:center;padding:0 14px;gap:12px;box-shadow:0 3px 12px rgba(0,0,0,0.4);border-bottom:1px solid rgba(255,255,255,0.12);">
+    <button type="button" onclick="onScreenBookBack()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:#ffffff;border-radius:10px;padding:7px 14px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;cursor:pointer;touch-action:manipulation;">
+      <i class="fa fa-arrow-left" style="font-size:15px;"></i> Back
+    </button>
+    <span id="book-viewer-title" style="color:#ffffff;font-weight:700;font-size:15px;flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 6px;">Book Reader</span>
+    <button id="book-viewer-download" style="background:none;border:none;color:#ffffff;font-size:18px;cursor:pointer;padding:6px;display:none;">
+      <i class="fa fa-download"></i>
+    </button>
   </div>
-  <div id="book-viewer-body" style="padding:16px;height:calc(100vh - 65px);overflow-y:auto;"></div>
+
+  <!-- FLOATING QUICK-BACK BUTTON -->
+  <button type="button" onclick="onScreenBookBack()" 
+          title="Back to Chapters"
+          style="position:fixed;bottom:24px;left:18px;z-index:2147483647;width:52px;height:52px;border-radius:50%;background:#6366f1;color:#ffffff;border:3px solid #ffffff;box-shadow:0 6px 20px rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;">
+    <i class="fa fa-arrow-left" style="font-size:20px;"></i>
+  </button>
+
+  <!-- PDF Reader Body -->
+  <div id="book-viewer-body" style="position:absolute;top:52px;bottom:0;left:0;right:0;width:100%;height:calc(100vh - 52px);overflow:hidden;background:#ffffff;"></div>
 </div>
 
 <!-- ======================== NOTES SCREEN ======================== -->
@@ -862,13 +1013,51 @@ function formatQuizText(str) {
     .replace(/\n/g, '<br/>');
 }
 
-// ===== HELPERS =====
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  const el=document.getElementById(id);
-  if(el){el.classList.add('active');el.classList.add('fade-in');}
-  if(!screenHistory.includes(id))screenHistory.push(id);
+// ===== HELPERS & GLOBAL BACK HANDLER =====
+function showScreen(id, pushHistory = true) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) {
+    el.classList.add('active');
+    el.classList.add('fade-in');
+  }
+  
+  if (screenHistory[screenHistory.length - 1] !== id) {
+    screenHistory.push(id);
+  }
+
+  if (pushHistory && window.history) {
+    window.history.pushState({ screenId: id }, '', window.location.pathname);
+  }
 }
+
+// Intercept Phone Hardware / Gesture Back Button
+window.addEventListener('popstate', function (event) {
+  const activeScreen = document.querySelector('.screen.active');
+  const activeId = activeScreen ? activeScreen.id : '';
+
+  // If user is inside the Books section or Reader, step back systematically
+  if (activeId === 'screen-book-viewer' || activeId === 'screen-books') {
+    handleBookBack();
+    return;
+  }
+
+  // If in Quiz
+  if (activeId === 'screen-quiz') {
+    confirmExit();
+    return;
+  }
+
+  // Standard screen back
+  if (screenHistory.length > 1) {
+    screenHistory.pop();
+    const prev = screenHistory[screenHistory.length - 1] || 'screen-courses';
+    showScreen(prev, false);
+  } else {
+    showScreen('screen-courses', false);
+  }
+});
+
 function goBack(fallback){
   screenHistory.pop();
   const prev=screenHistory[screenHistory.length-1]||fallback||'screen-courses';
@@ -1074,7 +1263,41 @@ const bannerTransitions = [
   't-bounce',
   't-skew',
   't-diagonal',
-  't-curtain'
+  't-curtain',
+  't-circle-expand',
+  't-cube-left',
+  't-cube-right',
+  't-diamond',
+  't-spiral-zoom',
+  't-card-flip',
+  't-split-h',
+  't-corner-wipe',
+  't-shockwave',
+  't-swing',
+  't-tornado',
+  't-tilt-slide',
+  't-hexagon',
+  't-flash',
+  't-fall-down',
+  't-cross-zoom',
+  't-cinematic-zoom',
+  't-origami-fold',
+  't-star-wipe',
+  't-spin-fall',
+  't-wobble-elastic',
+  't-split-diagonal',
+  't-kaleidoscope',
+  't-paper-curl',
+  't-vortex-zoom',
+  't-circle-shrink',
+  't-pinwheel',
+  't-flip-diag-alt',
+  't-float-pop',
+  't-lens-flare',
+  't-side-hinge',
+  't-zoom-slide-combo',
+  't-depth-tunnel',
+  't-liquid-wave'
 ];
 let transitionIdx = 0;
 let bannerInterval = null;
@@ -1345,7 +1568,9 @@ async function loadCourses() {
   ]);
 
   cache.courses = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  cache.enrolled = enrollSnap.docs.map(d => d.data().courseId);
+  cache.enrolled = enrollSnap.docs
+  .filter(d => d.data().status === 'approved')
+  .map(d => d.data().courseId);
 
   renderCourses(cache.courses, cache.enrolled);
   renderFeatured(cache.courses, cache.enrolled);
@@ -1414,6 +1639,7 @@ async function handleCourseClick(courseId,isPaid,isEnrolled){
 }
 function openPaymentModal(c,courseId){
   const body=document.getElementById('payment-body');
+  const safeCourseName = (c.name || 'Course').replace(/'/g, "\\'");
   body.innerHTML=`
     <div style="text-align:center;margin-bottom:20px;">
       <div style="font-size:48px;">${c.icon||'📚'}</div>
@@ -1430,8 +1656,47 @@ function openPaymentModal(c,courseId){
     <div style="background:rgba(99,102,241,.08);border-radius:10px;padding:14px;margin-top:12px;">
       <p style="color:var(--sub);font-size:13px;text-align:center;"><i class="fa fa-info-circle" style="color:var(--primary);margin-right:6px;"></i>After successful payment, your enrollment will be reviewed and approved by our admin. You will receive a notification once approved and can access the course immediately.</p>
     </div>
+
+    <!-- ADDED ENROLLMENT REQUEST BUTTON HERE -->
+    <button onclick="requestEnrollment('${courseId}', '${safeCourseName}')" class="btn btn-primary" style="width:100%;margin-top:14px;background:#10b981;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;">
+      <i class="fa fa-check-circle"></i> I Have Paid / Request Approval
+    </button>
   `;
   openModal('payment-modal');
+}
+async function requestEnrollment(courseId, courseName) {
+  if (!currentUser) {
+    showToast('Please sign in to enroll', 'error');
+    return;
+  }
+  try {
+    // Check if already requested
+    const existing = await db.collection('enrollments')
+      .where('userId', '==', currentUser.uid)
+      .where('courseId', '==', courseId)
+      .get();
+
+    if (!existing.empty) {
+      showToast('You have already submitted a request for this course.', 'info');
+      closeModal('payment-modal');
+      return;
+    }
+
+    await db.collection('enrollments').add({
+      userId: currentUser.uid,
+      userName: currentUser.displayName || document.getElementById('sb-name')?.textContent || 'Student',
+      userEmail: currentUser.email || '',
+      courseId: courseId,
+      courseName: courseName,
+      status: 'pending',
+      createdAt: new Date()
+    });
+
+    closeModal('payment-modal');
+    showToast('Request submitted! Admin will review and approve shortly.', 'success');
+  } catch (err) {
+    showToast('Error requesting enrollment: ' + err.message, 'error');
+  }
 }
 
 // ===== SUBJECTS =====
@@ -2111,7 +2376,15 @@ async function submitReview(){
 async function loadNotifications(){
   if(!currentUser)return;
   const snap=await db.collection('notifications').where('target','in',['all',currentUser.uid]).limit(20).get();
-  const notifs=snap.docs.map(d=>({id:d.id,...d.data()}));
+  
+  // SORTS NOTIFICATIONS FROM NEWEST TO OLDEST
+  const notifs = snap.docs
+    .map(d => ({ id: d.id, ...d.data() }))
+    .sort((a, b) => {
+      const tA = a.createdAt?.seconds || 0;
+      const tB = b.createdAt?.seconds || 0;
+      return tB - tA;
+    });
 
   const lastViewedStr = localStorage.getItem('last_viewed_notifs_' + currentUser.uid);
   const lastViewedTime = lastViewedStr ? parseInt(lastViewedStr) : 0;
@@ -2139,14 +2412,6 @@ async function loadNotifications(){
     `;
   }).join(''):'<div style="text-align:center;color:var(--sub);padding:20px;">No notifications</div>';
 }
-function openNotifs(){
-  openModal('notif-modal');
-  if(!currentUser)return;
-  localStorage.setItem('last_viewed_notifs_' + currentUser.uid, Date.now().toString());
-  const badge=document.getElementById('notif-badge');
-  if(badge) badge.style.display='none';
-  loadNotifications();
-}
 
 // ===== ADS =====
 function loadAds(container,type){
@@ -2169,21 +2434,11 @@ function loadAds(container,type){
   });
 }
 
-// ======================== BOOKS MODULE ========================
+// ======================== BOOKS MODULE (SYSTEMATIC NAVIGATION) ========================
 let allBooksData = [];
 let selectedBookClass = null;
 let selectedBookTitle = null;
-
-function normalizeDriveUrl(url) {
-  if (!url) return '';
-  if (url.includes('drive.google.com')) {
-    const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-    if (fileIdMatch && fileIdMatch[1]) {
-      return `https://drive.google.com/file/d/${fileIdMatch[1]}/preview`;
-    }
-  }
-  return url;
-}
+let bookNavLevel = 1; // 1: Classes, 2: Books, 3: Chapters, 4: Viewer
 
 function normalizeDriveDownloadUrl(url) {
   if (!url) return '';
@@ -2196,41 +2451,76 @@ function normalizeDriveDownloadUrl(url) {
   return url;
 }
 
-function handleBookBack() {
-  const chaptersView = document.getElementById('books-chapters-view');
-  const titlesView = document.getElementById('books-titles-view');
-
-  if (chaptersView && chaptersView.style.display !== 'none') {
-    // Go from Level 3 (Chapters) back to Level 2 (Books of that class)
-    openClassBooks(selectedBookClass);
-  } else if (titlesView && titlesView.style.display !== 'none') {
-    // Go from Level 2 (Books) back to Level 1 (Classes list)
-    openBooksSection();
+// Universal back handler used by BOTH on-screen buttons and phone back button
+function onScreenBookBack() {
+  if (window.history.state && window.history.state.bookLevel && window.history.state.bookLevel > 1) {
+    window.history.back(); // Pops browser history which automatically calls handleBookBack()
   } else {
-    // On Level 1, go back to previous screen (Home)
-    goBack('screen-courses');
+    handleBookBack();
   }
 }
 
+// Deterministic step-back state machine
+function handleBookBack() {
+  if (bookNavLevel === 4) {
+    // Level 4 (Viewer) -> Level 3 (Chapters List)
+    bookNavLevel = 3;
+    showScreen('screen-books', false);
+    renderBookChaptersView(selectedBookTitle);
+    return;
+  }
+  
+  if (bookNavLevel === 3) {
+    // Level 3 (Chapters List) -> Level 2 (Books of that class)
+    bookNavLevel = 2;
+    renderBookTitlesView(selectedBookClass);
+    return;
+  }
+  
+  if (bookNavLevel === 2) {
+    // Level 2 (Books of that class) -> Level 1 (Classes List)
+    bookNavLevel = 1;
+    renderBookClassesView();
+    return;
+  }
+  
+  // Level 1 (Classes List) -> Home Screen
+  bookNavLevel = 1;
+  showScreen('screen-courses', false);
+}
+
+// Level 1: Open Classes
 async function openBooksSection() {
-  showScreen('screen-books');
+  showScreen('screen-books', true);
+  bookNavLevel = 1;
+  
+  if (window.history) {
+    window.history.replaceState({ screenId: 'screen-books', bookLevel: 1 }, '', window.location.pathname);
+  }
+
+  // Load from database only on first open; keep in memory afterwards
+  if (!allBooksData || !allBooksData.length) {
+    const container = document.getElementById('books-classes-list');
+    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--sub);"><i class="fa fa-spinner fa-spin" style="font-size:24px;"></i></div>';
+    const snap = await db.collection('books').orderBy('createdAt', 'desc').get();
+    allBooksData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  }
+
+  renderBookClassesView();
+}
+
+function renderBookClassesView() {
   document.getElementById('books-main-title').textContent = 'Books';
   document.getElementById('books-classes-view').style.display = 'block';
   document.getElementById('books-titles-view').style.display = 'none';
   document.getElementById('books-chapters-view').style.display = 'none';
-  
+
   const container = document.getElementById('books-classes-list');
-  container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--sub);"><i class="fa fa-spinner fa-spin" style="font-size:24px;"></i></div>';
-
-  const snap = await db.collection('books').orderBy('createdAt', 'desc').get();
-  allBooksData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-
   if (!allBooksData.length) {
     container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--sub);">No books available yet.</div>';
     return;
   }
 
-  // Group by Class
   const classMap = {};
   allBooksData.forEach(b => {
     const cls = b.className && b.className.trim() ? b.className.trim() : 'General / Other';
@@ -2244,19 +2534,41 @@ async function openBooksSection() {
     return numA - numB;
   });
 
-  container.innerHTML = sortedClasses.map(cls => `
-    <div class="book-card-row" onclick="openClassBooks('${cls.replace(/'/g, "\\'")}')">
-      <div class="book-icon-box book-icon-blue">
-        <i class="fa fa-book-open"></i>
+  container.innerHTML = sortedClasses.map((cls, i) => {
+    const color = NOTE_COLORS[i % NOTE_COLORS.length];
+    const count = classMap[cls].length;
+    return `
+      <div onclick="openClassBooks('${cls.replace(/'/g, "\\'")}')" 
+           style="background:${color};border-radius:22px;padding:18px 20px;cursor:pointer;display:flex;align-items:center;gap:16px;box-shadow:0 6px 18px rgba(0,0,0,0.16);transition:transform 0.15s ease;"
+           onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'"
+           ontouchstart="this.style.transform='scale(0.98)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="background:rgba(255,255,255,0.25);border-radius:16px;width:56px;height:56px;display:flex;align-items:center;justify-content:center;font-size:26px;color:#ffffff;flex-shrink:0;">
+          <i class="fa fa-graduation-cap"></i>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:800;font-size:17px;color:#ffffff;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${cls}</div>
+          <div style="font-size:12.5px;color:rgba(255,255,255,0.85);font-weight:500;">${count} Book${count !== 1 ? 's' : ''} Available</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.25);color:#ffffff;font-weight:800;font-size:13px;padding:6px 14px;border-radius:20px;display:flex;align-items:center;gap:6px;flex-shrink:0;">
+          <span>${count}</span>
+          <i class="fa fa-chevron-right" style="font-size:11px;opacity:0.85;"></i>
+        </div>
       </div>
-      <div style="flex:1;font-weight:600;font-size:15px;">${cls}</div>
-      <div style="font-weight:700;color:#0284c7;font-size:15px;">${classMap[cls].length}</div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
+// Level 2: Open Books of selected class
 function openClassBooks(className) {
   selectedBookClass = className;
+  bookNavLevel = 2;
+  if (window.history) {
+    window.history.pushState({ screenId: 'screen-books', bookLevel: 2 }, '', window.location.pathname);
+  }
+  renderBookTitlesView(className);
+}
+
+function renderBookTitlesView(className) {
   document.getElementById('books-main-title').textContent = className;
   document.getElementById('books-classes-view').style.display = 'none';
   document.getElementById('books-titles-view').style.display = 'block';
@@ -2264,7 +2576,6 @@ function openClassBooks(className) {
 
   const classItems = allBooksData.filter(b => (b.className && b.className.trim() ? b.className.trim() : 'General / Other') === className);
 
-  // Group by Subject or Book Name
   const bookNameMap = {};
   classItems.forEach(b => {
     const name = b.name || b.title || 'Untitled Book';
@@ -2273,22 +2584,42 @@ function openClassBooks(className) {
   });
 
   const container = document.getElementById('books-titles-list');
-  container.innerHTML = Object.keys(bookNameMap).map(bName => `
-    <div class="book-card-row" onclick="openBookChapters('${bName.replace(/'/g, "\\'")}')">
-      <div class="book-icon-box book-icon-blue">
-        <i class="fa fa-book-open"></i>
+  container.innerHTML = Object.keys(bookNameMap).map((bName, i) => {
+    const color = NOTE_COLORS[(i + 2) % NOTE_COLORS.length];
+    const count = bookNameMap[bName].length;
+    const sub = bookNameMap[bName][0].subject || 'Course Book';
+    return `
+      <div onclick="openBookChapters('${bName.replace(/'/g, "\\'")}')" 
+           style="background:${color};border-radius:22px;padding:18px 20px;cursor:pointer;display:flex;align-items:center;gap:16px;box-shadow:0 6px 18px rgba(0,0,0,0.16);transition:transform 0.15s ease;"
+           onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'"
+           ontouchstart="this.style.transform='scale(0.98)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="background:rgba(255,255,255,0.25);border-radius:16px;width:56px;height:56px;display:flex;align-items:center;justify-content:center;font-size:26px;color:#ffffff;flex-shrink:0;">
+          <i class="fa fa-book-open"></i>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:800;font-size:17px;color:#ffffff;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${bName}</div>
+          <div style="font-size:12.5px;color:rgba(255,255,255,0.85);font-weight:500;">${sub} • ${count} Chapter${count !== 1 ? 's' : ''}</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.25);color:#ffffff;font-weight:800;font-size:13px;padding:6px 14px;border-radius:20px;display:flex;align-items:center;gap:6px;flex-shrink:0;">
+          <span>${count}</span>
+          <i class="fa fa-chevron-right" style="font-size:11px;opacity:0.85;"></i>
+        </div>
       </div>
-      <div style="flex:1;">
-        <div style="font-weight:600;font-size:15px;">${bName}</div>
-        ${bookNameMap[bName][0].subject ? `<div style="font-size:12px;color:var(--sub);">${bookNameMap[bName][0].subject}</div>` : ''}
-      </div>
-      <div style="font-weight:700;color:#0284c7;font-size:15px;">${bookNameMap[bName].length}</div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
+// Level 3: Open Chapters of selected book
 function openBookChapters(bookName) {
   selectedBookTitle = bookName;
+  bookNavLevel = 3;
+  if (window.history) {
+    window.history.pushState({ screenId: 'screen-books', bookLevel: 3 }, '', window.location.pathname);
+  }
+  renderBookChaptersView(bookName);
+}
+
+function renderBookChaptersView(bookName) {
   document.getElementById('books-main-title').textContent = bookName;
   document.getElementById('books-classes-view').style.display = 'none';
   document.getElementById('books-titles-view').style.display = 'none';
@@ -2302,58 +2633,128 @@ function openBookChapters(bookName) {
 
   const container = document.getElementById('books-chapters-list');
   container.innerHTML = chapters.map((c, i) => {
+    const color = NOTE_COLORS[(i + 4) % NOTE_COLORS.length];
     const title = c.chapter || c.title || `Chapter ${i + 1}`;
     const allowDownload = c.allowDownload !== false && (c.fileUrl || c.driveUrl);
     const dlUrl = normalizeDriveDownloadUrl(c.fileUrl || c.driveUrl);
 
     return `
-      <div class="book-card-row" style="cursor:default;">
-        <div class="book-icon-box book-icon-red" onclick="readBookItem('${c.id}')" style="cursor:pointer;">
+      <div style="background:${color};border-radius:22px;padding:16px 20px;display:flex;align-items:center;gap:16px;box-shadow:0 6px 18px rgba(0,0,0,0.16);transition:transform 0.15s ease;">
+        <div onclick="readBookItem('${c.id}')" style="background:rgba(255,255,255,0.25);border-radius:16px;width:52px;height:52px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#ffffff;flex-shrink:0;cursor:pointer;">
           <i class="fa fa-file-pdf"></i>
         </div>
-        <div style="flex:1;cursor:pointer;" onclick="readBookItem('${c.id}')">
-          <div style="font-weight:600;font-size:14.5px;">${title}</div>
-          ${c.subject ? `<div style="font-size:11.5px;color:var(--sub);">${c.subject}</div>` : ''}
+        <div style="flex:1;min-width:0;cursor:pointer;" onclick="readBookItem('${c.id}')">
+          <div style="font-weight:800;font-size:16px;color:#ffffff;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${title}</div>
+          <div style="font-size:12.5px;color:rgba(255,255,255,0.85);font-weight:500;">${c.subject || 'PDF Document'} • Tap to Read</div>
         </div>
         ${allowDownload ? `
-          <a href="${dlUrl}" target="_blank" download class="book-dl-btn" title="Download">
-            <i class="fa fa-arrow-down" style="font-size:13px;"></i>
+          <a href="${dlUrl}" target="_blank" download class="book-dl-btn" title="Download" style="background:rgba(255,255,255,0.25);border:none;color:#ffffff;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.2);">
+            <i class="fa fa-arrow-down" style="font-size:15px;"></i>
           </a>
-        ` : ''}
+        ` : `
+          <div onclick="readBookItem('${c.id}')" style="color:rgba(255,255,255,0.7);cursor:pointer;padding:4px 8px;">
+            <i class="fa fa-chevron-right" style="font-size:14px;"></i>
+          </div>
+        `}
       </div>
     `;
   }).join('');
 }
 
+// Helper for Google Drive downloads
+function normalizeDriveDownloadUrl(url) {
+  if (!url) return '';
+  if (url.includes('drive.google.com')) {
+    const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+    if (fileIdMatch && fileIdMatch[1]) {
+      return `https://drive.google.com/uc?export=download&id=${fileIdMatch[1]}`;
+    }
+  }
+  return url;
+}
+
+// Level 4: Open Reader
 function readBookItem(id) {
   const item = allBooksData.find(b => b.id === id);
   if (!item) return;
+
+  bookNavLevel = 4;
+  showScreen('screen-book-viewer', true);
 
   const viewerBody = document.getElementById('book-viewer-body');
   const viewerTitle = document.getElementById('book-viewer-title');
   const dlBtn = document.getElementById('book-viewer-download');
 
-  viewerTitle.textContent = item.chapter || item.title || item.name || 'Book View';
+  const bookTitle = item.chapter || item.title || item.name || 'Book View';
+  viewerTitle.textContent = bookTitle;
 
-  if (item.allowDownload !== false && (item.fileUrl || item.driveUrl)) {
+  const rawUrl = (item.fileUrl || item.driveUrl || '').trim();
+
+  // Download button handling
+  if (item.allowDownload !== false && rawUrl) {
     dlBtn.style.display = 'block';
-    dlBtn.onclick = () => window.open(normalizeDriveDownloadUrl(item.fileUrl || item.driveUrl), '_blank');
+    dlBtn.onclick = () => window.open(normalizeDriveDownloadUrl(rawUrl), '_blank');
   } else {
     dlBtn.style.display = 'none';
   }
 
   if (item.type === 'html' || item.isHtml) {
-    viewerBody.innerHTML = `<div class="html-note-rendered" style="font-size:15px;line-height:1.8;">${item.htmlContent || item.content || ''}</div>`;
-  } else if (item.fileUrl || item.driveUrl) {
-    const embedUrl = normalizeDriveUrl(item.fileUrl || item.driveUrl);
-    viewerBody.innerHTML = `
-      <iframe src="${embedUrl}" style="width:100%;height:100%;border:none;border-radius:12px;background:#fff;" allow="autoplay" allowfullscreen></iframe>
-    `;
+    viewerBody.innerHTML = `<div class="html-note-rendered" style="padding:16px;font-size:15px;line-height:1.8;height:100%;overflow-y:auto;">${item.htmlContent || item.content || ''}</div>`;
+  } else if (rawUrl) {
+    // 1. Google Drive Links -> Embed directly without ERR_BLOCKED_BY_RESPONSE
+    if (rawUrl.includes('drive.google.com')) {
+      const fileIdMatch = rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || rawUrl.match(/id=([a-zA-Z0-9_-]+)/);
+      const embedUrl = fileIdMatch ? `https://drive.google.com/file/d/${fileIdMatch[1]}/preview` : rawUrl;
+      viewerBody.innerHTML = `
+        <iframe 
+          src="${embedUrl}" 
+          style="width:100%;height:100%;border:none;display:block;background:#ffffff;" 
+          allow="autoplay; fullscreen" 
+          allowfullscreen>
+        </iframe>
+      `;
+    } 
+    // 2. pdflink.to or other services that block iframes -> Clean launcher card
+    else if (rawUrl.includes('pdflink.to') || rawUrl.includes('pdfdeck.com')) {
+      viewerBody.innerHTML = `
+        <div style="padding: 24px 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; background: var(--bg);">
+          <div style="background: var(--card); border: 1.5px solid var(--border); border-radius: 24px; padding: 36px 22px; max-width: 420px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+            <div style="width: 76px; height: 76px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 34px; margin: 0 auto 18px; box-shadow: 0 6px 18px rgba(99,102,241,0.35);">
+              <i class="fa fa-book-open"></i>
+            </div>
+            <h3 style="font-size: 19px; font-weight: 800; margin-bottom: 6px; color: var(--text);">${bookTitle}</h3>
+            ${item.subject ? `<div style="font-size: 13.5px; color: var(--sub); margin-bottom: 18px;">${item.subject}</div>` : ''}
+            
+            <p style="font-size: 13px; color: var(--sub); margin-bottom: 26px; line-height: 1.6;">
+              This book is ready to read. Tap below to launch the document reader with full page navigation.
+            </p>
+
+            <button onclick="window.open('${rawUrl}', '_blank')" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 15.5px; font-weight: 700; border-radius: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; box-shadow: 0 4px 16px rgba(99,102,241,0.35); cursor: pointer;">
+              <i class="fa fa-external-link-alt"></i> Open Book Reader
+            </button>
+            
+            <button onclick="onScreenBookBack()" class="btn btn-outline" style="width: 100%; padding: 13px; font-size: 14px; font-weight: 600; border-radius: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;">
+              <i class="fa fa-arrow-left"></i> Back to Chapters
+            </button>
+          </div>
+        </div>
+      `;
+    } 
+    // 3. Direct PDF URLs or Firebase Storage URLs
+    else {
+      const embedUrl = `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(rawUrl)}`;
+      viewerBody.innerHTML = `
+        <iframe 
+          src="${embedUrl}" 
+          style="width:100%;height:100%;border:none;background:#fff;" 
+          allow="autoplay; fullscreen" 
+          allowfullscreen>
+        </iframe>
+      `;
+    }
   } else {
     viewerBody.innerHTML = `<div style="text-align:center;color:var(--sub);padding:40px;">No content available for this book.</div>`;
   }
-
-  showScreen('screen-book-viewer');
 }
 
 // ===== THEME INIT =====
