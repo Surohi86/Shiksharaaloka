@@ -292,6 +292,62 @@ input::placeholder {
   height: auto !important;
   border-radius: 8px;
 }
+
+/* --- BOOKS UI STYLES (MATCHING SCREENSHOTS) --- */
+.book-card-row {
+  background: var(--card);
+  border: 1.5px solid #e0e7ff;
+  border-radius: 14px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+}
+.book-card-row:active {
+  transform: scale(0.98);
+  border-color: #6366f1;
+}
+.book-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.book-icon-blue {
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  color: #0284c7;
+  font-size: 20px;
+}
+.book-icon-red {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #ef4444;
+  font-size: 20px;
+}
+.book-dl-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #0284c7;
+  background: #ffffff;
+  color: #0284c7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+.book-dl-btn:active {
+  background: #0284c7;
+  color: #ffffff;
+}
 </style>
 </head>
 <body>
@@ -584,6 +640,39 @@ input::placeholder {
     </div>
     <div id="mr-list"></div>
   </div>
+</div>
+
+<!-- ======================== BOOKS SCREEN ======================== -->
+<div id="screen-books" class="screen">
+  <div class="header">
+    <button class="back-btn" onclick="handleBookBack()"><i class="fa fa-arrow-left"></i> Back</button>
+    <span id="books-main-title" style="font-weight:700;flex:1;text-align:center;">Books</span>
+    <div style="width:50px;"></div>
+  </div>
+  <div style="padding:16px;">
+    <!-- Classes List View (Matches Screenshot 1) -->
+    <div id="books-classes-view">
+      <div id="books-classes-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </div>
+    <!-- Specific Class Books View (Matches Screenshot 2) -->
+    <div id="books-titles-view" style="display:none;">
+      <div id="books-titles-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </div>
+    <!-- Chapters / PDF List View (Matches Screenshot 3) -->
+    <div id="books-chapters-view" style="display:none;">
+      <div id="books-chapters-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== BOOK VIEWER SCREEN ======================== -->
+<div id="screen-book-viewer" class="screen">
+  <div class="header">
+    <button class="back-btn" onclick="goBack('screen-books')"><i class="fa fa-arrow-left"></i> Back</button>
+    <span id="book-viewer-title" style="font-weight:700;flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 10px;">Book Reader</span>
+    <button id="book-viewer-download" style="background:none;border:none;color:var(--primary);font-size:18px;cursor:pointer;display:none;"><i class="fa fa-download"></i></button>
+  </div>
+  <div id="book-viewer-body" style="padding:16px;height:calc(100vh - 65px);overflow-y:auto;"></div>
 </div>
 
 <!-- ======================== NOTES SCREEN ======================== -->
@@ -1098,6 +1187,7 @@ function buildSidebar(){
   const items=[
     {icon:'fa-home',label:'Home',color:'#6366f1',action:"showScreen('screen-courses');closeSidebar();"},
     {icon:'fa-sticky-note',label:'Notes',color:'#f59e0b',action:"loadNotes();showScreen('screen-notes');closeSidebar();"},
+    {icon:'fa-book-open',label:'Books',color:'#0284c7',action:"openBooksSection();closeSidebar();"},
     {icon:'fa-chart-bar',label:'My Results',color:'#10b981',action:"loadMyResults();showScreen('screen-myresults');closeSidebar();"},
     {icon:'fa-trophy',label:'Leader Board',color:'#eab308',action:"loadLeaderboard();showScreen('screen-leaderboard');closeSidebar();"},
     {icon:'fa-user',label:'Profile',color:'#8b5cf6',action:"showScreen('screen-profile');closeSidebar();"},
@@ -2077,6 +2167,193 @@ function loadAds(container,type){
       } catch(e){wrap.innerHTML=code;}
     } else {container.innerHTML='';}
   });
+}
+
+// ======================== BOOKS MODULE ========================
+let allBooksData = [];
+let selectedBookClass = null;
+let selectedBookTitle = null;
+
+function normalizeDriveUrl(url) {
+  if (!url) return '';
+  if (url.includes('drive.google.com')) {
+    const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+    if (fileIdMatch && fileIdMatch[1]) {
+      return `https://drive.google.com/file/d/${fileIdMatch[1]}/preview`;
+    }
+  }
+  return url;
+}
+
+function normalizeDriveDownloadUrl(url) {
+  if (!url) return '';
+  if (url.includes('drive.google.com')) {
+    const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+    if (fileIdMatch && fileIdMatch[1]) {
+      return `https://drive.google.com/uc?export=download&id=${fileIdMatch[1]}`;
+    }
+  }
+  return url;
+}
+
+function handleBookBack() {
+  const chaptersView = document.getElementById('books-chapters-view');
+  const titlesView = document.getElementById('books-titles-view');
+
+  if (chaptersView && chaptersView.style.display !== 'none') {
+    // Go from Level 3 (Chapters) back to Level 2 (Books of that class)
+    openClassBooks(selectedBookClass);
+  } else if (titlesView && titlesView.style.display !== 'none') {
+    // Go from Level 2 (Books) back to Level 1 (Classes list)
+    openBooksSection();
+  } else {
+    // On Level 1, go back to previous screen (Home)
+    goBack('screen-courses');
+  }
+}
+
+async function openBooksSection() {
+  showScreen('screen-books');
+  document.getElementById('books-main-title').textContent = 'Books';
+  document.getElementById('books-classes-view').style.display = 'block';
+  document.getElementById('books-titles-view').style.display = 'none';
+  document.getElementById('books-chapters-view').style.display = 'none';
+  
+  const container = document.getElementById('books-classes-list');
+  container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--sub);"><i class="fa fa-spinner fa-spin" style="font-size:24px;"></i></div>';
+
+  const snap = await db.collection('books').orderBy('createdAt', 'desc').get();
+  allBooksData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+  if (!allBooksData.length) {
+    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--sub);">No books available yet.</div>';
+    return;
+  }
+
+  // Group by Class
+  const classMap = {};
+  allBooksData.forEach(b => {
+    const cls = b.className && b.className.trim() ? b.className.trim() : 'General / Other';
+    if (!classMap[cls]) classMap[cls] = [];
+    classMap[cls].push(b);
+  });
+
+  const sortedClasses = Object.keys(classMap).sort((a, b) => {
+    const numA = parseInt(a.replace(/\D/g, '')) || 999;
+    const numB = parseInt(b.replace(/\D/g, '')) || 999;
+    return numA - numB;
+  });
+
+  container.innerHTML = sortedClasses.map(cls => `
+    <div class="book-card-row" onclick="openClassBooks('${cls.replace(/'/g, "\\'")}')">
+      <div class="book-icon-box book-icon-blue">
+        <i class="fa fa-book-open"></i>
+      </div>
+      <div style="flex:1;font-weight:600;font-size:15px;">${cls}</div>
+      <div style="font-weight:700;color:#0284c7;font-size:15px;">${classMap[cls].length}</div>
+    </div>
+  `).join('');
+}
+
+function openClassBooks(className) {
+  selectedBookClass = className;
+  document.getElementById('books-main-title').textContent = className;
+  document.getElementById('books-classes-view').style.display = 'none';
+  document.getElementById('books-titles-view').style.display = 'block';
+  document.getElementById('books-chapters-view').style.display = 'none';
+
+  const classItems = allBooksData.filter(b => (b.className && b.className.trim() ? b.className.trim() : 'General / Other') === className);
+
+  // Group by Subject or Book Name
+  const bookNameMap = {};
+  classItems.forEach(b => {
+    const name = b.name || b.title || 'Untitled Book';
+    if (!bookNameMap[name]) bookNameMap[name] = [];
+    bookNameMap[name].push(b);
+  });
+
+  const container = document.getElementById('books-titles-list');
+  container.innerHTML = Object.keys(bookNameMap).map(bName => `
+    <div class="book-card-row" onclick="openBookChapters('${bName.replace(/'/g, "\\'")}')">
+      <div class="book-icon-box book-icon-blue">
+        <i class="fa fa-book-open"></i>
+      </div>
+      <div style="flex:1;">
+        <div style="font-weight:600;font-size:15px;">${bName}</div>
+        ${bookNameMap[bName][0].subject ? `<div style="font-size:12px;color:var(--sub);">${bookNameMap[bName][0].subject}</div>` : ''}
+      </div>
+      <div style="font-weight:700;color:#0284c7;font-size:15px;">${bookNameMap[bName].length}</div>
+    </div>
+  `).join('');
+}
+
+function openBookChapters(bookName) {
+  selectedBookTitle = bookName;
+  document.getElementById('books-main-title').textContent = bookName;
+  document.getElementById('books-classes-view').style.display = 'none';
+  document.getElementById('books-titles-view').style.display = 'none';
+  document.getElementById('books-chapters-view').style.display = 'block';
+
+  const chapters = allBooksData.filter(b => {
+    const matchesClass = (b.className && b.className.trim() ? b.className.trim() : 'General / Other') === selectedBookClass;
+    const matchesName = (b.name || b.title || 'Untitled Book') === bookName;
+    return matchesClass && matchesName;
+  });
+
+  const container = document.getElementById('books-chapters-list');
+  container.innerHTML = chapters.map((c, i) => {
+    const title = c.chapter || c.title || `Chapter ${i + 1}`;
+    const allowDownload = c.allowDownload !== false && (c.fileUrl || c.driveUrl);
+    const dlUrl = normalizeDriveDownloadUrl(c.fileUrl || c.driveUrl);
+
+    return `
+      <div class="book-card-row" style="cursor:default;">
+        <div class="book-icon-box book-icon-red" onclick="readBookItem('${c.id}')" style="cursor:pointer;">
+          <i class="fa fa-file-pdf"></i>
+        </div>
+        <div style="flex:1;cursor:pointer;" onclick="readBookItem('${c.id}')">
+          <div style="font-weight:600;font-size:14.5px;">${title}</div>
+          ${c.subject ? `<div style="font-size:11.5px;color:var(--sub);">${c.subject}</div>` : ''}
+        </div>
+        ${allowDownload ? `
+          <a href="${dlUrl}" target="_blank" download class="book-dl-btn" title="Download">
+            <i class="fa fa-arrow-down" style="font-size:13px;"></i>
+          </a>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+function readBookItem(id) {
+  const item = allBooksData.find(b => b.id === id);
+  if (!item) return;
+
+  const viewerBody = document.getElementById('book-viewer-body');
+  const viewerTitle = document.getElementById('book-viewer-title');
+  const dlBtn = document.getElementById('book-viewer-download');
+
+  viewerTitle.textContent = item.chapter || item.title || item.name || 'Book View';
+
+  if (item.allowDownload !== false && (item.fileUrl || item.driveUrl)) {
+    dlBtn.style.display = 'block';
+    dlBtn.onclick = () => window.open(normalizeDriveDownloadUrl(item.fileUrl || item.driveUrl), '_blank');
+  } else {
+    dlBtn.style.display = 'none';
+  }
+
+  if (item.type === 'html' || item.isHtml) {
+    viewerBody.innerHTML = `<div class="html-note-rendered" style="font-size:15px;line-height:1.8;">${item.htmlContent || item.content || ''}</div>`;
+  } else if (item.fileUrl || item.driveUrl) {
+    const embedUrl = normalizeDriveUrl(item.fileUrl || item.driveUrl);
+    viewerBody.innerHTML = `
+      <iframe src="${embedUrl}" style="width:100%;height:100%;border:none;border-radius:12px;background:#fff;" allow="autoplay" allowfullscreen></iframe>
+    `;
+  } else {
+    viewerBody.innerHTML = `<div style="text-align:center;color:var(--sub);padding:40px;">No content available for this book.</div>`;
+  }
+
+  showScreen('screen-book-viewer');
 }
 
 // ===== THEME INIT =====
