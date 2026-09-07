@@ -587,9 +587,9 @@ input::placeholder {
     <button onclick="openSidebar()" style="background:none;border:none;font-size:22px;color:var(--text);cursor:pointer;"><i class="fa fa-bars"></i></button>
     <img id="h-logo" src="https://img.icons8.com/color/48/graduation-cap.png" style="width:36px;height:36px;border-radius:8px;object-fit:contain;"/>
     <span id="h-appname" style="font-weight:700;font-size:16px;flex:1;">Shiksharaaloka</span>
-    <button onclick="toggleTheme()" style="background:none;border:none;font-size:18px;color:var(--text);cursor:pointer;" id="theme-btn"><i class="fa fa-moon"></i></button>
-    <div style="position:relative;">
-      <button onclick="openNotifs()" style="background:none;border:none;font-size:18px;color:var(--text);cursor:pointer;"><i class="fa fa-bell"></i></button>
+    <button onclick="toggleTheme()" style="background:none;border:none;font-size:18px;color:var(--text);cursor:pointer;padding:6px 8px;" id="theme-btn"><i class="fa fa-moon"></i></button>
+    <div style="position:relative;margin-left:14px;">
+      <button onclick="openNotifs()" style="background:none;border:none;font-size:18px;color:var(--text);cursor:pointer;padding:6px 8px;"><i class="fa fa-bell"></i></button>
       <span class="notification-badge" id="notif-badge" style="display:none;">!</span>
     </div>
   </div>
@@ -2373,6 +2373,16 @@ async function submitReview(){
 }
 
 // ===== NOTIFICATIONS =====
+function openNotifs() {
+  openModal('notif-modal');
+  loadNotifications();
+  if (currentUser) {
+    localStorage.setItem('last_viewed_notifs_' + currentUser.uid, Date.now().toString());
+    const badge = document.getElementById('notif-badge');
+    if (badge) badge.style.display = 'none';
+  }
+}
+
 async function loadNotifications(){
   if(!currentUser)return;
   const snap=await db.collection('notifications').where('target','in',['all',currentUser.uid]).limit(20).get();
