@@ -414,12 +414,28 @@ input::placeholder {
   color: var(--text);
   overflow-x: auto;
 }
+
+/* --- PPT SLIDE CARD STYLES --- */
+.html-note-rendered .ppt-slide-card {
+  background: var(--card) !important;
+  border: 1.5px solid var(--border) !important;
+  color: var(--text) !important;
+}
 .html-note-rendered table {
   width: 100% !important;
+  min-width: 480px;
   border-collapse: collapse !important;
   margin: 12px 0 !important;
+  font-size: 13.5px !important;
 }
-.html-note-rendered th, .html-note-rendered td {
+.html-note-rendered th {
+  background: rgba(99, 102, 241, 0.08) !important;
+  font-weight: 700 !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  padding: 8px 10px !important;
+}
+.html-note-rendered td {
   border: 1px solid var(--border) !important;
   padding: 8px 10px !important;
 }
@@ -2124,27 +2140,42 @@ function formatNoteContent(str) {
 }
 
 async function loadNotes(){
-  if(!currentUser)return;
-  const snap=await db.collection('notes').orderBy('createdAt','desc').get();
-  const notes=snap.docs.map(d=>({id:d.id,...d.data()}));
-  const container=document.getElementById('notes-list');
+  if(!currentUser) return;
+  const container = document.getElementById('notes-list');
+  container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--sub);"><i class="fa fa-spinner fa-spin" style="font-size:24px;"></i></div>';
+
+  let snap;
+  try {
+    snap = await db.collection('notes').orderBy('createdAt','desc').get();
+  } catch(e) {
+    snap = await db.collection('notes').get();
+  }
+
+  let notes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+  // Sort notes newest-first locally
+  notes.sort((a, b) => {
+    const tA = a.createdAt?.seconds || (a.createdAt?.toDate ? a.createdAt.toDate().getTime() / 1000 : 0) || 0;
+    const tB = b.createdAt?.seconds || (b.createdAt?.toDate ? b.createdAt.toDate().getTime() / 1000 : 0) || 0;
+    return tB - tA;
+  });
+
   if(!notes.length){
     container.innerHTML='<div style="text-align:center;color:var(--sub);padding:60px 20px;"><i class="fa fa-sticky-note" style="font-size:48px;margin-bottom:16px;display:block;opacity:.4;"></i>No notes available.</div>';
     return;
   }
 
-  // Cache notes in memory to prevent JSON encoding/quote breaks with raw HTML
   window._userNotesCache = {};
   notes.forEach(n => { window._userNotesCache[n.id] = n; });
 
-  container.innerHTML=notes.map((n,i)=>{
-    const color=NOTE_COLORS[i%NOTE_COLORS.length];
-    const dark=['#6366f1','#8b5cf6','#ec4899'].includes(color);
-    const tc=dark?'#fff':'#1e293b';
-    const sc=dark?'rgba(255,255,255,.75)':'rgba(0,0,0,.6)';
-    const ic=dark?'rgba(255,255,255,.25)':'rgba(255,255,255,.45)';
+  container.innerHTML = notes.map((n, i) => {
+    const color = NOTE_COLORS[i % NOTE_COLORS.length];
+    const dark = ['#6366f1','#8b5cf6','#ec4899'].includes(color);
+    const tc = dark ? '#fff' : '#1e293b';
+    const sc = dark ? 'rgba(255,255,255,.75)' : 'rgba(0,0,0,.6)';
+    const ic = dark ? 'rgba(255,255,255,.25)' : 'rgba(255,255,255,.45)';
 
-    const iconType = n.isHtml ? '💻' : (n.pdfUrl ? '📄' : '📝');
+    const iconType = n.docType === 'word' ? '📘' : (n.docType === 'excel' ? '📊' : (n.docType === 'ppt' ? '📙' : (n.isHtml ? '💻' : (n.pdfUrl ? '📄' : '📝'))));
 
     return `<div onclick="openNoteDetailById('${n.id}')" style="background:${color};border-radius:22px;padding:18px;margin-bottom:14px;cursor:pointer;display:flex;align-items:center;gap:14px;box-shadow:0 6px 18px rgba(0,0,0,.13);">
       <div style="background:${ic};border-radius:14px;width:64px;height:64px;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;">${iconType}</div>
