@@ -72,13 +72,14 @@ body{background:var(--bg);color:var(--text);min-height:100vh;}
   0% { transform: translateX(0%); }
   100% { transform: translateX(-100%); }
 }
-/* ================= HERO BANNER 16 TRANSITIONS ================= */
+/* ================= 105+ HERO BANNER TRANSITIONS ================= */
+/* ================= HERO BANNER CONTAINER & CORE SLIDE ================= */
 .banner-slider {
   position: relative;
   overflow: hidden;
   width: 100%;
   aspect-ratio: 16 / 9;
-  height: auto;
+  min-height: 180px;
   background: #6366f1;
   border-radius: 20px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -102,209 +103,326 @@ body{background:var(--bg);color:var(--text);min-height:100vh;}
   will-change: transform, opacity;
 }
 .banner-slide.active {
-  opacity: 1;
-  visibility: visible;
+  opacity: 1 !important;
+  visibility: visible !important;
   z-index: 2;
 }
-
 /* 1. Smooth Fade */
 .banner-slide.t-fade { animation: bFade 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
 @keyframes bFade { 0% { opacity: 0; } 100% { opacity: 1; } }
-
-/* 2. Slide from Right */
+/* 2. Slide Right */
 .banner-slide.t-slide-right { animation: bSlideRight 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes bSlideRight { 0% { transform: translateX(100%); opacity: 0.4; } 100% { transform: translateX(0); opacity: 1; } }
-
-/* 3. Slide from Left */
+/* 3. Slide Left */
 .banner-slide.t-slide-left { animation: bSlideLeft 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes bSlideLeft { 0% { transform: translateX(-100%); opacity: 0.4; } 100% { transform: translateX(0); opacity: 1; } }
-
-/* 4. Slide from Bottom */
+/* 4. Slide Up */
 .banner-slide.t-slide-up { animation: bSlideUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes bSlideUp { 0% { transform: translateY(100%); opacity: 0.4; } 100% { transform: translateY(0); opacity: 1; } }
-
-/* 5. Slide from Top */
+/* 5. Slide Down */
 .banner-slide.t-slide-down { animation: bSlideDown 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes bSlideDown { 0% { transform: translateY(-100%); opacity: 0.4; } 100% { transform: translateY(0); opacity: 1; } }
-
 /* 6. Zoom In */
 .banner-slide.t-zoom-in { animation: bZoomIn 0.8s cubic-bezier(0.34, 1.4, 0.64, 1) forwards; }
-@keyframes bZoomIn { 0% { transform: scale(0.65); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-
+@keyframes bZoomIn { 0% { transform: scale(0.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 /* 7. Zoom Out */
 .banner-slide.t-zoom-out { animation: bZoomOut 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-@keyframes bZoomOut { 0% { transform: scale(1.35); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-
-/* 8. 3D Flip Horizontal */
+@keyframes bZoomOut { 0% { transform: scale(1.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+/* 8. 3D Flip X */
 .banner-slide.t-flip-x { animation: bFlipX 0.85s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-@keyframes bFlipX { 0% { transform: rotateX(90deg); opacity: 0; } 100% { transform: rotateX(0deg); opacity: 1; } }
-
-/* 9. 3D Flip Vertical */
+@keyframes bFlipX { 0% { transform: perspective(1000px) rotateX(90deg); opacity: 0; } 100% { transform: perspective(1000px) rotateX(0deg); opacity: 1; } }
+/* 9. 3D Flip Y */
 .banner-slide.t-flip-y { animation: bFlipY 0.85s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-@keyframes bFlipY { 0% { transform: rotateY(90deg); opacity: 0; } 100% { transform: rotateY(0deg); opacity: 1; } }
-
+@keyframes bFlipY { 0% { transform: perspective(1000px) rotateY(90deg); opacity: 0; } 100% { transform: perspective(1000px) rotateY(0deg); opacity: 1; } }
 /* 10. Rotate In */
 .banner-slide.t-rotate-in { animation: bRotateIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes bRotateIn { 0% { transform: rotate(-15deg) scale(0.85); opacity: 0; } 100% { transform: rotate(0deg) scale(1); opacity: 1; } }
-
-/* 11. Swirl Clockwise */
+/* 11. Swirl */
 .banner-slide.t-swirl { animation: bSwirl 0.85s cubic-bezier(0.34, 1.2, 0.64, 1) forwards; }
-@keyframes bSwirl { 0% { transform: rotate(20deg) scale(0.7); opacity: 0; } 100% { transform: rotate(0deg) scale(1); opacity: 1; } }
-
+@keyframes bSwirl { 0% { transform: rotate(25deg) scale(0.65); opacity: 0; } 100% { transform: rotate(0deg) scale(1); opacity: 1; } }
 /* 12. Blur Focus */
 .banner-slide.t-blur { animation: bBlur 0.8s ease-out forwards; }
-@keyframes bBlur { 0% { filter: blur(12px); opacity: 0; transform: scale(1.06); } 100% { filter: blur(0px); opacity: 1; transform: scale(1); } }
-
+@keyframes bBlur { 0% { filter: blur(14px); opacity: 0; transform: scale(1.08); } 100% { filter: blur(0); opacity: 1; transform: scale(1); } }
 /* 13. Elastic Bounce */
 .banner-slide.t-bounce { animation: bBounce 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
-@keyframes bBounce { 0% { transform: scale(0.4); opacity: 0; } 70% { transform: scale(1.04); opacity: 0.9; } 100% { transform: scale(1); opacity: 1; } }
-
+@keyframes bBounce { 0% { transform: scale(0.3); opacity: 0; } 70% { transform: scale(1.05); opacity: 0.95; } 100% { transform: scale(1); opacity: 1; } }
 /* 14. Skew Slide */
 .banner-slide.t-skew { animation: bSkew 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-@keyframes bSkew { 0% { transform: translateX(80%) skewX(-12deg); opacity: 0; } 100% { transform: translateX(0) skewX(0deg); opacity: 1; } }
-
+@keyframes bSkew { 0% { transform: translateX(80%) skewX(-14deg); opacity: 0; } 100% { transform: translateX(0) skewX(0); opacity: 1; } }
 /* 15. Diagonal Drop */
 .banner-slide.t-diagonal { animation: bDiagonal 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-@keyframes bDiagonal { 0% { transform: translate(50%, -50%) scale(0.8); opacity: 0; } 100% { transform: translate(0, 0) scale(1); opacity: 1; } }
-
+@keyframes bDiagonal { 0% { transform: translate(50%, -50%) scale(0.75); opacity: 0; } 100% { transform: translate(0, 0) scale(1); opacity: 1; } }
 /* 16. Curtain Wipe */
 .banner-slide.t-curtain { animation: bCurtain 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-@keyframes bCurtain { 0% { clip-path: inset(0 50% 0 50%); opacity: 0.3; } 100% { clip-path: inset(0 0 0 0); opacity: 1; } }
-
-/* 17. Circle / Iris Reveal */
+@keyframes bCurtain { 0% { clip-path: inset(0 50% 0 50%); opacity: 0.2; } 100% { clip-path: inset(0 0 0 0); opacity: 1; } }
+/* 17. Circle Expand */
 .banner-slide.t-circle-expand { animation: bCircleExpand 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-@keyframes bCircleExpand { 0% { clip-path: circle(0% at 50% 50%); opacity: 0.3; } 100% { clip-path: circle(150% at 50% 50%); opacity: 1; } }
-
-/* 18. 3D Cube Rotate Left */
+@keyframes bCircleExpand { 0% { clip-path: circle(0% at 50% 50%); opacity: 0.2; } 100% { clip-path: circle(150% at 50% 50%); opacity: 1; } }
+/* 18. Cube Left */
 .banner-slide.t-cube-left { animation: bCubeLeft 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; transform-origin: left center; }
-@keyframes bCubeLeft { 0% { transform: perspective(1000px) rotateY(-90deg) translateZ(60px); opacity: 0; } 100% { transform: perspective(1000px) rotateY(0deg) translateZ(0); opacity: 1; } }
-
-/* 19. 3D Cube Rotate Right */
+@keyframes bCubeLeft { 0% { transform: perspective(1000px) rotateY(-90deg) translateZ(60px); opacity: 0; } 100% { transform: perspective(1000px) rotateY(0) translateZ(0); opacity: 1; } }
+/* 19. Cube Right */
 .banner-slide.t-cube-right { animation: bCubeRight 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; transform-origin: right center; }
-@keyframes bCubeRight { 0% { transform: perspective(1000px) rotateY(90deg) translateZ(60px); opacity: 0; } 100% { transform: perspective(1000px) rotateY(0deg) translateZ(0); opacity: 1; } }
-
+@keyframes bCubeRight { 0% { transform: perspective(1000px) rotateY(90deg) translateZ(60px); opacity: 0; } 100% { transform: perspective(1000px) rotateY(0) translateZ(0); opacity: 1; } }
 /* 20. Diamond Wipe */
 .banner-slide.t-diamond { animation: bDiamond 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes bDiamond { 0% { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%); opacity: 0.2; } 100% { clip-path: polygon(50% -60%, 160% 50%, 50% 160%, -60% 50%); opacity: 1; } }
-
-/* 21. Spiral Zoom In */
+/* 21. Spiral Zoom */
 .banner-slide.t-spiral-zoom { animation: bSpiralZoom 0.85s cubic-bezier(0.34, 1.3, 0.64, 1) forwards; }
-@keyframes bSpiralZoom { 0% { transform: scale(0.2) rotate(180deg); opacity: 0; filter: blur(8px); } 100% { transform: scale(1) rotate(0deg); opacity: 1; filter: blur(0px); } }
-
-/* 22. Diagonal 3D Card Flip */
+@keyframes bSpiralZoom { 0% { transform: scale(0.15) rotate(200deg); opacity: 0; filter: blur(8px); } 100% { transform: scale(1) rotate(0deg); opacity: 1; filter: blur(0); } }
+/* 22. Card Flip */
 .banner-slide.t-card-flip { animation: bCardFlip 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes bCardFlip { 0% { transform: perspective(900px) rotate3d(1, 1, 0, 75deg) scale(0.8); opacity: 0; } 100% { transform: perspective(900px) rotate3d(1, 1, 0, 0deg) scale(1); opacity: 1; } }
-
-/* 23. Horizontal Split Wipe */
+/* 23. Split Horizontal */
 .banner-slide.t-split-h { animation: bSplitH 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-@keyframes bSplitH { 0% { clip-path: inset(50% 0 50% 0); opacity: 0.3; } 100% { clip-path: inset(0 0 0 0); opacity: 1; } }
-
-/* 24. Corner Radial Wipe */
+@keyframes bSplitH { 0% { clip-path: inset(50% 0 50% 0); opacity: 0.2; } 100% { clip-path: inset(0 0 0 0); opacity: 1; } }
+/* 24. Corner Wipe */
 .banner-slide.t-corner-wipe { animation: bCornerWipe 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes bCornerWipe { 0% { clip-path: circle(0% at 0% 0%); opacity: 0.2; } 100% { clip-path: circle(160% at 0% 0%); opacity: 1; } }
-
 /* 25. Shockwave Pulse */
 .banner-slide.t-shockwave { animation: bShockwave 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-@keyframes bShockwave { 0% { transform: scale(1.4); filter: brightness(2) blur(10px); opacity: 0; } 100% { transform: scale(1); filter: brightness(1) blur(0px); opacity: 1; } }
-
+@keyframes bShockwave { 0% { transform: scale(1.4); filter: brightness(2.2) blur(8px); opacity: 0; } 100% { transform: scale(1); filter: brightness(1) blur(0); opacity: 1; } }
 /* 26. 3D Swing Drop */
 .banner-slide.t-swing { animation: bSwing 0.85s cubic-bezier(0.25, 1.2, 0.5, 1) forwards; transform-origin: top center; }
 @keyframes bSwing { 0% { transform: perspective(800px) rotateX(-85deg); opacity: 0; } 100% { transform: perspective(800px) rotateX(0deg); opacity: 1; } }
-
-/* 27. Tornado Spin In */
+/* 27. Tornado Spin */
 .banner-slide.t-tornado { animation: bTornado 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes bTornado { 0% { transform: rotate(-540deg) scale(0.15); opacity: 0; } 100% { transform: rotate(0deg) scale(1); opacity: 1; } }
-
 /* 28. Tilt Slide */
 .banner-slide.t-tilt-slide { animation: bTiltSlide 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-@keyframes bTiltSlide { 0% { transform: translateX(80%) rotate(10deg) scale(0.85); opacity: 0; filter: blur(6px); } 100% { transform: translateX(0) rotate(0deg) scale(1); opacity: 1; filter: blur(0px); } }
-
-/* 29. Hexagon Iris Wipe */
+@keyframes bTiltSlide { 0% { transform: translateX(80%) rotate(12deg) scale(0.85); opacity: 0; } 100% { transform: translateX(0) rotate(0deg) scale(1); opacity: 1; } }
+/* 29. Hexagon Reveal */
 .banner-slide.t-hexagon { animation: bHexagon 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes bHexagon { 0% { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%); opacity: 0.2; } 100% { clip-path: polygon(50% -60%, 160% 20%, 160% 80%, 50% 160%, -60% 80%, -60% 20%); opacity: 1; } }
-
 /* 30. Glitch Flash */
 .banner-slide.t-flash { animation: bFlash 0.75s ease-out forwards; }
-@keyframes bFlash { 0% { opacity: 0; transform: scale(1.08) skewX(4deg); filter: brightness(2.4) contrast(1.4); } 50% { opacity: 0.9; transform: scale(0.98) skewX(-2deg); filter: brightness(1.3); } 100% { opacity: 1; transform: scale(1) skewX(0deg); filter: brightness(1) contrast(1); } }
-
-/* 31. Sky Drop 3D */
+@keyframes bFlash { 0% { opacity: 0; transform: scale(1.08) skewX(4deg); filter: brightness(2.4); } 50% { opacity: 0.9; transform: scale(0.98) skewX(-2deg); } 100% { opacity: 1; transform: scale(1) skewX(0); filter: brightness(1); } }
+/* 31. Sky Drop */
 .banner-slide.t-fall-down { animation: bFallDown 0.85s cubic-bezier(0.34, 1.4, 0.64, 1) forwards; }
 @keyframes bFallDown { 0% { transform: translateY(-120%) scale(1.2) perspective(600px) rotateX(35deg); opacity: 0; } 100% { transform: translateY(0) scale(1) perspective(600px) rotateX(0deg); opacity: 1; } }
-
-/* 32. Diagonal Cross-Zoom */
+/* 32. Cross-Zoom */
 .banner-slide.t-cross-zoom { animation: bCrossZoom 0.85s cubic-bezier(0.34, 1.3, 0.64, 1) forwards; }
-@keyframes bCrossZoom { 0% { transform: translate(-45%, 45%) scale(0.3); opacity: 0; filter: blur(8px); } 100% { transform: translate(0, 0) scale(1); opacity: 1; filter: blur(0px); } }
-
-/* 33. Cinematic Stretch Zoom */
+@keyframes bCrossZoom { 0% { transform: translate(-45%, 45%) scale(0.3); opacity: 0; filter: blur(8px); } 100% { transform: translate(0, 0) scale(1); opacity: 1; filter: blur(0); } }
+/* 33. Cinematic Stretch */
 .banner-slide.t-cinematic-zoom { animation: bCinematicZoom 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-@keyframes bCinematicZoom { 0% { transform: scale(0.8, 1.45); opacity: 0; filter: contrast(1.6); } 100% { transform: scale(1, 1); opacity: 1; filter: contrast(1); } }
-
-/* 34. 3D Origami Fold */
+@keyframes bCinematicZoom { 0% { transform: scale(0.75, 1.45); opacity: 0; } 100% { transform: scale(1, 1); opacity: 1; } }
+/* 34. Origami Fold */
 .banner-slide.t-origami-fold { animation: bOrigamiFold 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; transform-origin: bottom center; }
-@keyframes bOrigamiFold { 0% { transform: perspective(850px) rotateX(90deg); opacity: 0; } 100% { transform: perspective(850px) rotateX(0deg); opacity: 1; } }
-
-/* 35. 8-Point Star Wipe */
+@keyframes bOrigamiFold { 0% { transform: perspective(850px) rotateX(90deg); opacity: 0; } 100% { transform: perspective(850px) rotateX(0); opacity: 1; } }
+/* 35. Star Wipe */
 .banner-slide.t-star-wipe { animation: bStarWipe 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes bStarWipe { 0% { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%); opacity: 0.2; } 100% { clip-path: polygon(50% -60%, 85% 15%, 160% 50%, 85% 85%, 50% 160%, 15% 85%, -60% 50%, 15% 15%); opacity: 1; } }
-
-/* 36. 3D Spin & Fall */
+/* 36. 3D Spin Fall */
 .banner-slide.t-spin-fall { animation: bSpinFall 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-@keyframes bSpinFall { 0% { transform: perspective(700px) rotateZ(360deg) rotateX(50deg) scale(0.2); opacity: 0; } 100% { transform: perspective(700px) rotateZ(0deg) rotateX(0deg) scale(1); opacity: 1; } }
-
-/* 37. Elastic Jell-O Wobble */
+@keyframes bSpinFall { 0% { transform: perspective(700px) rotateZ(360deg) scale(0.2); opacity: 0; } 100% { transform: perspective(700px) rotateZ(0deg) scale(1); opacity: 1; } }
+/* 37. Wobble Elastic */
 .banner-slide.t-wobble-elastic { animation: bWobbleElastic 0.9s ease-out forwards; }
-@keyframes bWobbleElastic { 0% { transform: scale(0.3) skewX(20deg); opacity: 0; } 45% { transform: scale(1.08) skewX(-12deg); opacity: 0.95; } 75% { transform: scale(0.97) skewX(5deg); } 100% { transform: scale(1) skewX(0deg); opacity: 1; } }
-
-/* 38. Diagonal Slicing Split */
+@keyframes bWobbleElastic { 0% { transform: scale(0.3) skewX(20deg); opacity: 0; } 50% { transform: scale(1.08) skewX(-10deg); opacity: 0.95; } 100% { transform: scale(1) skewX(0); opacity: 1; } }
+/* 38. Split Diagonal */
 .banner-slide.t-split-diagonal { animation: bSplitDiagonal 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes bSplitDiagonal { 0% { clip-path: polygon(0 0, 100% 0, 100% 0, 0 100%); opacity: 0.2; } 100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; } }
-
-/* 39. Prism Kaleidoscope */
+/* 39. Kaleidoscope */
 .banner-slide.t-kaleidoscope { animation: bKaleidoscope 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-@keyframes bKaleidoscope { 0% { transform: scale(0.15) rotate(270deg); filter: hue-rotate(180deg) blur(10px); opacity: 0; } 100% { transform: scale(1) rotate(0deg); filter: hue-rotate(0deg) blur(0px); opacity: 1; } }
-
-/* 40. 3D Book Page Curl */
+@keyframes bKaleidoscope { 0% { transform: scale(0.15) rotate(270deg); filter: hue-rotate(180deg); opacity: 0; } 100% { transform: scale(1) rotate(0deg); filter: hue-rotate(0); opacity: 1; } }
+/* 40. Paper Curl */
 .banner-slide.t-paper-curl { animation: bPaperCurl 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; transform-origin: left center; }
-@keyframes bPaperCurl { 0% { transform: perspective(1200px) rotateY(-85deg); opacity: 0.2; box-shadow: -20px 0 35px rgba(0,0,0,0.6); } 100% { transform: perspective(1200px) rotateY(0deg); opacity: 1; box-shadow: none; } }
-
-/* 41. Vortex Swirl In */
+@keyframes bPaperCurl { 0% { transform: perspective(1200px) rotateY(-85deg); opacity: 0.2; } 100% { transform: perspective(1200px) rotateY(0deg); opacity: 1; } }
+/* 41. Vortex Zoom */
 .banner-slide.t-vortex-zoom { animation: bVortexZoom 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-@keyframes bVortexZoom { 0% { transform: scale(2.2) rotate(-90deg); filter: blur(14px); opacity: 0; } 100% { transform: scale(1) rotate(0deg); filter: blur(0px); opacity: 1; } }
-
-/* 42. Top-Right Radial Reveal */
+@keyframes bVortexZoom { 0% { transform: scale(2.2) rotate(-90deg); filter: blur(12px); opacity: 0; } 100% { transform: scale(1) rotate(0deg); filter: blur(0); opacity: 1; } }
+/* 42. Top-Right Radial */
 .banner-slide.t-circle-shrink { animation: bCircleShrink 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes bCircleShrink { 0% { clip-path: circle(0% at 100% 0%); opacity: 0.2; } 100% { clip-path: circle(160% at 100% 0%); opacity: 1; } }
-
-/* 43. Pinwheel Sweep */
+/* 43. Pinwheel */
 .banner-slide.t-pinwheel { animation: bPinwheel 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes bPinwheel { 0% { clip-path: polygon(50% 50%, 50% 0, 50% 0, 50% 0, 50% 0); opacity: 0.2; } 100% { clip-path: polygon(50% 50%, 50% 0, 100% 0, 100% 100%, 0 100%, 0 0, 50% 0); opacity: 1; } }
-
-/* 44. Reverse Diagonal 3D Tilt */
+/* 44. Reverse Diagonal Tilt */
 .banner-slide.t-flip-diag-alt { animation: bFlipDiagAlt 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes bFlipDiagAlt { 0% { transform: perspective(900px) rotate3d(-1, 1, 0, 75deg) scale(0.8); opacity: 0; } 100% { transform: perspective(900px) rotate3d(0, 0, 0, 0deg) scale(1); opacity: 1; } }
-
-/* 45. Anti-Gravity Float & Pop */
+/* 45. Anti-Gravity Float */
 .banner-slide.t-float-pop { animation: bFloatPop 0.85s cubic-bezier(0.34, 1.4, 0.64, 1) forwards; }
 @keyframes bFloatPop { 0% { transform: translateY(70px) scale(0.7); opacity: 0; } 65% { transform: translateY(-10px) scale(1.04); opacity: 0.95; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
-
 /* 46. Solar Lens Flare */
 .banner-slide.t-lens-flare { animation: bLensFlare 0.8s ease-out forwards; }
-@keyframes bLensFlare { 0% { filter: brightness(3.5) saturate(2); transform: scale(1.18); opacity: 0; } 50% { opacity: 0.95; } 100% { filter: brightness(1) saturate(1); transform: scale(1); opacity: 1; } }
-
-/* 47. 3D Corner Hinge Drop */
+@keyframes bLensFlare { 0% { filter: brightness(3) saturate(2); transform: scale(1.15); opacity: 0; } 100% { filter: brightness(1) saturate(1); transform: scale(1); opacity: 1; } }
+/* 47. 3D Side Hinge */
 .banner-slide.t-side-hinge { animation: bSideHinge 0.85s cubic-bezier(0.25, 1.2, 0.5, 1) forwards; transform-origin: top left; }
-@keyframes bSideHinge { 0% { transform: rotate(-60deg) scale(0.6); opacity: 0; } 100% { transform: rotate(0deg) scale(1); opacity: 1; } }
-
-/* 48. Zoom-Slide Fusion */
+@keyframes bSideHinge { 0% { transform: rotate(-55deg) scale(0.65); opacity: 0; } 100% { transform: rotate(0deg) scale(1); opacity: 1; } }
+/* 48. Zoom Slide Fusion */
 .banner-slide.t-zoom-slide-combo { animation: bZoomSlideCombo 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-@keyframes bZoomSlideCombo { 0% { transform: translate(60%, -40%) scale(0.4) rotate(14deg); opacity: 0; } 100% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; } }
-
-/* 49. 3D Warp Tunnel */
+@keyframes bZoomSlideCombo { 0% { transform: translate(50%, -40%) scale(0.4) rotate(14deg); opacity: 0; } 100% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; } }
+/* 49. 3D Depth Tunnel */
 .banner-slide.t-depth-tunnel { animation: bDepthTunnel 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-@keyframes bDepthTunnel { 0% { transform: perspective(500px) translateZ(-800px) scale(0.2); opacity: 0; filter: blur(16px); } 100% { transform: perspective(500px) translateZ(0) scale(1); opacity: 1; filter: blur(0px); } }
-
+@keyframes bDepthTunnel { 0% { transform: perspective(500px) translateZ(-800px) scale(0.2); opacity: 0; filter: blur(14px); } 100% { transform: perspective(500px) translateZ(0) scale(1); opacity: 1; filter: blur(0); } }
 /* 50. Liquid Wave Settle */
 .banner-slide.t-liquid-wave { animation: bLiquidWave 0.85s ease-out forwards; }
+@keyframes bLiquidWave { 0% { transform: scale(0.85) skew(9deg, 4deg); filter: contrast(1.6) blur(6px); opacity: 0; } 100% { transform: scale(1) skew(0, 0); filter: contrast(1) blur(0); opacity: 1; } }
+
+/* 51. Shutter Vertical */
+.banner-slide.t-shutter-vertical { animation: bShutterV 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bShutterV { 0% { clip-path: polygon(0 0, 100% 0, 100% 0, 0 0, 0 50%, 100% 50%, 100% 50%, 0 50%); opacity: 0.3; } 100% { clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%, 0 50%, 100% 50%, 100% 100%, 0 100%); opacity: 1; } }
+/* 52. Shutter Horizontal */
+.banner-slide.t-shutter-horizontal { animation: bShutterH 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bShutterH { 0% { clip-path: polygon(0 0, 0 100%, 0 100%, 0 0, 50% 0, 50% 100%, 50% 100%, 50% 0); opacity: 0.3; } 100% { clip-path: polygon(0 0, 0 100%, 50% 100%, 50% 0, 50% 0, 50% 100%, 100% 100%, 100% 0); opacity: 1; } }
+/* 53. Ken Burns Zoom & Fade */
+.banner-slide.t-cross-fade-scale { animation: bKenBurns 0.85s ease-out forwards; }
+@keyframes bKenBurns { 0% { opacity: 0; transform: scale(1.18); } 100% { opacity: 1; transform: scale(1); } }
+/* 54. Rubber Band Snap */
+.banner-slide.t-rubber-band { animation: bRubberBand 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bRubberBand { 0% { transform: scale3d(1, 1, 1); opacity: 0; } 30% { transform: scale3d(1.25, 0.75, 1); opacity: 0.8; } 40% { transform: scale3d(0.75, 1.25, 1); } 50% { transform: scale3d(1.15, 0.85, 1); } 65% { transform: scale3d(0.95, 1.05, 1); } 100% { transform: scale3d(1, 1, 1); opacity: 1; } }
+/* 55. Jelly Squish & Pop */
+.banner-slide.t-jelly-pop { animation: bJellyPop 0.85s ease-out forwards; }
+@keyframes bJellyPop { 0% { transform: scale(0.2, 1.6); opacity: 0; } 50% { transform: scale(1.15, 0.85); opacity: 0.9; } 100% { transform: scale(1, 1); opacity: 1; } }
+/* 56. 3D Flip From Bottom */
+.banner-slide.t-flip-up-3d { animation: bFlipUp3D 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; transform-origin: bottom center; }
+@keyframes bFlipUp3D { 0% { transform: perspective(800px) rotateX(-90deg); opacity: 0; } 100% { transform: perspective(800px) rotateX(0deg); opacity: 1; } }
+/* 57. 3D Flip From Top */
+.banner-slide.t-flip-down-3d { animation: bFlipDown3D 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; transform-origin: top center; }
+@keyframes bFlipDown3D { 0% { transform: perspective(800px) rotateX(90deg); opacity: 0; } 100% { transform: perspective(800px) rotateX(0deg); opacity: 1; } }
+/* 58. Slit Expand Vertical */
+.banner-slide.t-slit-vertical { animation: bSlitV 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bSlitV { 0% { transform: perspective(800px) translateZ(-600px) rotateY(90deg); opacity: 0; } 60% { transform: perspective(800px) translateZ(-200px) rotateY(0deg); opacity: 0.8; } 100% { transform: perspective(800px) translateZ(0) rotateY(0deg); opacity: 1; } }
+/* 59. Slit Expand Horizontal */
+.banner-slide.t-slit-horizontal { animation: bSlitH 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bSlitH { 0% { transform: perspective(800px) translateZ(-600px) rotateX(90deg); opacity: 0; } 60% { transform: perspective(800px) translateZ(-200px) rotateX(0deg); opacity: 0.8; } 100% { transform: perspective(800px) translateZ(0) rotateX(0deg); opacity: 1; } }
+/* 60. Full 360 Spin In */
+.banner-slide.t-rotate-360-in { animation: bRotate360 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bRotate360 { 0% { transform: rotate(360deg) scale(0.2); opacity: 0; } 100% { transform: rotate(0deg) scale(1); opacity: 1; } }
+/* 61. Counter 360 Spin */
+.banner-slide.t-rotate-counter-360 { animation: bRotateCounter360 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bRotateCounter360 { 0% { transform: rotate(-360deg) scale(0.2); opacity: 0; } 100% { transform: rotate(0deg) scale(1); opacity: 1; } }
+/* 62. Classic Newspaper Spin */
+.banner-slide.t-newspaper-spin { animation: bNewspaper 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bNewspaper { 0% { transform: scale(0.05) rotate(720deg); opacity: 0; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+/* 63. Bubble Pop Expand */
+.banner-slide.t-pop-bubble { animation: bPopBubble 0.85s cubic-bezier(0.34, 1.4, 0.64, 1) forwards; }
+@keyframes bPopBubble { 0% { transform: scale(0.01); clip-path: circle(10% at 50% 50%); opacity: 0; } 60% { transform: scale(1.1); clip-path: circle(80% at 50% 50%); opacity: 0.95; } 100% { transform: scale(1); clip-path: circle(150% at 50% 50%); opacity: 1; } }
+/* 64. Sky Drop Double Bounce */
+.banner-slide.t-drop-bounce { animation: bDropBounce 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bDropBounce { 0% { transform: translateY(-100%); opacity: 0; } 60% { transform: translateY(12px); opacity: 0.9; } 80% { transform: translateY(-6px); } 100% { transform: translateY(0); opacity: 1; } }
+/* 65. Rise & Overshoot */
+.banner-slide.t-rise-float { animation: bRiseFloat 0.85s cubic-bezier(0.34, 1.3, 0.64, 1) forwards; }
+@keyframes bRiseFloat { 0% { transform: translateY(90%) scale(0.85); opacity: 0; } 75% { transform: translateY(-8px) scale(1.02); } 100% { transform: translateY(0) scale(1); opacity: 1; } }
+/* 66. Tilt Slide Left */
+.banner-slide.t-slide-rotate-left { animation: bSlideRotateL 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bSlideRotateL { 0% { transform: translateX(-100%) rotate(-18deg); opacity: 0; } 100% { transform: translateX(0) rotate(0deg); opacity: 1; } }
+/* 67. Tilt Slide Right */
+.banner-slide.t-slide-rotate-right { animation: bSlideRotateR 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bSlideRotateR { 0% { transform: translateX(100%) rotate(18deg); opacity: 0; } 100% { transform: translateX(0) rotate(0deg); opacity: 1; } }
+/* 68. Pulse Glow */
+.banner-slide.t-pulse-glow { animation: bPulseGlow 0.85s ease-out forwards; }
+@keyframes bPulseGlow { 0% { filter: brightness(2.2) drop-shadow(0 0 20px #6366f1); transform: scale(0.85); opacity: 0; } 100% { filter: brightness(1) drop-shadow(0 0 0 transparent); transform: scale(1); opacity: 1; } }
+/* 69. Spiral Inward */
+.banner-slide.t-spiral-out { animation: bSpiralOut 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes bSpiralOut { 0% { transform: scale(1.8) rotate(-140deg); opacity: 0; filter: blur(8px); } 100% { transform: scale(1) rotate(0deg); opacity: 1; filter: blur(0); } }
+/* 70. Cyberpunk Glitch Shift */
+.banner-slide.t-glitch-horizontal { animation: bGlitchH 0.8s ease-out forwards; }
+@keyframes bGlitchH { 0% { transform: translateX(15px) skewX(12deg); filter: invert(0.8); opacity: 0; } 30% { transform: translateX(-12px) skewX(-8deg); filter: invert(0); opacity: 0.8; } 70% { transform: translateX(6px) skewX(4deg); } 100% { transform: translateX(0) skewX(0); opacity: 1; } }
+/* 71. Matrix Hue Shift */
+.banner-slide.t-matrix-shift { animation: bMatrixShift 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bMatrixShift { 0% { filter: hue-rotate(240deg) contrast(1.8); transform: translateY(-50px) scale(0.9); opacity: 0; } 100% { filter: hue-rotate(0) contrast(1); transform: translateY(0) scale(1); opacity: 1; } }
+/* 72. Vertical Curtain Split */
+.banner-slide.t-curtain-vertical { animation: bCurtainV 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bCurtainV { 0% { clip-path: inset(50% 0 50% 0); opacity: 0.2; } 100% { clip-path: inset(0 0 0 0); opacity: 1; } }
+/* 73. Diagonal Wipe Top-Right */
+.banner-slide.t-diagonal-wipe-tr { animation: bDiagWipeTR 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bDiagWipeTR { 0% { clip-path: polygon(100% 0, 100% 0, 100% 0, 100% 0); opacity: 0.2; } 100% { clip-path: polygon(-50% 0, 150% 0, 100% 200%, -50% 200%); opacity: 1; } }
+/* 74. Diagonal Wipe Bottom-Left */
+.banner-slide.t-diagonal-wipe-bl { animation: bDiagWipeBL 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bDiagWipeBL { 0% { clip-path: polygon(0 100%, 0 100%, 0 100%, 0 100%); opacity: 0.2; } 100% { clip-path: polygon(0 -100%, 200% -100%, 150% 150%, 0 150%); opacity: 1; } }
+/* 75. Inset Box Reveal */
+.banner-slide.t-box-reveal { animation: bBoxReveal 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bBoxReveal { 0% { clip-path: inset(40% 40% 40% 40% round 20px); opacity: 0.2; } 100% { clip-path: inset(0 0 0 0 round 0px); opacity: 1; } }
+/* 76. Radial Wipe Top-Left */
+.banner-slide.t-circle-top-left { animation: bCircleTL 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bCircleTL { 0% { clip-path: circle(0% at 0% 0%); opacity: 0.2; } 100% { clip-path: circle(160% at 0% 0%); opacity: 1; } }
+/* 77. Radial Wipe Bottom-Right */
+.banner-slide.t-circle-bottom-right { animation: bCircleBR 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bCircleBR { 0% { clip-path: circle(0% at 100% 100%); opacity: 0.2; } 100% { clip-path: circle(160% at 100% 100%); opacity: 1; } }
+/* 78. Oval Expand */
+.banner-slide.t-oval-expand { animation: bOvalExpand 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bOvalExpand { 0% { clip-path: ellipse(0% 0% at 50% 50%); opacity: 0.2; } 100% { clip-path: ellipse(120% 80% at 50% 50%); opacity: 1; } }
+/* 79. Rhombus Angle Reveal */
+.banner-slide.t-rhombus-wipe { animation: bRhombus 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bRhombus { 0% { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%); opacity: 0.2; } 100% { clip-path: polygon(50% -80%, 180% 50%, 50% 180%, -80% 50%); opacity: 1; } }
+/* 80. Pentagon Reveal */
+.banner-slide.t-pentagon-reveal { animation: bPentagon 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bPentagon { 0% { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%); opacity: 0.2; } 100% { clip-path: polygon(50% -50%, 150% 25%, 120% 150%, -20% 150%, -50% 25%); opacity: 1; } }
+/* 81. Octagon Reveal */
+.banner-slide.t-octagon-reveal { animation: bOctagon 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bOctagon { 0% { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%); opacity: 0.2; } 100% { clip-path: polygon(30% -50%, 70% -50%, 150% 30%, 150% 70%, 70% 150%, 30% 150%, -50% 70%, -50% 30%); opacity: 1; } }
+/* 82. Heart Reveal */
+.banner-slide.t-heart-reveal { animation: bHeart 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bHeart { 0% { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%); opacity: 0.2; } 100% { clip-path: polygon(50% 140%, 160% 40%, 120% -40%, 50% 15%, -20% -40%, -60% 40%); opacity: 1; } }
+/* 83. 4-Corner Quad Wipe */
+.banner-slide.t-blinds-quad { animation: bBlindsQuad 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bBlindsQuad { 0% { clip-path: polygon(0 0, 0 0, 100% 0, 100% 0, 100% 100%, 100% 100%, 0 100%, 0 100%); opacity: 0.2; } 100% { clip-path: polygon(0 0, 50% 50%, 100% 0, 50% 50%, 100% 100%, 50% 50%, 0 100%, 50% 50%); opacity: 1; } }
+/* 84. Clock Wheel Sweep */
+.banner-slide.t-wheel-clockwise { animation: bWheelCW 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bWheelCW { 0% { clip-path: polygon(50% 50%, 50% 0, 50% 0, 50% 0, 50% 0); opacity: 0.2; } 100% { clip-path: polygon(50% 50%, 50% 0, 100% 0, 100% 100%, 0 100%, 0 0, 50% 0); opacity: 1; } }
+/* 85. Counter Wheel Sweep */
+.banner-slide.t-wheel-counter { animation: bWheelCCW 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bWheelCCW { 0% { clip-path: polygon(50% 50%, 50% 0, 50% 0, 50% 0, 50% 0); opacity: 0.2; } 100% { clip-path: polygon(50% 50%, 50% 0, 0 0, 0 100%, 100% 100%, 100% 0, 50% 0); opacity: 1; } }
+/* 86. Retro TV Turn On */
+.banner-slide.t-tv-turn-on { animation: bRetroTV 0.8s ease-out forwards; }
+@keyframes bRetroTV { 0% { transform: scale(0.01, 0.01); filter: brightness(4); opacity: 0; } 50% { transform: scale(1, 0.04); filter: brightness(3); opacity: 0.9; } 100% { transform: scale(1, 1); filter: brightness(1); opacity: 1; } }
+/* 87. Interlaced Slide */
+.banner-slide.t-slice-left-right { animation: bInterlaced 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bInterlaced { 0% { transform: translateX(60%) scaleX(0.7); opacity: 0; } 100% { transform: translateX(0) scaleX(1); opacity: 1; } }
+/* 88. Squeeze Horizontal */
+.banner-slide.t-squeeze-horizontal { animation: bSqueezeH 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bSqueezeH { 0% { transform: scaleX(0.1); opacity: 0; } 100% { transform: scaleX(1); opacity: 1; } }
+/* 89. Squeeze Vertical */
+.banner-slide.t-squeeze-vertical { animation: bSqueezeV 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bSqueezeV { 0% { transform: scaleY(0.1); opacity: 0; } 100% { transform: scaleY(1); opacity: 1; } }
+/* 90. 3D Left Door Swing */
+.banner-slide.t-swing-left-hinge { animation: bDoorLeft 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; transform-origin: left center; }
+@keyframes bDoorLeft { 0% { transform: perspective(1000px) rotateY(-90deg); opacity: 0; } 100% { transform: perspective(1000px) rotateY(0deg); opacity: 1; } }
+/* 91. 3D Right Door Swing */
+.banner-slide.t-swing-right-hinge { animation: bDoorRight 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; transform-origin: right center; }
+@keyframes bDoorRight { 0% { transform: perspective(1000px) rotateY(90deg); opacity: 0; } 100% { transform: perspective(1000px) rotateY(0deg); opacity: 1; } }
+/* 92. 3D Cube Up */
+.banner-slide.t-cube-up { animation: bCubeUp 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; transform-origin: center top; }
+@keyframes bCubeUp { 0% { transform: perspective(1000px) rotateX(90deg) translateZ(50px); opacity: 0; } 100% { transform: perspective(1000px) rotateX(0) translateZ(0); opacity: 1; } }
+/* 93. 3D Cube Down */
+.banner-slide.t-cube-down { animation: bCubeDown 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; transform-origin: center bottom; }
+@keyframes bCubeDown { 0% { transform: perspective(1000px) rotateX(-90deg) translateZ(50px); opacity: 0; } 100% { transform: perspective(1000px) rotateX(0) translateZ(0); opacity: 1; } }
+/* 94. Cinematic Letterbox */
+.banner-slide.t-cinematic-letterbox { animation: bCinemaLetterbox 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bCinemaLetterbox { 0% { clip-path: inset(35% 0 35% 0); transform: scale(1.15); opacity: 0.3; } 100% { clip-path: inset(0 0 0 0); transform: scale(1); opacity: 1; } }
+/* 95. 3D Tilt Corner */
+.banner-slide.t-tilt-3d-corner { animation: bTiltCorner 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bTiltCorner { 0% { transform: perspective(1000px) rotate3d(1, -1, 0, 60deg) scale(0.7); opacity: 0; } 100% { transform: perspective(1000px) rotate3d(0, 0, 0, 0deg) scale(1); opacity: 1; } }
+/* 96. Kaleido Twist */
+.banner-slide.t-kaleido-twist { animation: bKaleidoTwist 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bKaleidoTwist { 0% { transform: scale(0.2) rotate(180deg); filter: invert(0.6) blur(6px); opacity: 0; } 100% { transform: scale(1) rotate(0deg); filter: invert(0) blur(0); opacity: 1; } }
+/* 97. Warp Speed */
+.banner-slide.t-warp-speed { animation: bWarpSpeed 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes bWarpSpeed { 0% { transform: scale(3.5); filter: blur(20px) contrast(2); opacity: 0; } 100% { transform: scale(1); filter: blur(0) contrast(1); opacity: 1; } }
+/* 98. Supernova Explosion */
+.banner-slide.t-supernova { animation: bSupernova 0.85s ease-out forwards; }
+@keyframes bSupernova { 0% { filter: brightness(4) saturate(3); transform: scale(0.6); opacity: 0; } 60% { filter: brightness(2); transform: scale(1.05); opacity: 0.95; } 100% { filter: brightness(1) saturate(1); transform: scale(1); opacity: 1; } }
+/* 99. Prism Shimmer */
+.banner-slide.t-prism-shimmer { animation: bPrismShimmer 0.85s ease-out forwards; }
+@keyframes bPrismShimmer { 0% { filter: hue-rotate(180deg) saturate(2); opacity: 0; transform: scale(0.95); } 100% { filter: hue-rotate(0) saturate(1); opacity: 1; transform: scale(1); } }
+/* 100. 3D Accordion Unfold */
+.banner-slide.t-fold-unfold-3d { animation: bAccordion 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+@keyframes bAccordion { 0% { transform: perspective(800px) rotateY(-80deg) scale(0.7); opacity: 0; } 100% { transform: perspective(800px) rotateY(0deg) scale(1); opacity: 1; } }
+/* 101. Elastic Slide Right */
+.banner-slide.t-elastic-slide-right { animation: bElasticRight 0.9s cubic-bezier(0.68, -0.4, 0.27, 1.35) forwards; }
+@keyframes bElasticRight { 0% { transform: translateX(110%); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+/* 102. Elastic Slide Left */
+.banner-slide.t-elastic-slide-left { animation: bElasticLeft 0.9s cubic-bezier(0.68, -0.4, 0.27, 1.35) forwards; }
+@keyframes bElasticLeft { 0% { transform: translateX(-110%); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+/* 103. Elastic Slide Up */
+.banner-slide.t-elastic-slide-up { animation: bElasticUp 0.9s cubic-bezier(0.68, -0.4, 0.27, 1.35) forwards; }
+@keyframes bElasticUp { 0% { transform: translateY(110%); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+/* 104. Elastic Slide Down */
+.banner-slide.t-elastic-slide-down { animation: bElasticDown 0.9s cubic-bezier(0.68, -0.4, 0.27, 1.35) forwards; }
+@keyframes bElasticDown { 0% { transform: translateY(-110%); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+/* 105. Magnetic Snap */
+.banner-slide.t-magnetic-snap { animation: bMagneticSnap 0.85s cubic-bezier(0.34, 1.5, 0.64, 1) forwards; }
+@keyframes bMagneticSnap { 0% { transform: scale(0.35) translateY(40px); opacity: 0; } 70% { transform: scale(1.06) translateY(-4px); opacity: 0.95; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
 @keyframes bLiquidWave { 0% { transform: scale(0.85) skew(9deg, 4deg); filter: contrast(1.8) blur(6px); opacity: 0; } 50% { transform: scale(1.03) skew(-3deg, -2deg); filter: contrast(1.2); opacity: 0.9; } 100% { transform: scale(1) skew(0deg, 0deg); filter: contrast(1) blur(0px); opacity: 1; } }
 .course-card{background:var(--card);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;border:2px solid var(--card-border);box-shadow:0 4px 10px rgba(0,0,0,0.04);}
 .course-card:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,.12);}
@@ -1081,19 +1199,33 @@ input::placeholder {
   <div id="book-viewer-body" style="position:absolute;top:52px;bottom:0;left:0;right:0;width:100%;height:calc(100vh - 52px);overflow:hidden;background:#ffffff;"></div>
 </div>
 
-<!-- ======================== NOTES SCREEN ======================== -->
+<!-- ======================== NOTES SCREEN (COURSE & SUBJECT WISE) ======================== -->
 <div id="screen-notes" class="screen">
   <div class="header">
-    <button class="back-btn" onclick="goBack('screen-courses')"><i class="fa fa-arrow-left"></i> Back</button>
-    <span style="font-weight:700;flex:1;text-align:center;">Notes</span>
+    <button class="back-btn" type="button" onclick="onScreenNoteBack()"><i class="fa fa-arrow-left"></i> Back</button>
+    <span id="notes-main-title" style="font-weight:700;flex:1;text-align:center;">Notes</span>
+    <div style="width:50px;"></div>
   </div>
-  <div style="padding:16px;" id="notes-list"></div>
+  <div style="padding:16px;">
+    <!-- Level 1: Courses List View -->
+    <div id="notes-courses-view">
+      <div id="notes-courses-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </div>
+    <!-- Level 2: Subjects Under Selected Course -->
+    <div id="notes-subjects-view" style="display:none;">
+      <div id="notes-subjects-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </div>
+    <!-- Level 3: Notes Under Selected Subject -->
+    <div id="notes-items-view" style="display:none;">
+      <div id="notes-items-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </div>
+  </div>
 </div>
 
 <!-- ======================== NOTE DETAIL ======================== -->
 <div id="screen-note-detail" class="screen">
   <div class="header" id="note-detail-header" style="background:var(--primary);">
-    <button class="back-btn" onclick="goBack('screen-notes')" style="color:#fff;"><i class="fa fa-arrow-left"></i> Back</button>
+    <button class="back-btn" type="button" onclick="onScreenNoteBack()" style="color:#fff;"><i class="fa fa-arrow-left"></i> Back</button>
     <span id="note-detail-title" style="font-weight:700;flex:1;text-align:center;color:#fff;font-size:15px;"></span>
   </div>
   <div style="padding:20px;" id="note-detail-body"></div>
@@ -1290,6 +1422,12 @@ function showScreen(id, pushHistory = true) {
 window.addEventListener('popstate', function (event) {
   const activeScreen = document.querySelector('.screen.active');
   const activeId = activeScreen ? activeScreen.id : '';
+
+  // If user is inside the Notes section or Note Detail, step back systematically
+  if (activeId === 'screen-note-detail' || activeId === 'screen-notes') {
+    handleNoteBack();
+    return;
+  }
 
   // If user is inside the Books section or Reader, step back systematically
   if (activeId === 'screen-book-viewer' || activeId === 'screen-books') {
@@ -1537,81 +1675,74 @@ function handleGoldTickerClick() {
   }
 }
 
+function formatBannerImageUrl(url) {
+  if (!url) return '';
+  const trimmed = url.trim();
+  if (trimmed.includes('drive.google.com')) {
+    const match = trimmed.match(/\/d\/([a-zA-Z0-9_-]+)/) || trimmed.match(/id=([a-zA-Z0-9_-]+)/);
+    if (match && match[1]) {
+      return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+    }
+  }
+  if (trimmed.includes('dropbox.com')) {
+    return trimmed.replace('dl=0', 'raw=1');
+  }
+  return trimmed;
+}
+
 function loadBanners(s){
-  const container=document.getElementById('hero-banner');
-  if(!container)return;
-  const bList=s.banners||[];
-  if(!bList.length)return;
-  banners=bList;bannerLinks=bList.map(b=>b.link||'');
-  container.innerHTML='';
-  bList.forEach((b,i)=>{
-    const slide=document.createElement('div');
-    slide.className='banner-slide'+(i===0?' active':'');
-    if(b.url&&(b.url.includes('youtube.com')||b.url.includes('youtu.be'))){
-      const vid=b.url.replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');
-      slide.innerHTML=`<iframe src="${vid}?autoplay=1&mute=1" style="width:100%;height:100%;border:none;" allowfullscreen></iframe>`;
-    } else if(b.url){
-      slide.style.backgroundImage=`url(${b.url})`;
-      slide.style.backgroundSize='100% 100%';
-      slide.style.backgroundPosition='center';
-      slide.style.backgroundRepeat='no-repeat';
-      slide.style.borderRadius='20px';
+  const container = document.getElementById('hero-banner');
+  if (!container) return;
+  const bList = s.banners || [];
+  if (!bList.length) return; // Keeps the default welcome banner visible if no custom banners are added yet
+
+  banners = bList;
+  bannerLinks = bList.map(b => (typeof b === 'object' ? b.link : '') || '');
+  container.innerHTML = '';
+
+  bList.forEach((b, i) => {
+    const bannerObj = typeof b === 'string' ? { url: b } : b;
+    const slide = document.createElement('div');
+    slide.className = 'banner-slide' + (i === 0 ? ' active' : '');
+
+    if (bannerObj.url && (bannerObj.url.includes('youtube.com') || bannerObj.url.includes('youtu.be'))) {
+      const vid = bannerObj.url.replace('watch?v=', 'embed/').replace('youtu.be/', 'www.youtube.com/embed/');
+      slide.innerHTML = `<iframe src="${vid}?autoplay=1&mute=1" style="width:100%;height:100%;border:none;" allowfullscreen></iframe>`;
+    } else if (bannerObj.url) {
+      const finalImg = formatBannerImageUrl(bannerObj.url);
+      slide.style.backgroundImage = `url(${finalImg})`;
+      slide.style.backgroundSize = '100% 100%';
+      slide.style.backgroundPosition = 'center';
+      slide.style.backgroundRepeat = 'no-repeat';
+      slide.style.borderRadius = '20px';
     }
     container.appendChild(slide);
   });
+
   autoBanner();
 }
 const bannerTransitions = [
-  't-fade',
-  't-slide-right',
-  't-slide-left',
-  't-slide-up',
-  't-slide-down',
-  't-zoom-in',
-  't-zoom-out',
-  't-flip-x',
-  't-flip-y',
-  't-rotate-in',
-  't-swirl',
-  't-blur',
-  't-bounce',
-  't-skew',
-  't-diagonal',
-  't-curtain',
-  't-circle-expand',
-  't-cube-left',
-  't-cube-right',
-  't-diamond',
-  't-spiral-zoom',
-  't-card-flip',
-  't-split-h',
-  't-corner-wipe',
-  't-shockwave',
-  't-swing',
-  't-tornado',
-  't-tilt-slide',
-  't-hexagon',
-  't-flash',
-  't-fall-down',
-  't-cross-zoom',
-  't-cinematic-zoom',
-  't-origami-fold',
-  't-star-wipe',
-  't-spin-fall',
-  't-wobble-elastic',
-  't-split-diagonal',
-  't-kaleidoscope',
-  't-paper-curl',
-  't-vortex-zoom',
-  't-circle-shrink',
-  't-pinwheel',
-  't-flip-diag-alt',
-  't-float-pop',
-  't-lens-flare',
-  't-side-hinge',
-  't-zoom-slide-combo',
-  't-depth-tunnel',
-  't-liquid-wave'
+  't-fade', 't-slide-right', 't-slide-left', 't-slide-up', 't-slide-down',
+  't-zoom-in', 't-zoom-out', 't-flip-x', 't-flip-y', 't-rotate-in',
+  't-swirl', 't-blur', 't-bounce', 't-skew', 't-diagonal',
+  't-curtain', 't-circle-expand', 't-cube-left', 't-cube-right', 't-diamond',
+  't-spiral-zoom', 't-card-flip', 't-split-h', 't-corner-wipe', 't-shockwave',
+  't-swing', 't-tornado', 't-tilt-slide', 't-hexagon', 't-flash',
+  't-fall-down', 't-cross-zoom', 't-cinematic-zoom', 't-origami-fold', 't-star-wipe',
+  't-spin-fall', 't-wobble-elastic', 't-split-diagonal', 't-kaleidoscope', 't-paper-curl',
+  't-vortex-zoom', 't-circle-shrink', 't-pinwheel', 't-flip-diag-alt', 't-float-pop',
+  't-lens-flare', 't-side-hinge', 't-zoom-slide-combo', 't-depth-tunnel', 't-liquid-wave',
+  't-shutter-vertical', 't-shutter-horizontal', 't-cross-fade-scale', 't-rubber-band', 't-jelly-pop',
+  't-flip-up-3d', 't-flip-down-3d', 't-slit-vertical', 't-slit-horizontal', 't-rotate-360-in',
+  't-rotate-counter-360', 't-newspaper-spin', 't-pop-bubble', 't-drop-bounce', 't-rise-float',
+  't-slide-rotate-left', 't-slide-rotate-right', 't-pulse-glow', 't-spiral-out', 't-glitch-horizontal',
+  't-matrix-shift', 't-curtain-vertical', 't-diagonal-wipe-tr', 't-diagonal-wipe-bl', 't-box-reveal',
+  't-circle-top-left', 't-circle-bottom-right', 't-oval-expand', 't-rhombus-wipe', 't-pentagon-reveal',
+  't-octagon-reveal', 't-heart-reveal', 't-blinds-quad', 't-wheel-clockwise', 't-wheel-counter',
+  't-tv-turn-on', 't-slice-left-right', 't-squeeze-horizontal', 't-squeeze-vertical', 't-swing-left-hinge',
+  't-swing-right-hinge', 't-cube-up', 't-cube-down', 't-cinematic-letterbox', 't-tilt-3d-corner',
+  't-kaleido-twist', 't-warp-speed', 't-supernova', 't-prism-shimmer', 't-fold-unfold-3d',
+  't-elastic-slide-right', 't-elastic-slide-left', 't-elastic-slide-up', 't-elastic-slide-down', 't-magnetic-snap'
 ];
 let transitionIdx = 0;
 let bannerInterval = null;
@@ -1624,18 +1755,24 @@ function autoBanner() {
 
     bannerIdx = (bannerIdx + 1) % slides.length;
     const nextSlide = slides[bannerIdx];
+    const currentBannerData = banners[bannerIdx] || {};
 
-    // Select the next transition in the cycle
-    const currentTransition = bannerTransitions[transitionIdx];
-    transitionIdx = (transitionIdx + 1) % bannerTransitions.length;
+    // If banner has a specific transition set, use it; otherwise cycle sequentially
+    let appliedTransition = '';
+    if (currentBannerData.transition && currentBannerData.transition !== 'auto') {
+      appliedTransition = currentBannerData.transition;
+    } else {
+      appliedTransition = bannerTransitions[transitionIdx];
+      transitionIdx = (transitionIdx + 1) % bannerTransitions.length;
+    }
 
     // Reset active/transition classes on all slides
     slides.forEach(s => {
       s.classList.remove('active', ...bannerTransitions);
     });
 
-    // Apply new active slide with transition effect
-    nextSlide.classList.add('active', currentTransition);
+    // Apply new active slide with designated transition
+    nextSlide.classList.add('active', appliedTransition);
   }, 4000);
 }
 function bannerClick(){if(bannerLinks[bannerIdx])window.open(bannerLinks[bannerIdx],'_blank');}
@@ -2547,9 +2684,14 @@ async function loadLeaderboardInResult(){
   `).join('');
 }
 
-// ===== NOTES =====
+// ===== NOTES MODULE (COURSE ➔ SUBJECT ➔ NOTES HIERARCHICAL SYSTEM) =====
 const NOTE_COLORS=['#f59e0b','#06b6d4','#ec4899','#22c55e','#6366f1','#f97316','#8b5cf6','#14b8a6'];
 window._userNotesCache = {};
+
+let allNotesData = [];
+let selectedNoteCourse = null;
+let selectedNoteSubject = null;
+let noteNavLevel = 1; // 1: Courses, 2: Subjects, 3: Notes List, 4: Note Detail
 
 function getFieldCSS(color, style, align) {
   let css = '';
@@ -2577,62 +2719,256 @@ function formatNoteContent(str) {
     .replace(/~(.*?)~/g, '<sub>$1</sub>');
 }
 
-async function loadNotes(){
-  if(!currentUser) return;
-  const container = document.getElementById('notes-list');
+// Universal back navigation handler for both on-screen back buttons and gestures
+function onScreenNoteBack() {
+  if (window.history.state && window.history.state.noteLevel && window.history.state.noteLevel > 1) {
+    window.history.back();
+  } else {
+    handleNoteBack();
+  }
+}
+
+// Deterministic step-back state machine
+function handleNoteBack() {
+  if (noteNavLevel === 4) {
+    // Level 4 (Note Detail) -> Level 3 (Notes List)
+    noteNavLevel = 3;
+    showScreen('screen-notes', false);
+    renderSubjectNotesListView(selectedNoteSubject);
+    return;
+  }
+  
+  if (noteNavLevel === 3) {
+    // Level 3 (Notes List) -> Level 2 (Subjects of that Course)
+    noteNavLevel = 2;
+    renderNoteSubjectsView(selectedNoteCourse);
+    return;
+  }
+  
+  if (noteNavLevel === 2) {
+    // Level 2 (Subjects) -> Level 1 (Courses)
+    noteNavLevel = 1;
+    renderNoteCoursesView();
+    return;
+  }
+  
+  // Level 1 (Courses) -> Home Screen
+  noteNavLevel = 1;
+  showScreen('screen-courses', false);
+}
+
+// Main entry point when user taps "Notes" in the sidebar
+async function loadNotes() {
+  if (!currentUser) return;
+  showScreen('screen-notes', true);
+  noteNavLevel = 1;
+  
+  if (window.history) {
+    window.history.replaceState({ screenId: 'screen-notes', noteLevel: 1 }, '', window.location.pathname);
+  }
+
+  const container = document.getElementById('notes-courses-list');
   container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--sub);"><i class="fa fa-spinner fa-spin" style="font-size:24px;"></i></div>';
 
   let snap;
   try {
-    snap = await db.collection('notes').orderBy('createdAt','desc').get();
+    snap = await db.collection('notes').orderBy('createdAt', 'desc').get();
   } catch(e) {
     snap = await db.collection('notes').get();
   }
 
-  let notes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  allNotesData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-  // Sort notes newest-first locally
-  notes.sort((a, b) => {
+  allNotesData.sort((a, b) => {
     const tA = a.createdAt?.seconds || (a.createdAt?.toDate ? a.createdAt.toDate().getTime() / 1000 : 0) || 0;
     const tB = b.createdAt?.seconds || (b.createdAt?.toDate ? b.createdAt.toDate().getTime() / 1000 : 0) || 0;
     return tB - tA;
   });
 
-  if(!notes.length){
-    container.innerHTML='<div style="text-align:center;color:var(--sub);padding:60px 20px;"><i class="fa fa-sticky-note" style="font-size:48px;margin-bottom:16px;display:block;opacity:.4;"></i>No notes available.</div>';
+  window._userNotesCache = {};
+  allNotesData.forEach(n => { window._userNotesCache[n.id] = n; });
+
+  renderNoteCoursesView();
+}
+
+// Level 1: Render All Courses that have notes
+function renderNoteCoursesView() {
+  document.getElementById('notes-main-title').textContent = 'Course Notes';
+  document.getElementById('notes-courses-view').style.display = 'block';
+  document.getElementById('notes-subjects-view').style.display = 'none';
+  document.getElementById('notes-items-view').style.display = 'none';
+
+  const container = document.getElementById('notes-courses-list');
+  if (!allNotesData.length) {
+    container.innerHTML = '<div style="text-align:center;color:var(--sub);padding:60px 20px;"><i class="fa fa-sticky-note" style="font-size:48px;margin-bottom:16px;display:block;opacity:.4;"></i>No notes available yet.</div>';
     return;
   }
 
-  window._userNotesCache = {};
-  notes.forEach(n => { window._userNotesCache[n.id] = n; });
+  // Group notes by Course
+  const courseMap = {};
+  allNotesData.forEach(n => {
+    const crs = (n.course && n.course.trim()) ? n.course.trim() : 'General / Other Courses';
+    if (!courseMap[crs]) courseMap[crs] = [];
+    courseMap[crs].push(n);
+  });
 
-  container.innerHTML = notes.map((n, i) => {
+  const coursesList = Object.keys(courseMap);
+
+  container.innerHTML = coursesList.map((courseName, i) => {
     const color = NOTE_COLORS[i % NOTE_COLORS.length];
-    const dark = ['#6366f1','#8b5cf6','#ec4899'].includes(color);
-    const tc = dark ? '#fff' : '#1e293b';
-    const sc = dark ? 'rgba(255,255,255,.75)' : 'rgba(0,0,0,.6)';
-    const ic = dark ? 'rgba(255,255,255,.25)' : 'rgba(255,255,255,.45)';
+    const notesCount = courseMap[courseName].length;
 
-    const iconType = n.docType === 'word' ? '📘' : (n.docType === 'excel' ? '📊' : (n.docType === 'ppt' ? '📙' : (n.isHtml ? '💻' : (n.pdfUrl ? '📄' : '📝'))));
+    // Get count of unique subjects under this course
+    const uniqueSubjects = new Set(courseMap[courseName].map(n => (n.subject && n.subject.trim()) ? n.subject.trim() : 'General Notes'));
+    const subjectsCount = uniqueSubjects.size;
 
-    return `<div onclick="openNoteDetailById('${n.id}')" style="background:${color};border-radius:22px;padding:18px;margin-bottom:14px;cursor:pointer;display:flex;align-items:center;gap:14px;box-shadow:0 6px 18px rgba(0,0,0,.13);">
-      <div style="background:${ic};border-radius:14px;width:64px;height:64px;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;">${iconType}</div>
-      <div style="flex:1;min-width:0;">
-        <div style="font-weight:800;font-size:17px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:${tc};">${n.title||'Note'}</div>
-        <div style="font-size:13px;color:${sc};">${n.course||n.subject||'Study Notes'}</div>
+    return `
+      <div onclick="openCourseNoteSubjects('${courseName.replace(/'/g, "\\'")}')" 
+           style="background:${color};border-radius:22px;padding:18px 20px;cursor:pointer;display:flex;align-items:center;gap:16px;box-shadow:0 6px 18px rgba(0,0,0,0.15);transition:transform 0.15s ease;"
+           onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'"
+           ontouchstart="this.style.transform='scale(0.98)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="background:rgba(255,255,255,0.25);border-radius:16px;width:56px;height:56px;display:flex;align-items:center;justify-content:center;font-size:26px;color:#ffffff;flex-shrink:0;">
+          <i class="fa fa-graduation-cap"></i>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:800;font-size:17px;color:#ffffff;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${courseName}</div>
+          <div style="font-size:12.5px;color:rgba(255,255,255,0.88);font-weight:500;">
+            ${subjectsCount} Subject${subjectsCount !== 1 ? 's' : ''} • ${notesCount} Note${notesCount !== 1 ? 's' : ''}
+          </div>
+        </div>
+        <div style="background:rgba(255,255,255,0.25);color:#ffffff;font-weight:800;font-size:13px;padding:6px 14px;border-radius:20px;display:flex;align-items:center;gap:6px;flex-shrink:0;">
+          <span>${subjectsCount}</span>
+          <i class="fa fa-chevron-right" style="font-size:11px;opacity:0.85;"></i>
+        </div>
       </div>
-      <i class="fa fa-chevron-right" style="color:${dark?'rgba(255,255,255,.5)':'rgba(0,0,0,.3)'};font-size:16px;flex-shrink:0;"></i>
-    </div>`;
+    `;
   }).join('');
 }
 
-function openNoteDetailById(id){
+// Level 2: Open and render Subjects under the selected Course
+function openCourseNoteSubjects(courseName) {
+  selectedNoteCourse = courseName;
+  noteNavLevel = 2;
+  if (window.history) {
+    window.history.pushState({ screenId: 'screen-notes', noteLevel: 2 }, '', window.location.pathname);
+  }
+  renderNoteSubjectsView(courseName);
+}
+
+function renderNoteSubjectsView(courseName) {
+  document.getElementById('notes-main-title').textContent = courseName;
+  document.getElementById('notes-courses-view').style.display = 'none';
+  document.getElementById('notes-subjects-view').style.display = 'block';
+  document.getElementById('notes-items-view').style.display = 'none';
+
+  const courseNotes = allNotesData.filter(n => {
+    const c = (n.course && n.course.trim()) ? n.course.trim() : 'General / Other Courses';
+    return c === courseName;
+  });
+
+  // Group by Subject
+  const subjectMap = {};
+  courseNotes.forEach(n => {
+    const subj = (n.subject && n.subject.trim()) ? n.subject.trim() : 'General Notes';
+    if (!subjectMap[subj]) subjectMap[subj] = [];
+    subjectMap[subj].push(n);
+  });
+
+  const subjectsList = Object.keys(subjectMap);
+  const container = document.getElementById('notes-subjects-list');
+
+  container.innerHTML = subjectsList.map((subjName, i) => {
+    const color = NOTE_COLORS[(i + 2) % NOTE_COLORS.length];
+    const count = subjectMap[subjName].length;
+
+    return `
+      <div onclick="openSubjectNotesList('${subjName.replace(/'/g, "\\'")}')" 
+           style="background:${color};border-radius:22px;padding:18px 20px;cursor:pointer;display:flex;align-items:center;gap:16px;box-shadow:0 6px 18px rgba(0,0,0,0.15);transition:transform 0.15s ease;"
+           onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'"
+           ontouchstart="this.style.transform='scale(0.98)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="background:rgba(255,255,255,0.25);border-radius:16px;width:56px;height:56px;display:flex;align-items:center;justify-content:center;font-size:26px;color:#ffffff;flex-shrink:0;">
+          <i class="fa fa-book"></i>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:800;font-size:17px;color:#ffffff;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${subjName}</div>
+          <div style="font-size:12.5px;color:rgba(255,255,255,0.88);font-weight:500;">
+            ${count} Note${count !== 1 ? 's' : ''} Available
+          </div>
+        </div>
+        <div style="background:rgba(255,255,255,0.25);color:#ffffff;font-weight:800;font-size:13px;padding:6px 14px;border-radius:20px;display:flex;align-items:center;gap:6px;flex-shrink:0;">
+          <span>${count}</span>
+          <i class="fa fa-chevron-right" style="font-size:11px;opacity:0.85;"></i>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Level 3: Open and render Notes under the selected Subject
+function openSubjectNotesList(subjName) {
+  selectedNoteSubject = subjName;
+  noteNavLevel = 3;
+  if (window.history) {
+    window.history.pushState({ screenId: 'screen-notes', noteLevel: 3 }, '', window.location.pathname);
+  }
+  renderSubjectNotesListView(subjName);
+}
+
+function renderSubjectNotesListView(subjName) {
+  document.getElementById('notes-main-title').textContent = subjName;
+  document.getElementById('notes-courses-view').style.display = 'none';
+  document.getElementById('notes-subjects-view').style.display = 'none';
+  document.getElementById('notes-items-view').style.display = 'block';
+
+  const notes = allNotesData.filter(n => {
+    const c = (n.course && n.course.trim()) ? n.course.trim() : 'General / Other Courses';
+    const s = (n.subject && n.subject.trim()) ? n.subject.trim() : 'General Notes';
+    return c === selectedNoteCourse && s === subjName;
+  });
+
+  const container = document.getElementById('notes-items-list');
+
+  container.innerHTML = notes.map((n, i) => {
+    const color = NOTE_COLORS[(i + 4) % NOTE_COLORS.length];
+    const dark = ['#6366f1','#8b5cf6','#ec4899'].includes(color);
+    const tc = dark ? '#fff' : '#1e293b';
+    const sc = dark ? 'rgba(255,255,255,.85)' : 'rgba(0,0,0,.65)';
+    const ic = dark ? 'rgba(255,255,255,.25)' : 'rgba(255,255,255,.45)';
+
+    const iconType = n.docType === 'word' ? '📘' : (n.docType === 'excel' ? '📊' : (n.docType === 'ppt' ? '📙' : (n.isHtml ? '💻' : (n.pdfUrl ? '📄' : '📝'))));
+    const subLabel = n.topic ? `Topic: ${n.topic}` : (n.subject || 'Study Notes');
+
+    return `
+      <div onclick="openNoteDetailById('${n.id}')" 
+           style="background:${color};border-radius:22px;padding:16px 18px;margin-bottom:12px;cursor:pointer;display:flex;align-items:center;gap:14px;box-shadow:0 6px 18px rgba(0,0,0,.13);transition:transform 0.15s ease;"
+           onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'"
+           ontouchstart="this.style.transform='scale(0.98)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="background:${ic};border-radius:14px;width:56px;height:56px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">${iconType}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:800;font-size:16px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:${tc};">${n.title || 'Note'}</div>
+          <div style="font-size:12.5px;color:${sc};">${subLabel}</div>
+        </div>
+        <i class="fa fa-chevron-right" style="color:${dark?'rgba(255,255,255,.6)':'rgba(0,0,0,.35)'};font-size:15px;flex-shrink:0;"></i>
+      </div>
+    `;
+  }).join('');
+}
+
+// Level 4: Open Note Detail
+function openNoteDetailById(id) {
   const note = window._userNotesCache[id];
   if (!note) return;
   openNoteDetail(note);
 }
 
-function openNoteDetail(note){
+function openNoteDetail(note) {
+  noteNavLevel = 4;
+  showScreen('screen-note-detail', true);
+
+  if (window.history) {
+    window.history.pushState({ screenId: 'screen-note-detail', noteLevel: 4 }, '', window.location.pathname);
+  }
+
   document.getElementById('note-detail-title').textContent = note.title || 'Note';
   const body = document.getElementById('note-detail-body');
   
@@ -2642,32 +2978,32 @@ function openNoteDetail(note){
   const contentCss = getFieldCSS(note.contentColor, note.contentStyle, note.contentAlign);
 
   let detailsHTML = '';
-  if(note.subject) {
+  if (note.course) {
+    detailsHTML += `<div style="font-size:13.5px; margin-bottom:4px; color:var(--sub);"><strong>Course:</strong> ${note.course}</div>`;
+  }
+  if (note.subject) {
     detailsHTML += `<div style="font-size:14px; margin-bottom:4px; ${subjectCss}"><strong>Subject:</strong> ${note.subject}</div>`;
   }
-  if(note.topic) {
+  if (note.topic) {
     detailsHTML += `<div style="font-size:14px; margin-bottom:12px; ${topicCss}"><strong>Topic:</strong> ${note.topic}</div>`;
   }
-  if(note.title) {
+  if (note.title) {
     detailsHTML += `<h2 style="font-size:20px; margin-bottom:16px; ${titleCss}">${note.title}</h2>`;
   }
 
   let renderedContent = '';
   if (note.isHtml) {
-    // Render raw HTML without forcing white-space: pre-wrap
     renderedContent = `<div class="html-note-rendered">${note.content || ''}</div>`;
   } else {
-    // Normal markdown / text note
     renderedContent = `<div style="font-size:15px;line-height:1.9;white-space:pre-wrap; ${contentCss}">${formatNoteContent(note.content||'')}</div>`;
   }
 
   body.innerHTML = `
     ${detailsHTML}
-    ${note.pdfUrl?`<a href="${note.pdfUrl}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#ef4444;color:#fff;border-radius:12px;padding:12px 20px;text-decoration:none;font-weight:700;margin-bottom:18px;"><i class="fa fa-file-pdf"></i> Open PDF</a>`:''}
-    ${note.images&&note.images.length?note.images.map(img=>`<img src="${img}" style="width:100%;border-radius:12px;margin-bottom:12px;object-fit:contain;max-height:260px;"/>`).join(''):''}
+    ${note.pdfUrl ? `<a href="${note.pdfUrl}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#ef4444;color:#fff;border-radius:12px;padding:12px 20px;text-decoration:none;font-weight:700;margin-bottom:18px;"><i class="fa fa-file-pdf"></i> Open PDF</a>` : ''}
+    ${note.images && note.images.length ? note.images.map(img => `<img src="${img}" style="width:100%;border-radius:12px;margin-bottom:12px;object-fit:contain;max-height:260px;"/>`).join('') : ''}
     ${renderedContent}
   `;
-  showScreen('screen-note-detail');
 }
 
 // ===== LEADERBOARD =====
