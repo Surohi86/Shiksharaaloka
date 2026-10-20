@@ -852,6 +852,45 @@ input::placeholder {
   100% { transform: translateX(-100%); }
 }
 
+/* ================= MY LEARNING HUB STYLES ================= */
+.learning-wrap{padding:16px;max-width:900px;margin:0 auto;}
+.learning-hero{border-radius:22px;padding:22px;color:#fff;background:linear-gradient(135deg,#4338ca,#7c3aed 58%,#0891b2);box-shadow:0 12px 30px rgba(79,70,229,.22);margin-bottom:16px;}
+.learning-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0;}
+.learning-stat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;min-width:0;}
+.learning-stat .num{font-size:25px;font-weight:800;color:var(--primary);margin-top:5px;}
+.learning-panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px;margin:14px 0;}
+.learning-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.learning-row:last-child{border-bottom:0;}
+.learning-pill{display:inline-block;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:700;background:rgba(99,102,241,.12);color:var(--primary);}
+.learning-btn{border:0;border-radius:10px;padding:9px 12px;background:var(--primary);color:white;font-weight:700;cursor:pointer;}
+.bookmark-btn{border:1px solid var(--border);background:var(--card);color:var(--primary);border-radius:9px;padding:8px 10px;cursor:pointer;flex-shrink:0;}
+@media(min-width:600px){.learning-stats{grid-template-columns:repeat(4,minmax(0,1fr));}}
+
+/* ================= STUDY TOOLKIT STYLES ================= */
+#shx-student-fab{display:none;position:fixed;right:16px;bottom:22px;z-index:9990;border:0;border-radius:999px;padding:13px 17px;background:linear-gradient(135deg,#155eef,#7c3aed);color:#fff;font-weight:800;box-shadow:0 8px 28px #33415555;cursor:pointer;font-size:13px;}
+#shx-student-modal{display:none;position:fixed;inset:0;z-index:9999;background:#0f172acc;backdrop-filter:blur(5px);padding:16px;overflow:auto;align-items:center;justify-content:center;}
+#shx-student-modal.open{display:flex;}
+.shx-panel{width:min(760px,100%);max-height:92vh;overflow:auto;background:var(--card,#fff);color:var(--text,#172033);border:1px solid var(--border,#e2e8f0);border-radius:20px;box-shadow:0 24px 70px #02061755;}
+.shx-panel-head{position:sticky;top:0;z-index:2;display:flex;gap:12px;align-items:center;justify-content:space-between;padding:17px 19px;background:var(--card,#fff);border-bottom:1px solid var(--border,#e2e8f0);}
+.shx-panel-head h2{margin:0;font-size:19px;font-weight:900;}
+.shx-close{border:0;border-radius:10px;padding:8px 12px;cursor:pointer;background:var(--bg,#f1f5f9);color:inherit;font-weight:800;}
+.shx-content{padding:18px;display:grid;gap:14px;}
+.shx-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.shx-card{padding:14px;border:1px solid var(--border,#e2e8f0);border-radius:14px;background:var(--bg,#f8fafc);}
+.shx-card h3{margin:0 0 10px;font-size:14px;font-weight:850;}
+.shx-muted{font-size:12px;line-height:1.5;opacity:.75;}
+.shx-input,.shx-textarea{width:100%;box-sizing:border-box;border:1px solid var(--border,#cbd5e1);border-radius:9px;padding:10px;background:var(--card,#fff);color:inherit;font:inherit;margin:4px 0 8px;}
+.shx-textarea{min-height:85px;resize:vertical;}
+.shx-btn{border:0;border-radius:10px;padding:10px 13px;background:#155eef;color:#fff;font-weight:800;cursor:pointer;}
+.shx-btn.secondary{background:#e2e8f0;color:#172033;}
+.shx-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.shx-progress{height:9px;background:#cbd5e1;border-radius:99px;overflow:hidden;margin:8px 0;}
+.shx-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#10b981,#155eef);transition:width .2s;}
+.shx-stat{font-size:24px;font-weight:900;}
+.shx-check{display:flex;gap:9px;align-items:flex-start;padding:7px 0;}
+.shx-check input{margin-top:4px;accent-color:#155eef;}
+@media(max-width:560px){.shx-grid{grid-template-columns:1fr;}#shx-student-fab{right:12px;bottom:14px;padding:12px 14px;}.shx-content{padding:12px;}}
+
 </style>
 </head>
 <body>
@@ -1143,6 +1182,32 @@ input::placeholder {
       <div class="section-title">📋 Question Review</div>
       <div id="result-review"></div>
     </div>
+  </div>
+</div>
+
+<!-- ======================== MY LEARNING HUB ======================== -->
+<div id="screen-learning" class="screen">
+  <div class="header">
+    <button onclick="openSidebar()" style="background:none;border:none;font-size:22px;color:var(--text);cursor:pointer;"><i class="fa fa-bars"></i></button>
+    <span style="font-weight:800;flex:1;text-align:center;">My Learning</span>
+    <button onclick="loadLearningDashboard()" title="Refresh" style="border:0;background:none;color:var(--primary);font-size:18px;padding:8px;cursor:pointer;"><i class="fa fa-sync"></i></button>
+  </div>
+  <div class="learning-wrap">
+    <div class="learning-hero">
+      <div style="font-size:12px;letter-spacing:1.4px;text-transform:uppercase;opacity:.85;">Your learning journey</div>
+      <h2 style="font-size:25px;font-weight:800;margin:8px 0;">Small steps. Big progress.</h2>
+      <p style="font-size:13px;opacity:.92;line-height:1.6;margin:0;">Review quiz performance, track course requests and return to saved topics from one place.</p>
+    </div>
+    <div class="learning-stats">
+      <div class="learning-stat"><div style="color:var(--sub);font-size:12px;">Quizzes attempted</div><div class="num" id="lh-quiz-count">—</div></div>
+      <div class="learning-stat"><div style="color:var(--sub);font-size:12px;">Average score</div><div class="num" id="lh-average">—</div></div>
+      <div class="learning-stat"><div style="color:var(--sub);font-size:12px;">Approved courses</div><div class="num" id="lh-approved">—</div></div>
+      <div class="learning-stat"><div style="color:var(--sub);font-size:12px;">Saved topics</div><div class="num" id="lh-bookmark-count">—</div></div>
+    </div>
+    <div class="learning-panel"><h3 style="font-weight:800;margin-bottom:6px;">📈 Recent performance</h3><p style="font-size:12px;color:var(--sub);margin-bottom:8px;">Based on quiz attempts saved in the database.</p><div id="lh-performance"><div style="padding:18px;text-align:center;color:var(--sub);">Loading results…</div></div></div>
+    <div class="learning-panel"><h3 style="font-weight:800;margin-bottom:8px;">🔐 Course request status</h3><div id="lh-enrollments"><div style="padding:18px;text-align:center;color:var(--sub);">Loading requests…</div></div></div>
+    <div class="learning-panel"><h3 style="font-weight:800;margin-bottom:8px;">🔖 Saved topics</h3><p style="font-size:12px;color:var(--sub);margin-bottom:8px;">Topics saved on this device for revision.</p><div id="lh-bookmarks"><div style="padding:18px;text-align:center;color:var(--sub);">No saved topics yet.</div></div></div>
+    <div class="learning-panel"><h3 style="font-weight:800;margin-bottom:8px;">💡 Study tip</h3><div id="lh-tip" style="line-height:1.7;color:var(--sub);font-size:14px;">Short, regular practice sessions can help you remember more. Review incorrect answers and try the topic again later.</div></div>
   </div>
 </div>
 
@@ -1465,6 +1530,12 @@ function showScreen(id, pushHistory = true) {
     el.classList.add('fade-in');
   }
 
+  // --- HIDE STUDY TOOLKIT ON AUTH SCREENS, SHOW ONLY WHEN LOGGED IN ---
+  const fab = document.getElementById('shx-student-fab');
+  if (fab) {
+    fab.style.display = (id === 'screen-login' || id === 'screen-signup' || !currentUser) ? 'none' : 'block';
+  }
+
   if (pushHistory && window.history && window.history.pushState) {
     window.history.pushState({ screenId: id }, '', window.location.pathname);
   }
@@ -1564,7 +1635,7 @@ function handleSystematicBack() {
   }
 
   // Secondary screens -> back to Home
-  if (['screen-myresults', 'screen-leaderboard', 'screen-profile', 'screen-static'].includes(activeId)) {
+  if (['screen-myresults', 'screen-leaderboard', 'screen-profile', 'screen-static', 'screen-learning'].includes(activeId)) {
     showScreen('screen-courses');
     return;
   }
@@ -2296,6 +2367,7 @@ async function saveProfile(){
 function buildSidebar(){
   const items=[
     {icon:'fa-home',label:'Home',color:'#6366f1',action:"showScreen('screen-courses');closeSidebar();"},
+{icon:'fa-chart-line',label:'My Learning',color:'#22c55e',action:"loadLearningDashboard();showScreen('screen-learning');closeSidebar();"},
     {icon:'fa-sticky-note',label:'Notes',color:'#f59e0b',action:"loadNotes();showScreen('screen-notes');closeSidebar();"},
     {icon:'fa-book-open',label:'Books',color:'#0284c7',action:"openBooksSection();closeSidebar();"},
     {icon:'fa-chart-bar',label:'My Results',color:'#10b981',action:"loadMyResults();showScreen('screen-myresults');closeSidebar();"},
@@ -4067,6 +4139,347 @@ const savedTheme=localStorage.getItem('theme')||'light';
 currentTheme=savedTheme;
 document.documentElement.setAttribute('data-theme',savedTheme);
 if(savedTheme==='dark')document.addEventListener('DOMContentLoaded',()=>{const b=document.getElementById('theme-btn');if(b)b.innerHTML='<i class="fa fa-sun"></i>';});
+
+// ==================== MY LEARNING HUB LOGIC ====================
+function learningBookmarkKey(){ 
+  return 'shiksharaaloka_bookmarks_' + (currentUser?.uid || 'guest'); 
+}
+function getLearningBookmarks(){ 
+  try { 
+    const val = JSON.parse(localStorage.getItem(learningBookmarkKey()) || '[]'); 
+    return Array.isArray(val) ? val : []; 
+  } catch(e){ return []; } 
+}
+function saveLearningBookmarks(items){ 
+  localStorage.setItem(learningBookmarkKey(), JSON.stringify(items)); 
+}
+function escapeLearningText(value){
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+
+async function loadLearningDashboard(){
+  if (!currentUser) {
+    showToast('Please sign in to view learning stats', 'info');
+    return;
+  }
+
+  const put = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+  put('lh-quiz-count', '…'); put('lh-average', '…'); put('lh-approved', '…'); put('lh-bookmark-count', '…');
+
+  const resultsEl = document.getElementById('lh-performance');
+  const enrollEl = document.getElementById('lh-enrollments');
+  const bookmarksEl = document.getElementById('lh-bookmarks');
+
+  try {
+    const [resultsSnap, enrollSnap] = await Promise.all([
+      db.collection('results').where('userId', '==', currentUser.uid).get(),
+      db.collection('enrollments').where('userId', '==', currentUser.uid).get()
+    ]);
+
+    const results = resultsSnap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => {
+      const ta = a.createdAt?.seconds ? a.createdAt.seconds * 1000 : new Date(a.createdAt || 0).getTime();
+      const tb = b.createdAt?.seconds ? b.createdAt.seconds * 1000 : new Date(b.createdAt || 0).getTime();
+      return tb - ta;
+    });
+
+    const enrollments = enrollSnap.docs.map(d => d.data());
+    const approved = enrollments.filter(e => e.status === 'approved');
+    const avg = results.length ? Math.round(results.reduce((sum, r) => sum + Math.max(0, Math.min(100, Number(r.percentage) || 0)), 0) / results.length) : 0;
+
+    put('lh-quiz-count', String(results.length));
+    put('lh-average', results.length ? avg + '%' : '—');
+    put('lh-approved', String(approved.length));
+
+    if (resultsEl) {
+      resultsEl.innerHTML = results.length ? results.slice(0, 5).map(r => {
+        const pct = Math.max(0, Math.min(100, Number(r.percentage) || 0));
+        const date = r.createdAt?.toDate ? r.createdAt.toDate().toLocaleDateString() : (r.createdAt ? new Date(r.createdAt).toLocaleDateString() : '');
+        return `
+          <div class="learning-row">
+            <div style="width:38px;height:38px;border-radius:12px;background:rgba(16,185,129,.13);color:#10b981;display:grid;place-items:center;flex-shrink:0;">
+              <i class="fa fa-check"></i>
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;">${escapeLearningText(r.topicName || 'Quiz')}</div>
+              <div style="font-size:11px;color:var(--sub);">${date} · ${Number(r.score) || 0}/${Number(r.total) || 0}</div>
+              <div style="height:5px;background:var(--border);border-radius:99px;margin-top:7px;overflow:hidden;">
+                <div style="width:${pct}%;height:100%;background:${pct >= 70 ? '#10b981' : pct >= 40 ? '#f59e0b' : '#ef4444'};"></div>
+              </div>
+            </div>
+            <span class="learning-pill">${pct}%</span>
+          </div>`;
+      }).join('') : '<div style="padding:18px;text-align:center;color:var(--sub);">No quiz attempts recorded yet.</div>';
+    }
+
+    if (enrollEl) {
+      enrollEl.innerHTML = enrollments.length ? enrollments.map(e => {
+        const status = String(e.status || 'pending').toLowerCase();
+        const color = status === 'approved' ? '#10b981' : status === 'rejected' ? '#ef4444' : '#f59e0b';
+        return `
+          <div class="learning-row">
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;">${escapeLearningText(e.courseName || 'Course')}</div>
+              <div style="font-size:11px;color:var(--sub);margin-top:3px;">Status: ${status}</div>
+            </div>
+            <span class="learning-pill" style="color:${color};background:${color}18;">${status.toUpperCase()}</span>
+          </div>`;
+      }).join('') : '<div style="padding:18px;text-align:center;color:var(--sub);">No course requests found.</div>';
+    }
+  } catch (err) {
+    if (resultsEl) resultsEl.innerHTML = '<div style="padding:14px;color:var(--sub);">Could not load learning stats.</div>';
+    console.warn('Dashboard error:', err);
+  }
+
+  const bookmarks = getLearningBookmarks();
+  put('lh-bookmark-count', String(bookmarks.length));
+  if (bookmarksEl) {
+    bookmarksEl.innerHTML = bookmarks.length ? bookmarks.map((b, i) => `
+      <div class="learning-row">
+        <div style="width:38px;height:38px;border-radius:12px;background:rgba(99,102,241,.12);color:var(--primary);display:grid;place-items:center;flex-shrink:0;">
+          <i class="fa fa-bookmark"></i>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:700;">${escapeLearningText(b.topicName || 'Saved topic')}</div>
+          <div style="font-size:11px;color:var(--sub);">${escapeLearningText(b.courseName || 'Course')}</div>
+        </div>
+        <button class="bookmark-btn" onclick="removeLearningBookmark('${String(b.topicId).replace(/'/g, "\\'")}')"><i class="fa fa-trash"></i></button>
+      </div>`).join('') : '<div style="padding:18px;text-align:center;color:var(--sub);">No saved topics yet.</div>';
+  }
+  
+  // --- LOAD LIVE STYLES & TEXT FROM ADMIN PANEL WITH !IMPORTANT PRIORITY ---
+  try {
+    const configSnap = await db.collection('settings').doc('learning').get();
+    if (configSnap.exists) {
+      const cfg = configSnap.data();
+
+      // 1. Apply Hero Box Background
+      const heroEl = document.querySelector('.learning-hero');
+      if (heroEl) {
+        if (cfg.heroBg) {
+          heroEl.style.setProperty('background', cfg.heroBg, 'important');
+        }
+
+        const makeCss = (color, align, style) => {
+          let s = '';
+          if (color) s += `color: ${color} !important;`;
+          if (align) s += `text-align: ${align} !important;`;
+          if (style === 'bold') s += `font-weight: 800 !important; font-style: normal !important;`;
+          else if (style === 'italic') s += `font-style: italic !important; font-weight: normal !important;`;
+          else if (style === 'bold-italic') s += `font-weight: 800 !important; font-style: italic !important;`;
+          return s;
+        };
+
+        const tagCss = makeCss(cfg.taglineColor || '#ffffff', cfg.taglineAlign || 'left', cfg.taglineStyle || 'bold');
+        const titCss = makeCss(cfg.titleColor || '#ffffff', cfg.titleAlign || 'left', cfg.titleStyle || 'bold');
+        const desCss = makeCss(cfg.descColor || 'rgba(255,255,255,0.92)', cfg.descAlign || 'left', cfg.descStyle || 'normal');
+
+        heroEl.innerHTML = `
+          <div style="font-size:12px; letter-spacing:1.4px; text-transform:uppercase; margin-bottom:6px; ${tagCss}">
+            ${cfg.tagline || 'YOUR LEARNING JOURNEY'}
+          </div>
+          <h2 style="font-size:25px; margin:8px 0; line-height:1.3; ${titCss}">
+            ${cfg.title || 'Small steps. Big progress.'}
+          </h2>
+          <p style="font-size:13px; line-height:1.6; margin:0; ${desCss}">
+            ${cfg.desc || ''}
+          </p>
+        `;
+      }
+
+      // 2. Apply Daily Tip & Container Box Styling
+      const tipEl = document.getElementById('lh-tip');
+      if (tipEl) {
+        if (cfg.tip) tipEl.textContent = cfg.tip;
+        if (cfg.tipColor) tipEl.style.setProperty('color', cfg.tipColor, 'important');
+        if (cfg.tipAlign) tipEl.style.setProperty('text-align', cfg.tipAlign, 'important');
+        if (cfg.tipStyle === 'bold') { tipEl.style.fontWeight = '700'; tipEl.style.fontStyle = 'normal'; }
+        else if (cfg.tipStyle === 'italic') { tipEl.style.fontStyle = 'italic'; }
+        else if (cfg.tipStyle === 'bold-italic') { tipEl.style.fontWeight = '700'; tipEl.style.fontStyle = 'italic'; }
+
+        // Style the outer card container
+        const tipContainer = tipEl.closest('.learning-panel');
+        if (tipContainer) {
+          if (cfg.tipBg) tipContainer.style.setProperty('background', cfg.tipBg, 'important');
+          if (cfg.tipBorder) tipContainer.style.setProperty('border-color', cfg.tipBorder, 'important');
+        }
+      }
+    }
+  } catch(e) {
+    console.warn("Could not load custom learning hub settings:", e);
+  }
+}
+
+function removeLearningBookmark(topicId){
+  saveLearningBookmarks(getLearningBookmarks().filter(b => b.topicId !== topicId));
+  showToast('Saved topic removed.', 'info');
+  loadLearningDashboard();
+}
+
+// ==================== STUDY TOOLKIT LOGIC ====================
+(function initStudyToolkit(){
+  const $ = id => document.getElementById(id);
+  let shxInterval = null, shxRemaining = 1500;
+
+  function userKey(){
+    try { return (currentUser && currentUser.uid) ? currentUser.uid : 'user_local'; }
+    catch(e){ return 'user_local'; }
+  }
+  function key(){ return 'shiksharaaloka.studytoolkit.v1.' + userKey(); }
+  function read(){ try { return JSON.parse(localStorage.getItem(key()) || '{}'); } catch(e){ return {}; } }
+  function write(d){
+    try { localStorage.setItem(key(), JSON.stringify(d)); return true; }
+    catch(e){ alert('Could not save on this device. Please check browser storage.'); return false; }
+  }
+  function today(){ return new Date().toISOString().slice(0, 10); }
+
+  window.shxStudentOpen = () => { $('shx-student-modal').classList.add('open'); shxRender(); };
+  window.shxStudentClose = () => { $('shx-student-modal').classList.remove('open'); };
+
+  function shxRender(){
+    let d = read(), goals = Array.isArray(d.goals) ? d.goals : [];
+    while (goals.length < 3) goals.push({ text: '', done: false });
+    $('shx-goals').innerHTML = goals.slice(0, 3).map((g, i) => `
+      <label class="shx-check">
+        <input type="checkbox" ${g.done ? 'checked' : ''} onchange="shxToggleGoal(${i},this.checked)">
+        <input class="shx-input" aria-label="Study goal ${i + 1}" value="${esc(g.text || '')}" placeholder="Goal ${i + 1}" oninput="shxEditGoal(${i},this.value)" style="margin:0">
+      </label>
+    `).join('');
+    let done = goals.slice(0, 3).filter(g => g.done).length;
+    $('shx-goal-progress').style.width = (done / 3 * 100) + '%';
+    $('shx-goal-summary').textContent = `${done} of 3 goals complete`;
+    $('shx-revision').value = d.revision || '';
+    let days = Array.isArray(d.studyDays) ? d.studyDays : [];
+    $('shx-study-days').textContent = days.length + ' day' + (days.length === 1 ? '' : 's');
+    $('shx-study-message').textContent = days.includes(today()) ? 'Great work — today is recorded.' : 'Small, regular study sessions add up.';
+  }
+
+  function esc(s){ return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
+  window.shxEditGoal = (i, v) => {
+    let d = read();
+    d.goals = Array.isArray(d.goals) ? d.goals : [];
+    while (d.goals.length < 3) d.goals.push({ text: '', done: false });
+    d.goals[i].text = v;
+    write(d);
+  };
+  window.shxToggleGoal = (i, v) => {
+    let d = read();
+    d.goals = Array.isArray(d.goals) ? d.goals : [];
+    while (d.goals.length < 3) d.goals.push({ text: '', done: false });
+    d.goals[i].done = v;
+    write(d);
+    shxRender();
+  };
+  window.shxSaveGoals = () => {
+    let d = read();
+    d.goals = [...document.querySelectorAll('#shx-goals .shx-check')].map(el => ({
+      text: el.querySelector('.shx-input').value.trim(),
+      done: el.querySelector('input[type=checkbox]').checked
+    }));
+    write(d);
+    shxRender();
+    showToast('Study goals saved on this device.', 'success');
+  };
+  window.shxSavePlanner = () => {
+    let d = read();
+    d.revision = $('shx-revision').value;
+    write(d);
+    showToast('Revision list saved on this device.', 'success');
+  };
+  window.shxRecordStudy = () => {
+    let d = read();
+    d.studyDays = Array.isArray(d.studyDays) ? d.studyDays : [];
+    if (!d.studyDays.includes(today())) d.studyDays.push(today());
+    write(d);
+    shxRender();
+  };
+  window.shxExportPlanner = () => {
+    let blob = new Blob([JSON.stringify({ ...read(), exportedAt: new Date().toISOString() }, null, 2)], { type: 'application/json' });
+    let url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url;
+    a.download = 'shiksharaaloka-study-plan.json';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+  window.shxToggleTimer = () => {
+    if (shxInterval) {
+      clearInterval(shxInterval);
+      shxInterval = null;
+      $('shx-timer-toggle').textContent = 'Resume';
+      return;
+    }
+    $('shx-timer-toggle').textContent = 'Pause';
+    shxInterval = setInterval(() => {
+      shxRemaining--;
+      if (shxRemaining <= 0) {
+        shxRemaining = 0;
+        clearInterval(shxInterval);
+        shxInterval = null;
+        $('shx-timer-toggle').textContent = 'Start';
+        alert('Focus session complete. Take a short break!');
+      }
+      let m = Math.floor(shxRemaining / 60), s = shxRemaining % 60;
+      $('shx-timer').textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    }, 1000);
+  };
+  window.shxResetTimer = () => {
+    if (shxInterval) clearInterval(shxInterval);
+    shxInterval = null;
+    shxRemaining = 1500;
+    $('shx-timer').textContent = '25:00';
+    $('shx-timer-toggle').textContent = 'Start';
+  };
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') window.shxStudentClose(); });
+})();
 </script>
+<!-- STUDY TOOL KIT FAB & MODAL -->
+<button id="shx-student-fab" type="button" onclick="shxStudentOpen()" aria-label="Open study toolkit">✦ Study Toolkit</button>
+<div id="shx-student-modal" role="dialog" aria-modal="true" aria-labelledby="shx-student-title" onclick="if(event.target===this)shxStudentClose()">
+  <section class="shx-panel">
+    <header class="shx-panel-head">
+      <div>
+        <h2 id="shx-student-title">📘 My Study Toolkit</h2>
+        <div class="shx-muted">Personal planner • saved on this device</div>
+      </div>
+      <button class="shx-close" type="button" onclick="shxStudentClose()">Close ✕</button>
+    </header>
+    <div class="shx-content">
+      <div class="shx-grid">
+        <div class="shx-card">
+          <h3>🎯 Today's study goals</h3>
+          <div id="shx-goals"></div>
+          <div class="shx-progress"><span id="shx-goal-progress"></span></div>
+          <div class="shx-muted" id="shx-goal-summary">0 of 3 goals complete</div>
+          <button class="shx-btn secondary" type="button" onclick="shxSaveGoals()">Save goals</button>
+        </div>
+        <div class="shx-card">
+          <h3>⏱️ Focus timer</h3>
+          <div class="shx-stat" id="shx-timer">25:00</div>
+          <div class="shx-muted">Try a short, focused study session, then take a break.</div>
+          <div class="shx-row" style="margin-top:12px">
+            <button class="shx-btn" id="shx-timer-toggle" type="button" onclick="shxToggleTimer()">Start</button>
+            <button class="shx-btn secondary" type="button" onclick="shxResetTimer()">Reset</button>
+          </div>
+        </div>
+        <div class="shx-card">
+          <h3>🧠 Topics to revise</h3>
+          <label class="shx-muted" for="shx-revision">Write topics or concepts you want to revisit</label>
+          <textarea class="shx-textarea" id="shx-revision" placeholder="e.g. Algebraic identities, Photosynthesis..."></textarea>
+          <button class="shx-btn secondary" type="button" onclick="shxSavePlanner()">Save revision list</button>
+        </div>
+        <div class="shx-card">
+          <h3>📈 Study consistency</h3>
+          <div class="shx-stat" id="shx-study-days">0 days</div>
+          <div class="shx-muted" id="shx-study-message">Record a study session to start building your history.</div>
+          <div class="shx-row" style="margin-top:12px">
+            <button class="shx-btn" type="button" onclick="shxRecordStudy()">I studied today ✓</button>
+            <button class="shx-btn secondary" type="button" onclick="shxExportPlanner()">Export my plan</button>
+          </div>
+        </div>
+      </div>
+      <div class="shx-muted">Privacy note: planner goals, revision notes, and study log are stored in this browser's local storage on this device.</div>
+    </div>
+  </section>
+</div>
 </body>
 </html>
