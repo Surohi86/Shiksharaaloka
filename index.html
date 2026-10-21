@@ -1437,7 +1437,7 @@ input::placeholder {
 
     <div style="display:flex; flex-direction:column; gap:10px;">
       <!-- 1. Stay on Home -->
-      <button type="button" class="btn btn-primary" onclick="closeModal('app-exit-choice-modal'); showScreen('screen-courses');" 
+      <button type="button" class="btn btn-primary" onclick="closeModal('app-exit-choice-modal');" 
               style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px; padding:13px; font-weight:700; border-radius:12px; font-size:14.5px;">
         <i class="fa fa-home"></i> Stay & Continue Learning
       </button>
@@ -1522,7 +1522,15 @@ function formatQuizText(str) {
 }
 
 // ===== SYSTEMATIC STEP-BY-STEP BACK NAVIGATION ENGINE =====
-function showScreen(id, pushHistory = true) {
+let isHistoryGuardLocked = false;
+
+function armHistoryGuard() {
+  if (window.history && window.history.pushState) {
+    window.history.pushState({ app: 'shiksharaaloka_guard', t: Date.now() }, '', window.location.pathname);
+  }
+}
+
+function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const el = document.getElementById(id);
   if (el) {
@@ -1530,17 +1538,16 @@ function showScreen(id, pushHistory = true) {
     el.classList.add('fade-in');
   }
 
-  // --- HIDE STUDY TOOLKIT ON AUTH SCREENS, SHOW ONLY WHEN LOGGED IN ---
+  // Hide study toolkit on auth screens, show only when logged in
   const fab = document.getElementById('shx-student-fab');
   if (fab) {
     fab.style.display = (id === 'screen-login' || id === 'screen-signup' || !currentUser) ? 'none' : 'block';
   }
 
-  if (pushHistory && window.history && window.history.pushState) {
-    window.history.pushState({ screenId: id }, '', window.location.pathname);
-  }
+  // Scroll to top of screen
+  window.scrollTo(0, 0);
 
-  // --- HERO BANNER LIFECYCLE RECOVERY ---
+  // Hero Banner Lifecycle Recovery
   if (id === 'screen-courses') {
     setTimeout(() => {
       if (typeof refreshHeroBanner === 'function') {
@@ -1548,7 +1555,6 @@ function showScreen(id, pushHistory = true) {
       }
     }, 50);
   } else {
-    // Pause timer and media when leaving the home screen
     if (bannerTimer) {
       clearTimeout(bannerTimer);
       bannerTimer = null;
@@ -1562,29 +1568,44 @@ function showScreen(id, pushHistory = true) {
 }
 
 // Master Step-by-Step Back Controller
-function handleSystematicBack() {
+function handleSystematicBack(isHardwareBack = false) {
   // 1. If Sidebar is open -> close it first
   const sidebar = document.getElementById('sidebar');
   if (sidebar && sidebar.classList.contains('open')) {
     closeSidebar();
+    if (isHardwareBack) armHistoryGuard();
     return;
   }
 
-  // 2. If the Exit/Logout Choice Modal is open -> close it
+  // 2. If Study Toolkit modal is open -> close it
+  const studyModal = document.getElementById('shx-student-modal');
+  if (studyModal && studyModal.classList.contains('open')) {
+    if (typeof window.shxStudentClose === 'function') {
+      window.shxStudentClose();
+    } else {
+      studyModal.classList.remove('open');
+    }
+    if (isHardwareBack) armHistoryGuard();
+    return;
+  }
+
+  // 3. If Exit/Logout Choice Modal is open -> close it
   const exitChoiceModal = document.getElementById('app-exit-choice-modal');
   if (exitChoiceModal && exitChoiceModal.classList.contains('active')) {
     closeModal('app-exit-choice-modal');
+    if (isHardwareBack) armHistoryGuard();
     return;
   }
 
-  // 3. If any other modal is open -> close it
+  // 4. If any other modal is open (Notifications, Review, Payment, Quiz Exit) -> close it
   const activeModals = document.querySelectorAll('.modal.active');
   if (activeModals.length > 0) {
     activeModals.forEach(m => m.classList.remove('active'));
+    if (isHardwareBack) armHistoryGuard();
     return;
   }
 
-  // 4. Identify the active screen
+  // 5. Identify the active screen
   const activeScreen = document.querySelector('.screen.active');
   const activeId = activeScreen ? activeScreen.id : '';
 
@@ -1595,72 +1616,82 @@ function handleSystematicBack() {
   }
   if (activeId === 'screen-signup') {
     showScreen('screen-login');
+    if (isHardwareBack) armHistoryGuard();
     return;
   }
 
   // Books hierarchy (Reader -> Chapters -> Titles -> Classes -> Home)
   if (activeId === 'screen-book-viewer' || activeId === 'screen-books') {
     handleBookBack();
+    if (isHardwareBack) armHistoryGuard();
     return;
   }
 
   // Notes hierarchy (Detail -> Items -> Subjects -> Courses -> Home)
   if (activeId === 'screen-note-detail' || activeId === 'screen-notes') {
     handleNoteBack();
+    if (isHardwareBack) armHistoryGuard();
     return;
   }
 
   // In Quiz -> Confirm exit
   if (activeId === 'screen-quiz') {
     confirmExit();
+    if (isHardwareBack) armHistoryGuard();
     return;
   }
 
   // Results screen -> back to Home
   if (activeId === 'screen-results') {
     showScreen('screen-courses');
+    if (isHardwareBack) armHistoryGuard();
     return;
   }
 
   // Topic screen -> back to Subjects
   if (activeId === 'screen-topics') {
     showScreen('screen-subjects');
+    if (isHardwareBack) armHistoryGuard();
     return;
   }
 
   // Subject screen -> back to Home (All Courses)
   if (activeId === 'screen-subjects') {
     showScreen('screen-courses');
+    if (isHardwareBack) armHistoryGuard();
     return;
   }
 
   // Secondary screens -> back to Home
   if (['screen-myresults', 'screen-leaderboard', 'screen-profile', 'screen-static', 'screen-learning'].includes(activeId)) {
     showScreen('screen-courses');
+    if (isHardwareBack) armHistoryGuard();
     return;
   }
 
-  // >>> AT HOME (screen-courses): SHOW EXIT / LOGOUT / HOME CHOICE MODAL <<<
+  // >>> AT HOME (screen-courses): SHOW EXIT / LOGOUT CHOICE MODAL <<<
   if (activeId === 'screen-courses') {
     openModal('app-exit-choice-modal');
+    if (isHardwareBack) armHistoryGuard();
     return;
   }
 
   // Safety fallback
   showScreen('screen-courses');
+  if (isHardwareBack) armHistoryGuard();
 }
 
-// Intercept Mobile Phone Hardware / Gesture Back Button safely
+// Intercept Mobile Phone Hardware / Gesture Back Button
 window.addEventListener('popstate', function (event) {
-  handleSystematicBack();
+  handleSystematicBack(true);
 });
 
-// Unify all on-screen Back buttons with the master handler
+// All on-screen Back buttons call this
 function goBack(fallback) {
-  handleSystematicBack();
+  handleSystematicBack(false);
 }
 
-// Exit Entire Application (HopWeb / WebView / Play Store wrapper compatible)
+// Exit Entire Application
 function exitEntireApp() {
   if (navigator.app && typeof navigator.app.exitApp === 'function') {
     navigator.app.exitApp();
@@ -1785,11 +1816,7 @@ auth.onAuthStateChanged(async user=>{
     loadCourses();
     loadNotifications();
     showScreen('screen-courses');
-
-    // Armed history trap for smooth back-button navigation
-    if (window.history && window.history.pushState) {
-      window.history.pushState({ app: 'shiksharaaloka' }, '', window.location.pathname);
-    }
+    armHistoryGuard();
   } else {
     currentUser=null;
     currentUserRole='user';
@@ -2764,7 +2791,7 @@ async function handleTopicClick(topicId,topicName,isPaid){
 
   // Preserve numerical question order if saved with an index/order
   if (quizQuestions.some(q => q.order !== undefined)) {
-    quizQuestions.sort((a, b) => (a.order || 0) - (b.order || 0));
+    quizQuestions.sort((a, b) => (a.order ?? 999999) - (b.order ?? 999999));
   }
 
   const firstQ = quizQuestions[0];
@@ -3142,85 +3169,103 @@ function formatNoteContent(str) {
 
 // Universal back navigation handler for both on-screen back buttons and gestures
 function onScreenNoteBack() {
-  if (window.history.state && window.history.state.noteLevel && window.history.state.noteLevel > 1) {
-    window.history.back();
-  } else {
-    handleNoteBack();
-  }
+  handleNoteBack();
 }
 
-// Deterministic step-back state machine
 function handleNoteBack() {
   if (noteNavLevel === 4) {
-    // Level 4 (Note Detail) -> Level 3 (Notes List)
+    // Note Detail -> Notes List
     noteNavLevel = 3;
-    showScreen('screen-notes', false);
+    showScreen('screen-notes');
     renderSubjectNotesListView(selectedNoteSubject);
     return;
   }
   
   if (noteNavLevel === 3) {
-    // Level 3 (Notes List) -> Level 2 (Subjects of that Course)
+    // Notes List -> Subjects under Course
     noteNavLevel = 2;
     renderNoteSubjectsView(selectedNoteCourse);
     return;
   }
   
   if (noteNavLevel === 2) {
-    // Level 2 (Subjects) -> Level 1 (Courses)
+    // Subjects -> Courses List
     noteNavLevel = 1;
     renderNoteCoursesView();
     return;
   }
   
-  // Level 1 (Courses) -> Home Screen
+  // Courses List -> Home
   noteNavLevel = 1;
-  showScreen('screen-courses', false);
+  showScreen('screen-courses');
 }
 
-// Main entry point when user taps "Notes" in the sidebar
 async function loadNotes() {
   if (!currentUser) return;
-  showScreen('screen-notes', true);
+  showScreen('screen-notes');
   noteNavLevel = 1;
-  
-  if (window.history) {
-    window.history.replaceState({ screenId: 'screen-notes', noteLevel: 1 }, '', window.location.pathname);
-  }
 
   const container = document.getElementById('notes-courses-list');
-  container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--sub);"><i class="fa fa-spinner fa-spin" style="font-size:24px;"></i></div>';
+  if (!container) return;
+  container.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--sub);"><i class="fa fa-spinner fa-spin" style="font-size:28px;color:var(--primary);"></i><div style="font-size:13px;margin-top:10px;font-weight:600;">Loading notes...</div></div>';
 
-  let snap;
   try {
-    snap = await db.collection('notes').orderBy('createdAt', 'desc').get();
-  } catch(e) {
-    snap = await db.collection('notes').get();
+    let snap;
+    try {
+      snap = await db.collection('notes').get();
+    } catch(err) {
+      console.warn("Retrying notes fetch...", err);
+      snap = await db.collection('notes').get({ source: 'server' });
+    }
+
+    allNotesData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    // Safely sort in memory without crashing if createdAt is missing
+    allNotesData.sort((a, b) => {
+      const getMs = (item) => {
+        if (!item || !item.createdAt) return 0;
+        if (typeof item.createdAt.toMillis === 'function') return item.createdAt.toMillis();
+        if (typeof item.createdAt.toDate === 'function') return item.createdAt.toDate().getTime();
+        if (item.createdAt.seconds) return item.createdAt.seconds * 1000;
+        const parsed = new Date(item.createdAt).getTime();
+        return isNaN(parsed) ? 0 : parsed;
+      };
+      return getMs(b) - getMs(a);
+    });
+
+    window._userNotesCache = {};
+    allNotesData.forEach(n => { window._userNotesCache[n.id] = n; });
+
+    renderNoteCoursesView();
+  } catch (err) {
+    console.error("Error loading notes:", err);
+    container.innerHTML = `
+      <div style="text-align:center;padding:50px 20px;color:var(--sub);">
+        <i class="fa fa-exclamation-circle" style="font-size:36px;color:#ef4444;margin-bottom:12px;display:block;"></i>
+        <div style="font-weight:700;font-size:15px;color:var(--text);margin-bottom:4px;">Unable to load notes</div>
+        <div style="font-size:12px;margin-bottom:14px;">${err.message || 'Please check your internet connection'}</div>
+        <button type="button" class="btn btn-primary btn-sm" onclick="loadNotes()">Retry</button>
+      </div>
+    `;
   }
-
-  allNotesData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-
-  allNotesData.sort((a, b) => {
-    const tA = a.createdAt?.seconds || (a.createdAt?.toDate ? a.createdAt.toDate().getTime() / 1000 : 0) || 0;
-    const tB = b.createdAt?.seconds || (b.createdAt?.toDate ? b.createdAt.toDate().getTime() / 1000 : 0) || 0;
-    return tB - tA;
-  });
-
-  window._userNotesCache = {};
-  allNotesData.forEach(n => { window._userNotesCache[n.id] = n; });
-
-  renderNoteCoursesView();
 }
 
 // Level 1: Render All Courses that have notes
 function renderNoteCoursesView() {
-  document.getElementById('notes-main-title').textContent = 'Course Notes';
-  document.getElementById('notes-courses-view').style.display = 'block';
-  document.getElementById('notes-subjects-view').style.display = 'none';
-  document.getElementById('notes-items-view').style.display = 'none';
+  const mainTitle = document.getElementById('notes-main-title');
+  if (mainTitle) mainTitle.textContent = 'Course Notes';
+
+  const coursesView = document.getElementById('notes-courses-view');
+  const subjectsView = document.getElementById('notes-subjects-view');
+  const itemsView = document.getElementById('notes-items-view');
+  if (coursesView) coursesView.style.display = 'block';
+  if (subjectsView) subjectsView.style.display = 'none';
+  if (itemsView) itemsView.style.display = 'none';
 
   const container = document.getElementById('notes-courses-list');
-  if (!allNotesData.length) {
+  if (!container) return;
+
+  if (!allNotesData || !allNotesData.length) {
     container.innerHTML = '<div style="text-align:center;color:var(--sub);padding:60px 20px;"><i class="fa fa-sticky-note" style="font-size:48px;margin-bottom:16px;display:block;opacity:.4;"></i>No notes available yet.</div>';
     return;
   }
@@ -3270,17 +3315,19 @@ function renderNoteCoursesView() {
 function openCourseNoteSubjects(courseName) {
   selectedNoteCourse = courseName;
   noteNavLevel = 2;
-  if (window.history) {
-    window.history.pushState({ screenId: 'screen-notes', noteLevel: 2 }, '', window.location.pathname);
-  }
   renderNoteSubjectsView(courseName);
 }
 
 function renderNoteSubjectsView(courseName) {
-  document.getElementById('notes-main-title').textContent = courseName;
-  document.getElementById('notes-courses-view').style.display = 'none';
-  document.getElementById('notes-subjects-view').style.display = 'block';
-  document.getElementById('notes-items-view').style.display = 'none';
+  const mainTitle = document.getElementById('notes-main-title');
+  if (mainTitle) mainTitle.textContent = courseName;
+
+  const coursesView = document.getElementById('notes-courses-view');
+  const subjectsView = document.getElementById('notes-subjects-view');
+  const itemsView = document.getElementById('notes-items-view');
+  if (coursesView) coursesView.style.display = 'none';
+  if (subjectsView) subjectsView.style.display = 'block';
+  if (itemsView) itemsView.style.display = 'none';
 
   const courseNotes = allNotesData.filter(n => {
     const c = (n.course && n.course.trim()) ? n.course.trim() : 'General / Other Courses';
@@ -3297,6 +3344,7 @@ function renderNoteSubjectsView(courseName) {
 
   const subjectsList = Object.keys(subjectMap);
   const container = document.getElementById('notes-subjects-list');
+  if (!container) return;
 
   container.innerHTML = subjectsList.map((subjName, i) => {
     const color = NOTE_COLORS[(i + 2) % NOTE_COLORS.length];
@@ -3329,17 +3377,19 @@ function renderNoteSubjectsView(courseName) {
 function openSubjectNotesList(subjName) {
   selectedNoteSubject = subjName;
   noteNavLevel = 3;
-  if (window.history) {
-    window.history.pushState({ screenId: 'screen-notes', noteLevel: 3 }, '', window.location.pathname);
-  }
   renderSubjectNotesListView(subjName);
 }
 
 function renderSubjectNotesListView(subjName) {
-  document.getElementById('notes-main-title').textContent = subjName;
-  document.getElementById('notes-courses-view').style.display = 'none';
-  document.getElementById('notes-subjects-view').style.display = 'none';
-  document.getElementById('notes-items-view').style.display = 'block';
+  const mainTitle = document.getElementById('notes-main-title');
+  if (mainTitle) mainTitle.textContent = subjName;
+
+  const coursesView = document.getElementById('notes-courses-view');
+  const subjectsView = document.getElementById('notes-subjects-view');
+  const itemsView = document.getElementById('notes-items-view');
+  if (coursesView) coursesView.style.display = 'none';
+  if (subjectsView) subjectsView.style.display = 'none';
+  if (itemsView) itemsView.style.display = 'block';
 
   const notes = allNotesData.filter(n => {
     const c = (n.course && n.course.trim()) ? n.course.trim() : 'General / Other Courses';
@@ -3348,6 +3398,7 @@ function renderSubjectNotesListView(subjName) {
   });
 
   const container = document.getElementById('notes-items-list');
+  if (!container) return;
 
   container.innerHTML = notes.map((n, i) => {
     const color = NOTE_COLORS[(i + 4) % NOTE_COLORS.length];
@@ -3375,7 +3426,7 @@ function renderSubjectNotesListView(subjName) {
   }).join('');
 }
 
-// Level 4: Open Note Detail
+// Level 4: Open Note Detail helper
 function openNoteDetailById(id) {
   const note = window._userNotesCache[id];
   if (!note) return;
@@ -3384,11 +3435,7 @@ function openNoteDetailById(id) {
 
 function openNoteDetail(note) {
   noteNavLevel = 4;
-  showScreen('screen-note-detail', true);
-
-  if (window.history) {
-    window.history.pushState({ screenId: 'screen-note-detail', noteLevel: 4 }, '', window.location.pathname);
-  }
+  showScreen('screen-note-detail');
 
   document.getElementById('note-detail-title').textContent = note.title || 'Note';
   const body = document.getElementById('note-detail-body');
@@ -3862,84 +3909,118 @@ function normalizeDriveDownloadUrl(url) {
 
 // Universal back handler used by BOTH on-screen buttons and phone back button
 function onScreenBookBack() {
-  if (window.history.state && window.history.state.bookLevel && window.history.state.bookLevel > 1) {
-    window.history.back(); // Pops browser history which automatically calls handleBookBack()
-  } else {
-    handleBookBack();
-  }
+  handleBookBack();
 }
 
-// Deterministic step-back state machine
 function handleBookBack() {
   if (bookNavLevel === 4) {
-    // Level 4 (Viewer) -> Level 3 (Chapters List)
+    // Reader -> Chapters List
     bookNavLevel = 3;
-    showScreen('screen-books', false);
+    showScreen('screen-books');
     renderBookChaptersView(selectedBookTitle);
     return;
   }
   
   if (bookNavLevel === 3) {
-    // Level 3 (Chapters List) -> Level 2 (Books of that class)
+    // Chapters List -> Books of class
     bookNavLevel = 2;
     renderBookTitlesView(selectedBookClass);
     return;
   }
   
   if (bookNavLevel === 2) {
-    // Level 2 (Books of that class) -> Level 1 (Classes List)
+    // Books -> Classes List
     bookNavLevel = 1;
     renderBookClassesView();
     return;
   }
   
-  // Level 1 (Classes List) -> Home Screen
+  // Classes List -> Home
   bookNavLevel = 1;
-  showScreen('screen-courses', false);
+  showScreen('screen-courses');
 }
 
 // Level 1: Open Classes
 async function openBooksSection() {
-  showScreen('screen-books', true);
+  showScreen('screen-books');
   bookNavLevel = 1;
-  
-  if (window.history) {
-    window.history.replaceState({ screenId: 'screen-books', bookLevel: 1 }, '', window.location.pathname);
+
+  const container = document.getElementById('books-classes-list');
+  if (container && (!allBooksData || !allBooksData.length)) {
+    container.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--sub);"><i class="fa fa-spinner fa-spin" style="font-size:28px;color:var(--primary);"></i><div style="font-size:13px;margin-top:10px;font-weight:600;">Loading books...</div></div>';
   }
 
-  // Load from database only on first open; keep in memory afterwards
-  if (!allBooksData || !allBooksData.length) {
-    const container = document.getElementById('books-classes-list');
-    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--sub);"><i class="fa fa-spinner fa-spin" style="font-size:24px;"></i></div>';
-    const snap = await db.collection('books').orderBy('createdAt', 'desc').get();
-    allBooksData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  }
+  try {
+    if (!allBooksData || !allBooksData.length) {
+      let snap;
+      try {
+        snap = await db.collection('books').get();
+      } catch (err) {
+        console.warn("Retrying books fetch...", err);
+        snap = await db.collection('books').get({ source: 'server' });
+      }
 
-  renderBookClassesView();
+      allBooksData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      // Safely sort in memory without crashing if createdAt is missing
+      allBooksData.sort((a, b) => {
+        const getMs = (item) => {
+          if (!item || !item.createdAt) return 0;
+          if (typeof item.createdAt.toMillis === 'function') return item.createdAt.toMillis();
+          if (typeof item.createdAt.toDate === 'function') return item.createdAt.toDate().getTime();
+          if (item.createdAt.seconds) return item.createdAt.seconds * 1000;
+          const parsed = new Date(item.createdAt).getTime();
+          return isNaN(parsed) ? 0 : parsed;
+        };
+        return getMs(b) - getMs(a);
+      });
+    }
+
+    renderBookClassesView();
+  } catch (err) {
+    console.error("Error loading books:", err);
+    if (container) {
+      container.innerHTML = `
+        <div style="text-align:center;padding:50px 20px;color:var(--sub);">
+          <i class="fa fa-exclamation-circle" style="font-size:36px;color:#ef4444;margin-bottom:12px;display:block;"></i>
+          <div style="font-weight:700;font-size:15px;color:var(--text);margin-bottom:4px;">Unable to load books</div>
+          <div style="font-size:12px;margin-bottom:14px;">${err.message || 'Please check your internet connection'}</div>
+          <button type="button" class="btn btn-primary btn-sm" onclick="allBooksData=[]; openBooksSection();">Retry</button>
+        </div>
+      `;
+    }
+  }
 }
 
 function renderBookClassesView() {
-  document.getElementById('books-main-title').textContent = 'Books';
-  document.getElementById('books-classes-view').style.display = 'block';
-  document.getElementById('books-titles-view').style.display = 'none';
-  document.getElementById('books-chapters-view').style.display = 'none';
+  const mainTitle = document.getElementById('books-main-title');
+  if (mainTitle) mainTitle.textContent = 'Books';
+
+  const classesView = document.getElementById('books-classes-view');
+  const titlesView = document.getElementById('books-titles-view');
+  const chaptersView = document.getElementById('books-chapters-view');
+  if (classesView) classesView.style.display = 'block';
+  if (titlesView) titlesView.style.display = 'none';
+  if (chaptersView) chaptersView.style.display = 'none';
 
   const container = document.getElementById('books-classes-list');
-  if (!allBooksData.length) {
-    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--sub);">No books available yet.</div>';
+  if (!container) return;
+
+  if (!allBooksData || !allBooksData.length) {
+    container.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--sub);"><i class="fa fa-book-open" style="font-size:48px;margin-bottom:16px;display:block;opacity:.4;"></i>No books available yet.</div>';
     return;
   }
 
   const classMap = {};
   allBooksData.forEach(b => {
-    const cls = b.className && b.className.trim() ? b.className.trim() : 'General / Other';
+    const cls = b.className && String(b.className).trim() ? String(b.className).trim() : 'General / Other';
     if (!classMap[cls]) classMap[cls] = [];
     classMap[cls].push(b);
   });
 
   const sortedClasses = Object.keys(classMap).sort((a, b) => {
-    const numA = parseInt(a.replace(/\D/g, '')) || 999;
-    const numB = parseInt(b.replace(/\D/g, '')) || 999;
+    const numA = parseInt(String(a).replace(/\D/g, '')) || 999;
+    const numB = parseInt(String(b).replace(/\D/g, '')) || 999;
     return numA - numB;
   });
 
@@ -3971,19 +4052,21 @@ function renderBookClassesView() {
 function openClassBooks(className) {
   selectedBookClass = className;
   bookNavLevel = 2;
-  if (window.history) {
-    window.history.pushState({ screenId: 'screen-books', bookLevel: 2 }, '', window.location.pathname);
-  }
   renderBookTitlesView(className);
 }
 
 function renderBookTitlesView(className) {
-  document.getElementById('books-main-title').textContent = className;
-  document.getElementById('books-classes-view').style.display = 'none';
-  document.getElementById('books-titles-view').style.display = 'block';
-  document.getElementById('books-chapters-view').style.display = 'none';
+  const mainTitle = document.getElementById('books-main-title');
+  if (mainTitle) mainTitle.textContent = className;
 
-  const classItems = allBooksData.filter(b => (b.className && b.className.trim() ? b.className.trim() : 'General / Other') === className);
+  const classesView = document.getElementById('books-classes-view');
+  const titlesView = document.getElementById('books-titles-view');
+  const chaptersView = document.getElementById('books-chapters-view');
+  if (classesView) classesView.style.display = 'none';
+  if (titlesView) titlesView.style.display = 'block';
+  if (chaptersView) chaptersView.style.display = 'none';
+
+  const classItems = allBooksData.filter(b => (b.className && String(b.className).trim() ? String(b.className).trim() : 'General / Other') === className);
 
   const bookNameMap = {};
   classItems.forEach(b => {
@@ -3993,6 +4076,8 @@ function renderBookTitlesView(className) {
   });
 
   const container = document.getElementById('books-titles-list');
+  if (!container) return;
+
   container.innerHTML = Object.keys(bookNameMap).map((bName, i) => {
     const color = NOTE_COLORS[(i + 2) % NOTE_COLORS.length];
     const count = bookNameMap[bName].length;
@@ -4022,25 +4107,29 @@ function renderBookTitlesView(className) {
 function openBookChapters(bookName) {
   selectedBookTitle = bookName;
   bookNavLevel = 3;
-  if (window.history) {
-    window.history.pushState({ screenId: 'screen-books', bookLevel: 3 }, '', window.location.pathname);
-  }
   renderBookChaptersView(bookName);
 }
 
 function renderBookChaptersView(bookName) {
-  document.getElementById('books-main-title').textContent = bookName;
-  document.getElementById('books-classes-view').style.display = 'none';
-  document.getElementById('books-titles-view').style.display = 'none';
-  document.getElementById('books-chapters-view').style.display = 'block';
+  const mainTitle = document.getElementById('books-main-title');
+  if (mainTitle) mainTitle.textContent = bookName;
+
+  const classesView = document.getElementById('books-classes-view');
+  const titlesView = document.getElementById('books-titles-view');
+  const chaptersView = document.getElementById('books-chapters-view');
+  if (classesView) classesView.style.display = 'none';
+  if (titlesView) titlesView.style.display = 'none';
+  if (chaptersView) chaptersView.style.display = 'block';
 
   const chapters = allBooksData.filter(b => {
-    const matchesClass = (b.className && b.className.trim() ? b.className.trim() : 'General / Other') === selectedBookClass;
+    const matchesClass = (b.className && String(b.className).trim() ? String(b.className).trim() : 'General / Other') === selectedBookClass;
     const matchesName = (b.name || b.title || 'Untitled Book') === bookName;
     return matchesClass && matchesName;
   });
 
   const container = document.getElementById('books-chapters-list');
+  if (!container) return;
+
   container.innerHTML = chapters.map((c, i) => {
     const color = NOTE_COLORS[(i + 4) % NOTE_COLORS.length];
     const title = c.chapter || c.title || `Chapter ${i + 1}`;
@@ -4070,25 +4159,65 @@ function renderBookChaptersView(bookName) {
   }).join('');
 }
 
-// Helper for Google Drive downloads
-function normalizeDriveDownloadUrl(url) {
-  if (!url) return '';
-  if (url.includes('drive.google.com')) {
-    const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-    if (fileIdMatch && fileIdMatch[1]) {
-      return `https://drive.google.com/uc?export=download&id=${fileIdMatch[1]}`;
-    }
-  }
-  return url;
-}
-
 // Level 4: Open Reader
 function readBookItem(id) {
   const item = allBooksData.find(b => b.id === id);
   if (!item) return;
 
   bookNavLevel = 4;
-  showScreen('screen-book-viewer', true);
+  showScreen('screen-book-viewer');
+
+  const viewerBody = document.getElementById('book-viewer-body');
+  const viewerTitle = document.getElementById('book-viewer-title');
+  const dlBtn = document.getElementById('book-viewer-download');
+
+  const bookTitle = item.chapter || item.title || item.name || 'Book View';
+  if (viewerTitle) viewerTitle.textContent = bookTitle;
+
+  const rawUrl = (item.fileUrl || item.driveUrl || '').trim();
+
+  if (dlBtn) {
+    if (item.allowDownload !== false && rawUrl) {
+      dlBtn.style.display = 'block';
+      dlBtn.onclick = () => window.open(normalizeDriveDownloadUrl(rawUrl), '_blank');
+    } else {
+      dlBtn.style.display = 'none';
+    }
+  }
+
+  if (!viewerBody) return;
+
+  if (item.type === 'html' || item.isHtml) {
+    viewerBody.innerHTML = `<div class="html-note-rendered" style="padding:16px;font-size:15px;line-height:1.8;height:100%;overflow-y:auto;">${item.htmlContent || item.content || ''}</div>`;
+  } else if (rawUrl) {
+    let embedUrl = rawUrl;
+    if (rawUrl.includes('drive.google.com')) {
+      const fileIdMatch = rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || rawUrl.match(/id=([a-zA-Z0-9_-]+)/);
+      embedUrl = fileIdMatch ? `https://drive.google.com/file/d/${fileIdMatch[1]}/preview` : rawUrl;
+    } else if (rawUrl.toLowerCase().endsWith('.pdf') || rawUrl.includes('firebasestorage.googleapis.com')) {
+      embedUrl = `https://docs.google.com/viewer?embedded=true&url=${encodeURIComponent(rawUrl)}`;
+    }
+
+    viewerBody.innerHTML = `
+      <iframe 
+        src="${embedUrl}" 
+        style="width:100%;height:100%;border:none;display:block;background:#ffffff;" 
+        allow="autoplay; fullscreen" 
+        loading="lazy"
+        allowfullscreen>
+      </iframe>
+    `;
+  } else {
+    viewerBody.innerHTML = `<div style="text-align:center;color:var(--sub);padding:40px;">No document preview available.</div>`;
+  }
+}
+
+function readBookItem(id) {
+  const item = allBooksData.find(b => b.id === id);
+  if (!item) return;
+
+  bookNavLevel = 4;
+  showScreen('screen-book-viewer');
 
   const viewerBody = document.getElementById('book-viewer-body');
   const viewerTitle = document.getElementById('book-viewer-title');
@@ -4099,7 +4228,6 @@ function readBookItem(id) {
 
   const rawUrl = (item.fileUrl || item.driveUrl || '').trim();
 
-  // Download button handling
   if (item.allowDownload !== false && rawUrl) {
     dlBtn.style.display = 'block';
     dlBtn.onclick = () => window.open(normalizeDriveDownloadUrl(rawUrl), '_blank');
@@ -4110,13 +4238,11 @@ function readBookItem(id) {
   if (item.type === 'html' || item.isHtml) {
     viewerBody.innerHTML = `<div class="html-note-rendered" style="padding:16px;font-size:15px;line-height:1.8;height:100%;overflow-y:auto;">${item.htmlContent || item.content || ''}</div>`;
   } else if (rawUrl) {
-    // Universal Android WebView PDF Embedder
     let embedUrl = rawUrl;
     if (rawUrl.includes('drive.google.com')) {
       const fileIdMatch = rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || rawUrl.match(/id=([a-zA-Z0-9_-]+)/);
       embedUrl = fileIdMatch ? `https://drive.google.com/file/d/${fileIdMatch[1]}/preview` : rawUrl;
     } else if (rawUrl.toLowerCase().endsWith('.pdf') || rawUrl.includes('firebasestorage.googleapis.com')) {
-      // Route direct PDFs through Google Docs Viewer for Android WebView compatibility
       embedUrl = `https://docs.google.com/viewer?embedded=true&url=${encodeURIComponent(rawUrl)}`;
     }
 
