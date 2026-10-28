@@ -538,11 +538,10 @@ input::placeholder {
   opacity: 1 !important;
 }
 
-/* --- HTML NOTE CONTAINER STYLES --- */
+/* ================= HTML NOTE ORIGINAL STYLING & READABILITY ================= */
 .html-note-rendered {
   width: 100%;
   line-height: 1.7;
-  color: var(--text);
   overflow-x: auto;
 }
 
@@ -552,31 +551,47 @@ input::placeholder {
   border: 1.5px solid var(--border) !important;
   color: var(--text) !important;
 }
-.html-note-rendered table {
-  width: 100% !important;
-  min-width: 480px;
-  border-collapse: collapse !important;
-  margin: 12px 0 !important;
-  font-size: 13.5px !important;
-}
-.html-note-rendered th {
-  background: rgba(99, 102, 241, 0.08) !important;
-  font-weight: 700 !important;
-  color: var(--text) !important;
-  border: 1px solid var(--border) !important;
-  padding: 8px 10px !important;
-}
-.html-note-rendered td {
-  border: 1px solid var(--border) !important;
-  padding: 8px 10px !important;
-}
 .html-note-rendered img {
   max-width: 100% !important;
   height: auto !important;
   border-radius: 8px;
 }
 
-/* --- BOOKS UI STYLES (MATCHING SCREENSHOTS) --- */
+/* 1. Ensure Table structure matches Admin preview */
+.html-note-rendered table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 14px 0 !important;
+}
+.html-note-rendered table th,
+.html-note-rendered table td {
+  border: 1px solid #cbd5e1;
+  padding: 8px 12px;
+}
+
+/* 2. Only override washed-out neutral grays (slate-400 / gray-400) on white backgrounds */
+[data-theme="light"] .html-note-rendered .bg-white .text-slate-400,
+[data-theme="light"] .html-note-rendered .bg-white .text-gray-400,
+[data-theme="light"] .html-note-rendered [class*="bg-slate-50"] .text-slate-400,
+[data-theme="light"] .html-note-rendered [class*="bg-gray-50"] .text-gray-400 {
+  color: #475569 !important;
+}
+
+/* 3. Dark container safety: ensure text inside dark cards remains legible */
+.html-note-rendered [class*="bg-slate-9"] > *:not([class*="text-"]):not([style*="color"]),
+.html-note-rendered [class*="bg-gray-9"] > *:not([class*="text-"]):not([style*="color"]),
+.html-note-rendered [class*="bg-[#0f172a]"] > *:not([class*="text-"]):not([style*="color"]) {
+  color: #f8fafc;
+}
+
+/* 4. Ensure buttons like "Show / Hide Solutions" maintain their original styling */
+.html-note-rendered button,
+.html-note-rendered .btn {
+  cursor: pointer !important;
+  touch-action: manipulation;
+}
+
+/* --- BOOKS UI STYLES --- */
 .book-card-row {
   background: var(--card);
   border: 1.5px solid #e0e7ff;
@@ -1718,10 +1733,19 @@ function showToast(msg,type='info'){
   t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3000);
 }
 function toggleTheme(){
-  currentTheme=currentTheme==='light'?'dark':'light';
-  document.documentElement.setAttribute('data-theme',currentTheme);
-  document.getElementById('theme-btn').innerHTML=currentTheme==='dark'?'<i class="fa fa-sun"></i>':'<i class="fa fa-moon"></i>';
-  localStorage.setItem('theme',currentTheme);
+  currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  document.getElementById('theme-btn').innerHTML = currentTheme === 'dark' ? '<i class="fa fa-sun"></i>' : '<i class="fa fa-moon"></i>';
+  localStorage.setItem('theme', currentTheme);
+
+  // Re-adjust notes contrast if currently viewing a note
+  const noteDetailBody = document.getElementById('note-detail-body');
+  const noteScreen = document.getElementById('screen-note-detail');
+  if (noteScreen && noteScreen.classList.contains('active') && noteDetailBody) {
+    if (typeof sanitizeHtmlNoteContrast === 'function') {
+      sanitizeHtmlNoteContrast(noteDetailBody);
+    }
+  }
 }
 
 // ===== AUTH =====
@@ -3426,11 +3450,189 @@ function renderSubjectNotesListView(subjName) {
   }).join('');
 }
 
+// Color-Preserving Contrast Sanitizer: Keeps all original colors intact
+function sanitizeHtmlNoteContrast(container) {
+  if (!container) return;
+
+  const noteWrap = container.querySelector('.html-note-rendered') || container;
+
+  // Helper to determine if an element sits inside a dark container
+  function getEffectiveBackground(el) {
+    let curr = el;
+    while (curr && curr !== container && curr !== document.body) {
+      if (curr.className && typeof curr.className === 'string') {
+        const cls = curr.className.toLowerCase();
+        if (/bg-(slate|gray|zinc|neutral)-(800|900|950)|bg-black|bg-\[#0|bg-\[#1|from-(indigo|purple|slate|blue)-(600|700|800|900)/.test(cls)) {
+          return { isDark: true };
+        }
+        if (/bg-(white|slate-50|gray-50|blue-50|purple-50|pink-50|yellow-50)/.test(cls)) {
+          return { isDark: false };
+        }
+      }
+
+      const style = window.getComputedStyle(curr);
+      const bgCol = style.backgroundColor;
+      if (bgCol && bgCol !== 'transparent' && bgCol !== 'rgba(0, 0, 0, 0)') {
+        const rgb = bgCol.match(/\d+/g);
+        if (rgb && rgb.length >= 3) {
+          const a = rgb[3] !== undefined ? parseFloat(rgb[3]) : 1;
+          if (a > 0.2) {
+            const brightness = (parseInt(rgb[0]) * 299 + parseInt(rgb[1]) * 587 + parseInt(rgb[2]) * 114) / 1000;
+            return { isDark: brightness < 135 };
+          }
+        }
+      }
+      curr = curr.parentElement;
+    }
+
+    const isThemeDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return { isDark: isThemeDark };
+  }
+
+  // Scan text elements to fix only truly invisible text without altering original color themes
+  const elements = noteWrap.querySelectorAll('p, span, div, h1, h2, h3, h4, h5, h6, li, em, strong, b, td, th');
+  elements.forEach(el => {
+    if (el.closest('button, .btn')) return;
+
+    const style = window.getComputedStyle(el);
+    const color = style.color || '';
+    const rgb = color.match(/\d+/g);
+
+    if (rgb && rgb.length >= 3) {
+      const r = parseInt(rgb[0]), g = parseInt(rgb[1]), b = parseInt(rgb[2]);
+      
+      // Calculate color saturation / tint (Difference between max and min channel)
+      const colorSpread = Math.max(r, g, b) - Math.min(r, g, b);
+      
+      // IF IT HAS AN INTENTIONAL COLOR (Blue, Pink, Purple, Green, Orange, Red, etc.):
+      // DO NOT MODIFY IT — keep the original color from the Admin Panel!
+      if (colorSpread > 28) {
+        return; 
+      }
+
+      // If it's a neutral white/gray/black, check for zero-contrast conditions:
+      const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+      const bg = getEffectiveBackground(el);
+
+      if (bg.isDark) {
+        // Dark background (e.g. Dark navy options): black/dark gray text is invisible -> make it white
+        if (brightness < 120) {
+          el.style.setProperty('color', '#f8fafc', 'important');
+        }
+      } else {
+        // Light background: near-white or ghost text (brightness > 185) -> make it dark slate
+        if (brightness > 185) {
+          const isHeading = ['H1','H2','H3','H4','H5','H6','STRONG','B','TH'].includes(el.tagName);
+          el.style.setProperty('color', isHeading ? '#0f172a' : '#334155', 'important');
+        }
+      }
+    }
+  });
+}
+
 // Level 4: Open Note Detail helper
 function openNoteDetailById(id) {
   const note = window._userNotesCache[id];
   if (!note) return;
   openNoteDetail(note);
+}
+
+// Universal Interaction & Script Runner for HTML Notes (Show/Hide Solutions)
+function initHtmlNoteInteractions(container) {
+  if (!container) return;
+
+  // 1. Re-activate & execute any <script> tags included in the HTML note
+  const scripts = container.querySelectorAll('script');
+  scripts.forEach(oldScript => {
+    const newScript = document.createElement('script');
+    Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+    
+    let code = oldScript.innerHTML || oldScript.textContent || '';
+    // Bypass DOMContentLoaded / window.onload wrappers so scripts run immediately in single-page apps
+    code = code.replace(/document\s*\.\s*addEventListener\s*\(\s*['"]DOMContentLoaded['"]\s*,\s*function\s*\([^\)]*\)\s*\{/gi, '(function(){');
+    code = code.replace(/window\s*\.\s*onload\s*=\s*function\s*\([^\)]*\)\s*\{/gi, '(function(){');
+    
+    newScript.appendChild(document.createTextNode(code));
+    oldScript.parentNode.replaceChild(newScript, oldScript);
+  });
+
+  // 2. Universal Click Delegate for any Show/Hide Solution, Answer, or Accordion elements
+  container.addEventListener('click', function(e) {
+    const btn = e.target.closest('button, .btn, [role="button"], a');
+    if (!btn) return;
+
+    const btnText = (btn.textContent || '').trim().toLowerCase();
+    const onclickAttr = btn.getAttribute('onclick') || '';
+    const dataTarget = btn.getAttribute('data-target') || btn.getAttribute('aria-controls') || btn.getAttribute('href');
+
+    const isToggleBtn = 
+      btnText.includes('solution') || 
+      btnText.includes('answer') || 
+      btnText.includes('show') || 
+      btnText.includes('hide') || 
+      btnText.includes('reveal') || 
+      btnText.includes('view') ||
+      btn.classList.contains('toggle-btn') ||
+      btn.classList.contains('collapsible') ||
+      /toggle|solution|answer/i.test(onclickAttr);
+
+    if (!isToggleBtn) return;
+
+    let targetEl = null;
+
+    // Strategy A: Check data-target or href (#id)
+    if (dataTarget && dataTarget.startsWith('#')) {
+      targetEl = container.querySelector(dataTarget) || document.querySelector(dataTarget);
+    }
+
+    // Strategy B: Extract target ID from onclick="toggleSolution('some_id')"
+    if (!targetEl && onclickAttr) {
+      const idMatch = onclickAttr.match(/['"]([a-zA-Z0-9_\-]+)['"]/);
+      if (idMatch && idMatch[1]) {
+        targetEl = container.querySelector('#' + idMatch[1]) || document.getElementById(idMatch[1]);
+      }
+    }
+
+    // Strategy C: Target the adjacent sibling element
+    if (!targetEl && btn.nextElementSibling) {
+      targetEl = btn.nextElementSibling;
+    }
+
+    // Strategy D: Target solution container within the same card/activity block
+    if (!targetEl) {
+      const card = btn.closest('.card, .activity, .activity-box, .exercise, [class*="activity"], div');
+      if (card) {
+        targetEl = card.querySelector('.solution, .answer, .solutions, .answers, .solution-box, [id*="sol"], [id*="ans"]');
+      }
+    }
+
+    // Toggle target element visibility
+    if (targetEl) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const computed = window.getComputedStyle(targetEl);
+      const isHidden = computed.display === 'none' || 
+                       targetEl.style.display === 'none' || 
+                       targetEl.classList.contains('hidden') || 
+                       targetEl.hasAttribute('hidden');
+
+      if (isHidden) {
+        targetEl.style.setProperty('display', 'block', 'important');
+        targetEl.classList.remove('hidden');
+        targetEl.removeAttribute('hidden');
+        if (targetEl.classList.contains('collapse') && !targetEl.classList.contains('show')) {
+          targetEl.classList.add('show');
+        }
+      } else {
+        targetEl.style.setProperty('display', 'none', 'important');
+        targetEl.classList.add('hidden');
+        if (targetEl.classList.contains('show')) {
+          targetEl.classList.remove('show');
+        }
+      }
+    }
+  });
 }
 
 function openNoteDetail(note) {
@@ -3472,6 +3674,14 @@ function openNoteDetail(note) {
     ${note.images && note.images.length ? note.images.map(img => `<img src="${img}" style="width:100%;border-radius:12px;margin-bottom:12px;object-fit:contain;max-height:260px;"/>`).join('') : ''}
     ${renderedContent}
   `;
+
+  // Activate Show/Hide toggles and run embedded scripts
+  if (note.isHtml) {
+    initHtmlNoteInteractions(body);
+    sanitizeHtmlNoteContrast(body);
+    // Runs right after the browser layout engine completes render:
+    setTimeout(() => sanitizeHtmlNoteContrast(body), 50);
+  }
 }
 
 // ===== LEADERBOARD =====
